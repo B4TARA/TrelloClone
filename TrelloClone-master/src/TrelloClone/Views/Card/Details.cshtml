@@ -1,0 +1,108 @@
+﻿@model TrelloClone.ViewModels.CardDetails
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <h2>Детали</h2>
+    
+    <div class="row">
+        <form class="col s12" asp-controller="Card" asp-action="Update">
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="Name" />
+                    <label asp-for="Name">Наименование SMART-задачи</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="Requirement" />
+                    <label asp-for="Requirement">Требование к задаче (что считается исполнением задачи)</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="Term" />
+                    <label asp-for="Term">Плановый срок реализации задачи</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="EmployeeAssessment" />
+                    <label asp-for="EmployeeAssessment">Оценочное суждение работника</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="EmployeeComment"/>
+                    <label asp-for="EmployeeComment">Комментарий работника</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="SupervisorAssessment" />
+                    <label asp-for="SupervisorAssessment">Оценочное суждение непосредственного руководителя</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="SupervisorComment"/>
+                    <label asp-for="SupervisorComment">Комментарий непосредственного руководителя</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="Points"/>
+                    <label asp-for="Points">Баллы в зависимости от оценочного суждения непосредственного руководителя</label>
+                </div>
+            </div>
+
+
+             <div class="row">
+                <div class="input-field col s12">
+                    <select asp-for="Column" asp-items="Model.Columns"></select>
+                    <label asp-for="Column"></label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <input type="submit" value="Save" class="btn">
+                <button asp-controller="Home" asp-action="Index" class="btn">Back to Boards</button>
+            </div>
+            <input asp-for="Id" type="hidden"/>
+        </form>
+    </div>
+</div>
+
+
+@if(TempData.ContainsKey("Message"))
+{
+    <script type="text/javascript">
+        M.toast({ html: '@TempData["Message"]'}, 3000);
+    </script>
+}
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    });
+</script>

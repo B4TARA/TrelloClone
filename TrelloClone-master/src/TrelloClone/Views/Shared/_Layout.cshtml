@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/reserv.css">
+</head>
+
+
+<body>
+
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+
+        <div>
+            <nav>
+                <div class="nav-wrapper">
+                    <a asp-controller="Home" asp-action="Index" class="brand-logo center">Смарты</a>
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                        <li>
+                            <a asp-controller="Home" asp-action="Index">
+                                Кварталы
+                            </a>
+                        </li>
+
+                        <li>
+                            <div class="profile-details">
+
+                                <div class="name-job">
+                                    <div class="profile_name">@User.Claims.FirstOrDefault(c => c.Type == "Name").Value</div>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                   @* <ul>
+                        <li>
+                            @if (User.Claims.FirstOrDefault(c => c.Type == "ImgPath") != null)
+                            {
+                                <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImgPath").Value" alt="profileImg">
+                            }
+                            else
+                            {
+                                <img style=" max-width: 50px; max-height: 50px;" src="../image/default_profile_icon.svg" alt="profileImg">
+                            }
+                        </li>
+                    </ul>*@
+                    <ul>
+                        <a asp-area="" asp-controller="Account" asp-action="Logout">
+                            <i class='bx bx-log-out'></i>
+                        </a>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    }
+
+
+    <div>
+        @RenderBody()
+    </div>
+
+
+</body>
+</html>
