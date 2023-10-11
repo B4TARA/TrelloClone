@@ -30,11 +30,24 @@
                 <div class="nav-wrapper">
                     <a asp-controller="Home" asp-action="Index" class="brand-logo center">Смарты</a>
                     <ul id="nav-mobile" class="left hide-on-med-and-down">
-                        <li>
-                            <a asp-controller="Home" asp-action="Index">
-                                Кварталы
-                            </a>
-                        </li>
+
+                        @if(User.IsInRole("Employee") || User.IsInRole("Combined"))
+                        {
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">
+                                    Мои Карточки
+                                </a>
+                            </li>
+                        }
+
+                        @if(User.IsInRole("Supervisor") || User.IsInRole("Combined"))
+                        {
+                            <li>
+                                <a asp-controller="Home" asp-action="IndexSupervisor">
+                                    Мои сотрудники
+                                </a>
+                            </li>
+                        }
 
                         <li>
                             <div class="profile-details">

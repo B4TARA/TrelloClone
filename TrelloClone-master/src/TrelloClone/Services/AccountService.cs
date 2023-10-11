@@ -62,9 +62,7 @@ namespace TrelloClone.Services
 
             List<Claim> claims = new List<Claim>
             {
-
-                new Claim(ClaimTypes.Role, user.Roles.ToString()),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Roles.ToString()),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString()),
                 new Claim("Id", user.Id.ToString())
             };
 

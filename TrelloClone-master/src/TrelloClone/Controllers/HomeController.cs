@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
 
@@ -17,21 +17,24 @@ namespace TrelloClone.Controllers
             _boardService = boardService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            if (User.Identity == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            else if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
 
-            var model = _boardService.ListBoard(userId);
+            string supervisorName = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
+
+            var model = await _boardService.ListBoard(userId);
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> IndexSupervisor()
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            string supervisorName = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
+
+            var model = await _boardService.ListBoardSupervisor(supervisorName);
 
             return View(model);
         }
@@ -46,10 +49,15 @@ namespace TrelloClone.Controllers
         public IActionResult Create(NewBoard viewModel)
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            string employeeName = User.Claims.FirstOrDefault(c => c.Type == "Name").Value;
+
             viewModel.UserId = userId;
 
+            viewModel.EmployeeName = employeeName;
+
             _boardService.AddBoard(viewModel);
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -68,6 +76,6 @@ namespace TrelloClone.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-  
+
     }
 }

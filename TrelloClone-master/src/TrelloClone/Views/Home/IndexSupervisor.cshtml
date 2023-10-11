@@ -5,16 +5,6 @@
 
 <div class="container">
     <div class="row">
-        <h2>Месяцы</h2>
-        <a asp-action="Create"
-           asp-controller="Home"
-           class="waves-effect waves-light btn">
-            Добавить новый месяц
-        </a>
-
-    </div>
-
-    <div class="row">
         @foreach (var board in Model.Boards)
         {
             <div class="card s12">

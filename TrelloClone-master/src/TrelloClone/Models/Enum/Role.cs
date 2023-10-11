@@ -3,6 +3,7 @@
     public enum Role
     {
         Employee = 1,
-        Supervisor = 2
+        Supervisor = 2,
+        Combined = 3
     }
 }

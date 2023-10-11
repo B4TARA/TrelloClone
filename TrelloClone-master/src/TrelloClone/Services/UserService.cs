@@ -85,7 +85,7 @@ namespace TrelloClone.Services
                         User user = new User();
 
                         user.Name = Convert.ToString(table.Rows[rowCounter][4]);
-                        user.Roles.Add(Role.Supervisor);
+                        user.Role = Role.Supervisor;
 
                         users.Add(user);
                     }                   
@@ -133,11 +133,12 @@ namespace TrelloClone.Services
                         }
                     }
 
-                    user.Roles.Add(Role.Employee);
+                   
 
                     //если не попадался как руководитель
                     if (users.FirstOrDefault(x => x.Name == user.Name) == null)
                     {
+                        user.Role = Role.Employee;
                         users.Add(user);
                     }
                     else
@@ -145,7 +146,7 @@ namespace TrelloClone.Services
                         users.FirstOrDefault(x => x.Name == user.Name).Position = user.Position;
                         users.FirstOrDefault(x => x.Name == user.Name).SspName = user.SspName;
                         users.FirstOrDefault(x => x.Name == user.Name).SupervisorName = user.SupervisorName;
-                        users.FirstOrDefault(x => x.Name == user.Name).Roles.Add(Role.Employee);
+                        users.FirstOrDefault(x => x.Name == user.Name).Role = Role.Combined;
                     }
                 }
 

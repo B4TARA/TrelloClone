@@ -14,6 +14,6 @@ namespace TrelloClone.Models
         public string? ImagePath { get; set; }
         public long? SupervisorId { get; set; }
         public string? SupervisorName { get; set; }          
-        public List<Role> Roles { get; set; } = new List<Role>();
+        public Role Role { get; set; }
     }
 }

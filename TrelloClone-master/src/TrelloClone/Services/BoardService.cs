@@ -1,6 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using TrelloClone.Data;
+using TrelloClone.Data.Repositories;
+using TrelloClone.Models;
+using TrelloClone.Models.Enum;
 using TrelloClone.ViewModels;
 
 namespace TrelloClone.Services
@@ -8,23 +14,51 @@ namespace TrelloClone.Services
     public class BoardService
     {
         private readonly TrelloCloneDbContext _dbContext;
+        private readonly RepositoryManager _repository;
 
-        public BoardService(TrelloCloneDbContext dbContext)
+        public BoardService(TrelloCloneDbContext dbContext, RepositoryManager repository)
         {
             _dbContext = dbContext;
+            _repository = repository;
         }
 
-        public BoardList ListBoard(int userId)
+        public async Task<BoardList> ListBoard(int userId)
         {
             var model = new BoardList();
 
-            foreach (var board in _dbContext.Boards.Where(x=>x.UserId == userId))
+            var allBoards = await _repository.BoardRepository.GetAll(false);
+
+            foreach (var board in allBoards.Where(x => x.UserId == userId))
             {
                 model.Boards.Add(new BoardList.Board
                 {
                     Id = board.Id,
+                    EmployeeName = board.EmployeeName,
                     Title = board.Title
                 });
+            }
+
+            return model;
+        }
+
+        public async Task<BoardList> ListBoardSupervisor(string supervisorName)
+        {
+            var model = new BoardList();
+
+            var allUsers = await _repository.UserRepository.GetAllUsers(false);
+            var allBoards = await _repository.BoardRepository.GetAll(false);
+
+            foreach (var user in allUsers.Where(x => x.SupervisorName == supervisorName))
+            {
+                foreach (var board in allBoards.Where(x => x.UserId == user.Id))
+                {
+                    model.Boards.Add(new BoardList.Board
+                    {
+                        Id = board.Id,
+                        EmployeeName=board.EmployeeName,
+                        Title = board.Title
+                    });
+                }
             }
 
             return model;
@@ -42,6 +76,7 @@ namespace TrelloClone.Services
             if (board == null)
                 return model;
             model.Id = board.Id;
+            model.EmployeeName = board.EmployeeName;
             model.Title = board.Title;
 
             foreach (var column in board.Columns)
@@ -114,6 +149,7 @@ namespace TrelloClone.Services
             _dbContext.Boards.Add(new Models.Board
             {
                 UserId = viewModel.UserId,
+                EmployeeName = viewModel.EmployeeName,
                 Title = viewModel.Title
             });
 

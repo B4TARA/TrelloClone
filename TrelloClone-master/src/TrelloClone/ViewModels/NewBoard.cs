@@ -10,5 +10,6 @@ namespace TrelloClone.ViewModels
         [RegularExpression(@"^[А-Я]+[а-яА-Я\s]*$", ErrorMessage ="Пожалуйста, сделайте первую букву заглавной и используйте только русские символы.")]
         [Required]
         public string Title { get; set; }
+        public string EmployeeName { get; set; }
     }
 }
