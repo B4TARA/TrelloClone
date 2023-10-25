@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using TrelloClone.Models.Enum;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
 
@@ -22,13 +24,18 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(CardDetails cardDetails)
+        public async Task<IActionResult> Update(CardDetails cardDetails)
         {
-            _cardService.Update(cardDetails);
+            var response = await _cardService.Update(cardDetails);
 
-            TempData["Message"] = "Saved card Details";
+            if (response.StatusCode == StatusCodes.OK)
+            {
+                TempData["Message"] = "Saved card Details";
 
-            return RedirectToAction(nameof(Details), new { id = cardDetails.Id });
+                return RedirectToAction(nameof(Details), new { id = cardDetails.Id });
+            }
+
+            return NotFound(response.Description);           
         }
     }
 }

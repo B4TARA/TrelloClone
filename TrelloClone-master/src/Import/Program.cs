@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrelloClone.Data;
+using TrelloClone.Data.Repositories;
 using TrelloClone.Services;
 
 var optionsBuilder = new DbContextOptionsBuilder<TrelloCloneDbContext>();
@@ -8,8 +9,9 @@ var options = optionsBuilder
         .Options;
 
 TrelloCloneDbContext _db = new TrelloCloneDbContext(options);
+RepositoryManager _repository = new RepositoryManager(_db);
 
-UserService userService = new UserService(_db);
+UserService userService = new UserService(_db, _repository);
 
 //var path = "C:\\Users\\tomchikadm\\Documents\\GitHub\\kop\\ooo\\";
 var path = "D:\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";

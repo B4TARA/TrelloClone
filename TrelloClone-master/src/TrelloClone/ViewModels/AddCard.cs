@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TrelloClone.ViewModels
 {
@@ -13,6 +14,6 @@ namespace TrelloClone.ViewModels
         public string Requirement { get; set; }
 
         [Required]
-        public string Term { get; set; }
+        public DateTime Term { get; set; }
     }
 }

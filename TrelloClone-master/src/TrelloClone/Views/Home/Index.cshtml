@@ -1,21 +1,21 @@
-﻿@model TrelloClone.ViewModels.BoardList;
+﻿@model TrelloClone.ViewModels.UserBoardList;
 @{
     ViewData["Title"] = "Index";
 }
 
+@foreach (var notification in Model.Notifications)
+{
+    <font color="red">
+        <center>
+            @notification
+        </center>
+    </font>
+}
+
 <div class="container">
     <div class="row">
-        <h2>Месяцы</h2>
-        <a asp-action="Create"
-           asp-controller="Home"
-           class="waves-effect waves-light btn">
-            Добавить новый месяц
-        </a>
 
-    </div>
-
-    <div class="row">
-        @foreach (var board in Model.Boards)
+        @foreach (var user in Model.Users)
         {
             <div class="card s12">
                 <div style="float: left; margin-right: 2em; width: 22em;">
@@ -23,28 +23,14 @@
 
                         <div class="card-content white-text">
                             <span class="card-title">
-                                @board.EmployeeName
-                            </span>
-                            <span class="card-title">
-                                @board.Title
+                                @user.Name
                             </span>
                         </div>
 
                         <div class="card-action">
-                            <a asp-action="Index" asp-controller="Board"
-                               asp-route-id="@board.Id"
+                            <a asp-action="Index" asp-controller="UserBoard"
+                               asp-route-id="@user.Id"
                                class="collection-item">Открыть</a>
-                        
-                            <form asp-action="Delete" asp-controller="Home"
-                                  style="float: right;">
-                                <input type="hidden"
-                                       value="@board.Id"
-                                       name="id" />
-                                <button class="btn-floating btn-small red"
-                                        type="submit">
-                                    <i class="material-icons">delete</i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>

@@ -1,19 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using TrelloClone.Data;
-using TrelloClone.Infrastructure;
-using TrelloClone.Services;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
+using TrelloClone.Services;
 
 namespace TrelloClone
 {
@@ -46,13 +43,13 @@ namespace TrelloClone
         {
             services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                //options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).AddNewtonsoftJson(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
-            services.AddScoped<BoardService>();
+            services.AddScoped<UserBoardService>();
             services.AddScoped<CardService>();
             services.AddScoped<AccountService>();
 

@@ -1,8 +1,10 @@
+using TrelloClone.Models;
+
 namespace TrelloClone.ViewModels
 {
     public class MoveCardCommand
     {
-        public int CardId { get; set; }
+        public int UserId { get; set; }
         public int ColumnId { get; set; }
     }
 }

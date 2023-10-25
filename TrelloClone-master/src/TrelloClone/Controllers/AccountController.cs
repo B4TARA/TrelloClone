@@ -64,8 +64,8 @@ namespace TrelloClone.Controllers
                         new ClaimsPrincipal(response.Data),
                         new AuthenticationProperties { IsPersistent = true });
 
-
                     return RedirectToAction("Index", "Home");
+
                 }
 
 
@@ -79,7 +79,6 @@ namespace TrelloClone.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
 
             return RedirectToAction("Login", "Account");
         }

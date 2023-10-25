@@ -9,8 +9,7 @@
     
     <div class="row">
         <form class="col s12" asp-controller="Card" asp-action="Update">
-
-
+            
             <div class="row">
                 <div class="input-field col s12">
                     <input asp-for="Name" />
@@ -29,59 +28,49 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input asp-for="Term" />
+                    <input type="month" asp-for="Term" />
                     <label asp-for="Term">Плановый срок реализации задачи</label>
                 </div>
             </div>
 
-
-            <div class="row">
-                <div class="input-field col s12">
-                    <input asp-for="EmployeeAssessment" />
-                    <label asp-for="EmployeeAssessment">Оценочное суждение работника</label>
+            @if (Model.Column > 3)
+            {
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select asp-for="EmployeeAssessment" asp-items="Html.GetEnumSelectList<TrelloClone.Models.Enum.Marks>()">
+                        </select>
+                        <label asp-for="EmployeeAssessment">Оценочное суждение работника</label>
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="row">
-                <div class="input-field col s12">
-                    <input asp-for="EmployeeComment"/>
-                    <label asp-for="EmployeeComment">Комментарий работника</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input asp-for="EmployeeComment" />
+                        <label asp-for="EmployeeComment">Комментарий работника</label>
+                    </div>
                 </div>
-            </div>
+
+                @if(Model.Column > 4)
+                {
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select asp-for="SupervisorAssessment" asp-items="Html.GetEnumSelectList<TrelloClone.Models.Enum.Marks>()">
+                            </select>
+                            <label asp-for="SupervisorAssessment">Оценочное суждение непосредственного руководителя</label>
+                        </div>
+                    </div>
 
 
-            <div class="row">
-                <div class="input-field col s12">
-                    <input asp-for="SupervisorAssessment" />
-                    <label asp-for="SupervisorAssessment">Оценочное суждение непосредственного руководителя</label>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="input-field col s12">
-                    <input asp-for="SupervisorComment"/>
-                    <label asp-for="SupervisorComment">Комментарий непосредственного руководителя</label>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="input-field col s12">
-                    <input asp-for="Points"/>
-                    <label asp-for="Points">Баллы в зависимости от оценочного суждения непосредственного руководителя</label>
-                </div>
-            </div>
-
-
-             <div class="row">
-                <div class="input-field col s12">
-                    <select asp-for="Column" asp-items="Model.Columns"></select>
-                    <label asp-for="Column"></label>
-                </div>
-            </div>
-
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="SupervisorComment" />
+                            <label asp-for="SupervisorComment">Комментарий непосредственного руководителя</label>
+                        </div>
+                    </div>
+                }              
+            }
+            
 
             <div class="row">
                 <input type="submit" value="Save" class="btn">

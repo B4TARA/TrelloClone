@@ -5,7 +5,7 @@ namespace TrelloClone.Models
 {
     public class User
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Login { get; set; }
         public string? Password { get; set; }
@@ -13,7 +13,12 @@ namespace TrelloClone.Models
         public string? SspName { get; set; }
         public string? ImagePath { get; set; }
         public long? SupervisorId { get; set; }
-        public string? SupervisorName { get; set; }          
-        public Role Role { get; set; }
+        public string? SupervisorName { get; set; }
+        public Roles Role { get; set; }
+        public List<Column> Columns { get; set; } = new List<Column>();
+
+        public bool IsActiveLikeEmployee { get; set; } = false;
+        public bool IsActiveLikeSupervisor { get; set; } = false;
+        public List<string> Notifications { get; set; } = new List<string>();
     }
 }

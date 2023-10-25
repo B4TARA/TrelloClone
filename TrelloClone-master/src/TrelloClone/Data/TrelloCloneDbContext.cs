@@ -13,7 +13,6 @@ namespace TrelloClone.Data
             Database.EnsureCreated();
         }
 
-        public DbSet<Board> Boards { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<Column> Columns { get; set; }
         public DbSet<User> Users { get; set; }
@@ -27,11 +26,6 @@ namespace TrelloClone.Data
             builder.Entity<User>(builder =>
             {
                 builder.ToTable("USERS", schema: "public").HasKey(x => x.Id);
-            });
-
-            builder.Entity<Board>(builder =>
-            {
-                builder.ToTable("BOARDS", schema: "public").HasKey(x => x.Id);
             });
 
             builder.Entity<Card>(builder =>

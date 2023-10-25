@@ -15,7 +15,7 @@ namespace TrelloClone.Data.Repositories
             _db = db;
         }
 
-        public async Task CreateUserInfoRecord(User entity)
+        public async Task CreateUser(User entity)
         {
             await Create(entity);
         }
@@ -28,6 +28,18 @@ namespace TrelloClone.Data.Repositories
         public async Task<User?> GetUserById(bool trackChanges, int id)
         {
             Expression<Func<User, bool>> expression = m => m.Id == id;
+
+            List<User> usersByCondition = await GetByCondition(expression, trackChanges);
+            if (usersByCondition.Count() == 0)
+            {
+                return null;
+            }
+            return usersByCondition.First();
+        }
+
+        public async Task<User?> GetUserByName(bool trackChanges, string name)
+        {
+            Expression<Func<User, bool>> expression = m => m.Name == name;
 
             List<User> usersByCondition = await GetByCondition(expression, trackChanges);
             if (usersByCondition.Count() == 0)

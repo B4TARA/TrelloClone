@@ -11,7 +11,6 @@ namespace TrelloClone.Services
     public class AccountService
     {
         private readonly RepositoryManager _repository;
-        //private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public AccountService(RepositoryManager repository)
         {
@@ -48,7 +47,6 @@ namespace TrelloClone.Services
             }
             catch (Exception ex)
             {
-                //logger.Error(ex, $"[AccountService.Login] error: {ex.Message}");
                 return new BaseResponse<ClaimsIdentity>()
                 {
                     Description = $"[Login] : {ex.Message}",

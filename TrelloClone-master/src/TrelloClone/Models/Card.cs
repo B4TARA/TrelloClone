@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TrelloClone.Models
 {
@@ -7,10 +8,10 @@ namespace TrelloClone.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Requirement { get; set; }
-        public string Term { get; set; }
-        public string? EmployeeAssessment { get; set; }
+        public DateTime Term { get; set; }
+        public int? EmployeeAssessment { get; set; }
         public string? EmployeeComment { get; set; }
-        public string? SupervisorAssessment { get; set; }
+        public int? SupervisorAssessment { get; set; }
         public string? SupervisorComment { get; set; }
         public double? Points { get; set; }
         public int ColumnId { get; set; }

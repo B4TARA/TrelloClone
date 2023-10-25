@@ -28,13 +28,13 @@
         <div>
             <nav>
                 <div class="nav-wrapper">
-                    <a asp-controller="Home" asp-action="Index" class="brand-logo center">Смарты</a>
                     <ul id="nav-mobile" class="left hide-on-med-and-down">
 
                         @if(User.IsInRole("Employee") || User.IsInRole("Combined"))
                         {
                             <li>
-                                <a asp-controller="Home" asp-action="Index">
+                                <a asp-controller="UserBoard" asp-action="ListMyCards"
+                                asp-route-id="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value)">
                                     Мои Карточки
                                 </a>
                             </li>
@@ -43,7 +43,7 @@
                         @if(User.IsInRole("Supervisor") || User.IsInRole("Combined"))
                         {
                             <li>
-                                <a asp-controller="Home" asp-action="IndexSupervisor">
+                                <a asp-controller="UserBoard" asp-action="ListSubordinateEmployees">
                                     Мои сотрудники
                                 </a>
                             </li>

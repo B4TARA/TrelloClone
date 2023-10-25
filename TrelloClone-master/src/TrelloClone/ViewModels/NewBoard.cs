@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TrelloClone.ViewModels
 {
@@ -6,10 +8,12 @@ namespace TrelloClone.ViewModels
     {
         [Required]
         public int UserId { get; set; }
-
-        [RegularExpression(@"^[А-Я]+[а-яА-Я\s]*$", ErrorMessage ="Пожалуйста, сделайте первую букву заглавной и используйте только русские символы.")]
         [Required]
-        public string Title { get; set; }
+        public DateTime Title { get; set; } = new DateTime();
         public string EmployeeName { get; set; }
+        public List<string> Months { get; } = new List<string>()
+        {
+            "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+        };
     }
 }

@@ -6,7 +6,6 @@ namespace TrelloClone.Data.Repositories
     public class RepositoryManager
     {
         private TrelloCloneDbContext _db;
-        private BoardRepository? _boardRepository;
         private CardRepository? _cardRepository;
         private ColumnRepository? _columnRepository;
         private UserRepository? _userRepository;
@@ -14,18 +13,7 @@ namespace TrelloClone.Data.Repositories
         public RepositoryManager(TrelloCloneDbContext db)
         {
             _db = db;
-        }
-
-        public BoardRepository BoardRepository
-        {
-            get
-            {
-                if (_boardRepository == null)
-                    _boardRepository = new BoardRepository(_db);
-
-                return _boardRepository;
-            }
-        }
+        }    
 
         public CardRepository CardRepository
         {
