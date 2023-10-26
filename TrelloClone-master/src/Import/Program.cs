@@ -13,8 +13,8 @@ RepositoryManager _repository = new RepositoryManager(_db);
 
 UserService userService = new UserService(_db, _repository);
 
-//var path = "C:\\Users\\tomchikadm\\Documents\\GitHub\\kop\\ooo\\";
-var path = "D:\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
+var path = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
+//var path = "D:\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
 
 Task.Run(async () =>
 {

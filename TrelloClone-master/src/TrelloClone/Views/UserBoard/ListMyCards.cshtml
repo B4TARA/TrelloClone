@@ -13,63 +13,221 @@
     </font>
 }
 
-<div class="container">
 
-    <h4 style="text-align:center">@Model.Name</h4>
+<section class="main_container_content">
+    <div class="stages_main_wrapper">
 
-    @if(Model.IsActiveLikeEmployee)
-    {
-        <div class="row">
-            <div class="col s10">
-                <a asp-controller="UserBoard"
-                   asp-action="AddCard"
-                   asp-route-id="@Model.Id"
-                   class="wave-effect waves-light btn">
-                    Добавить задачу
-                </a>
-            </div>
-        </div>
-    } 
 
-    <div class="row">
         @foreach (var column in Model.Columns)
         {
-            <div class="col m4">
+            <div class="stage_wrapper" id="@column.Id">
 
-                <h3 style="text-align:center">@column.Title</h3>
 
-                <div class="column" style="min-height: 600px" id="@column.Id">
+                <div class="stage_header_info_wrapper margin_container_bottom_middle">
+                    <div class="stage_info_main_wrapper margin_container_bottom_small">
 
-                    @foreach (var card in column.Cards)
+
+                        <div class="stage_info_wrapper">
+                            <div class="stage_indicator_circle default_bcolor"></div>
+                            <div class="mid_title">
+                                @column.Title
+                            </div>
+                            <!-- <textarea name="" id="" cols="0" rows="0" class="mid_title">Создано</textarea> -->
+                        </div>
+
+
+                        <div class="count_cards_wrapper">
+                            <div class="mid_description">4</div>
+                        </div>
+                    </div>
+                    <div class="stage_indicator_line default_bcolor"></div>
+                </div>
+
+
+                @foreach (var card in column.Cards)
+                {
+                    <div class="cards_main_wrapper margin_container_bottom_middle">
+                        <div class="card_wrapper open-popup">
+
+
+                            <div class="card_header_wrapper margin_container_bottom_extrasmall">
+                                <div class="card_name_wrapper">
+                                    <div class="mid_description">
+                                       @card.Term
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="mid_title margin_container_bottom_extrasmall">
+                                <a asp-controller="Card" asp-action="Details"
+                                   asp-route-id="@card.Id" class="white-text">
+                                    @card.Name
+                                </a>
+                            </div>
+
+
+                            <div class="mid_description margin_container_bottom_small">
+                               @card.Requirement
+                            </div>
+
+
+                            <div class="card_footer_wrapper">
+                                <div class="card_holders_wrapper">
+                                    <div class="holder_image_wrapper">
+                                        <img src="/image/profile.jpg" alt="holder_image">
+                                    </div>
+                                </div>
+                                <div class="card_details_info_wrapper">
+                                    <div class="card_detail_item">
+                                        <div class="item_icon">
+                                            <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                        </div>
+                                        <div class="item_count">
+                                            <div class="mid_description">
+                                                4
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card_detail_item">
+                                        <div class="item_icon">
+                                            <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                        </div>
+                                        <div class="item_count">
+                                            <div class="mid_description">
+                                                10
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+               
+                @if (Model.IsActiveLikeEmployee)
+                {
+                    <div class="action_btn white_btn add_card_btn">
+
+
+                        <div class="action_btn_icon">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+
+
+                        <div class="description">
+                            <a asp-controller="UserBoard"
+                               asp-action="AddCard"
+                               asp-route-id="@Model.Id"
+                               class="wave-effect waves-light btn">
+                                Добавить задачу
+                            </a>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        }
+
+    </div>
+    <div class="popup__bg">
+        <div class="popup">
+            <div class="close-popup"><i class="fa-solid fa-xmark"></i></div>
+            <div class="info_popup_card_wrapper">
+                <div class="title_wrapper">
+                    <div class="container_description">
+                        <input type="text" value="MTSpace">
+                        <div class="title">
+                        </div>
+                    </div>
+                </div>
+                <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                        <div class="mid_title">
+                            Срок
+                        </div>
+                    </div>
+                    <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
+                        <div></div>
+                        <div class="choose_date_wrapper" id="choose_date">
+                            <input type="month" id="input-datepicker" placeholder="Выберите период">
+                        </div>
+                        <!-- <div class="mid_description">Январь</div> -->
+                    </div>
+
+                </div>
+                <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
+                        </div>
+
+                        <div class="mid_title">
+                            Описание
+                        </div>
+                    </div>
+                    <div class="second_row_grid_description" id="description">
+                        <div></div>
+
+                        <div class="mid_description" id="description_editor" onclick="createTextEditor(this)">
+                            Brainstorming brings team members' diverse experience into play. Brainstorming brings
+                            team members' diverse experience into play.
+                            Brainstorming brings team members' diverse experience into play.
+                            Brainstorming brings team members' diverse experience into play.
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="comment_popup_card_wrapper grid_description_2fr" id="comment_popup_card_wrapper">
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-solid fa-bars-staggered" style="color: #0D062D;"></i>
+
+                        </div>
+                        <div class="mid_title">
+                            Действия
+                        </div>
+                    </div>
+                    <div class="comment_user_wrapper second_row_grid_description margin_container_bottom_middle">
+                        <div class="card_holders_wrapper">
+                            <div class="holder_image_wrapper">
+                                <img src="/image/profile.jpg" alt="holder_image">
+                            </div>
+                        </div>
+                        <div class="commentarea_wrapper" id="comment_editor" onclick="createTextEditor(this)">
+                            <div class="comment_area">
+                                <span id="placeholder" style="position: absolute; top: 10px; left: 10px; color: #999;">Напишите комментарий</span>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    @if (Model.IsActiveLikeEmployee && Model.Columns.Count() > 0)
                     {
-                        <div class="card blue-grey darken-1 draggable" id="@card.Id">
-                            <div class="card-content">
-                                <p>
-                                    <a asp-controller="Card" asp-action="Details"
-                                       asp-route-id="@card.Id" class="white-text">
-                                        @card.Name
-                                    </a>
-                                </p>
+                        <div class="row">
+                            <div class="col s10">
+                                <button onclick="accept()">
+                                    Перевести
+                                </button>
                             </div>
                         </div>
                     }
                 </div>
             </div>
-        }
-    </div>
-
-    @if (Model.IsActiveLikeEmployee && Model.Columns.Count() > 0)
-    {
-        <div class="row">
-            <div class="col s10">
-                <button onclick="accept()">
-                    Перевести
-                </button>
-            </div>
         </div>
-    }
-
-</div>
+    </div>
+</section>
 
 
 @if (@Model.Columns.FirstOrDefault(x => x.Cards.Count() > 0) != null)
@@ -88,7 +246,3 @@
 
     </script>
 }
-
-
-
-

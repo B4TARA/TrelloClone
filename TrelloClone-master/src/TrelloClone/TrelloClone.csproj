@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\fonts\**" />
-    <Compile Remove="wwwroot\js\**" />
     <Content Remove="wwwroot\fonts\**" />
-    <Content Remove="wwwroot\js\**" />
     <EmbeddedResource Remove="wwwroot\fonts\**" />
-    <EmbeddedResource Remove="wwwroot\js\**" />
     <None Remove="wwwroot\fonts\**" />
-    <None Remove="wwwroot\js\**" />
   </ItemGroup>
 
   <ItemGroup>

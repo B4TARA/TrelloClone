@@ -1,21 +1,20 @@
 ﻿<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
 
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/reserv.css">
+<html lang="en" dir="ltr">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/4.17.2/standard/ckeditor.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 
 
@@ -24,67 +23,111 @@
 
     @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
-
-        <div>
-            <nav>
-                <div class="nav-wrapper">
-                    <ul id="nav-mobile" class="left hide-on-med-and-down">
-
-                        @if(User.IsInRole("Employee") || User.IsInRole("Combined"))
-                        {
-                            <li>
-                                <a asp-controller="UserBoard" asp-action="ListMyCards"
-                                asp-route-id="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value)">
-                                    Мои Карточки
-                                </a>
-                            </li>
-                        }
-
-                        @if(User.IsInRole("Supervisor") || User.IsInRole("Combined"))
-                        {
-                            <li>
-                                <a asp-controller="UserBoard" asp-action="ListSubordinateEmployees">
-                                    Мои сотрудники
-                                </a>
-                            </li>
-                        }
-
-                        <li>
-                            <div class="profile-details">
-
-                                <div class="name-job">
-                                    <div class="profile_name">@User.Claims.FirstOrDefault(c => c.Type == "Name").Value</div>
-                                </div>
-
-                            </div>
-                        </li>
+        <div class="sidebar">
+            <div class="logo-details">
+                <img src="~/image/smartproj_icon.svg" alt="logo">
+                <span class="logo_name">MTSmart</span>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">
+                        <i class='bx bx-grid-alt'></i>
+                        <span class="link_name">Главная</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li class=""><a class="link_name" href="#">Главная</a></li>
                     </ul>
-                   @* <ul>
-                        <li>
-                            @if (User.Claims.FirstOrDefault(c => c.Type == "ImgPath") != null)
-                            {
-                                <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImgPath").Value" alt="profileImg">
-                            }
-                            else
-                            {
-                                <img style=" max-width: 50px; max-height: 50px;" src="../image/default_profile_icon.svg" alt="profileImg">
-                            }
-                        </li>
-                    </ul>*@
-                    <ul>
+                </li>
+
+
+                @if (User.IsInRole("Supervisor") || User.IsInRole("Combined"))
+                {
+                    <li class="showMenu">
+                        <div class="iocn-link">
+                            <a asp-controller="UserBoard" asp-action="ListMyCards"
+                               asp-route-id="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value)">
+                                <i class='bx bx-collection'></i>
+                                <span class="link_name">Мои проекты</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a class="link_name" href="#">Мои проекты</a></li>
+                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">УОП</a></li>
+                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">ОРААСУП</a></li>
+                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">УМСТ</a></li>
+                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">УРП</a></li>
+                        </ul>
+                    </li>
+                }
+
+
+                @if (User.IsInRole("Employee") || User.IsInRole("Combined"))
+                {
+                    <li>
+                        <a asp-controller="UserBoard" asp-action="ListMyCards"
+                           asp-route-id="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value)">
+                            <i class='bx bx-grid-alt'></i>
+                            <span class="link_name">Мои задачи</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li class=""><a class="link_name" href="#">Мои задачи</a></li>
+                        </ul>
+                    </li>
+                }
+
+
+                <li>
+                    <div class="profile-details">
+                        <div class="profile-content">
+                            <img src="/image/profile.jpg" alt="profileImg">
+                        </div>
+                        <div class="name-job">
+                            <div class="profile_name">@User.Claims.FirstOrDefault(c => c.Type == "Name").Value</div>
+                        </div>
                         <a asp-area="" asp-controller="Account" asp-action="Logout">
                             <i class='bx bx-log-out'></i>
                         </a>
-                    </ul>
-                </div>
-            </nav>
+                    </div>
+                </li>
+
+@*
+                <li>
+                    @if (User.Claims.FirstOrDefault(c => c.Type == "ImgPath") != null)
+                    {
+                        <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImgPath").Value" alt="profileImg">
+                    }
+                    else
+                    {
+                        <img style=" max-width: 50px; max-height: 50px;" src="../image/default_profile_icon.svg" alt="profileImg">
+                    }
+                </li>*@
+            </ul>
         </div>
     }
 
 
-    <div>
+    <section class="home-section">
+        <div class="home-content">
+
+
+            <div class="home_content_info">
+                <i class='bx bx-menu'></i>
+            </div>       
+
+
+        </div>
+
+
         @RenderBody()
-    </div>
+
+
+    </section>
+
+
+    <script src="~/js/addCard.js"></script>
+    <script src="~/js/editorJS.js"></script>
+    <script src="~/js/script.js"></script>
 
 
 </body>
