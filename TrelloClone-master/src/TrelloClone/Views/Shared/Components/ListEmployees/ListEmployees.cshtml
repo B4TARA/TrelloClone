@@ -1,0 +1,13 @@
+﻿@model TrelloClone.ViewModels.UserBoardList
+
+
+<li><a class="link_name" href="#">Мои проекты</a></li>
+
+
+@foreach(var user in Model.Users)
+{
+    <li>
+        <div class="stage_indicator_circle blue_bcolor"></div>
+        <a asp-controller="UserBoard" asp-action="ListEmployeeCards" asp-route-employeeId="@user.Id">@user.Name</a>
+    </li>
+}

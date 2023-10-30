@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using TrelloClone.Models.Enum;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
 
@@ -17,7 +14,8 @@ namespace TrelloClone.Controllers
         {
             _userBoardService = boardService;
         }
-        
+
+        [HttpGet]
         public IActionResult ListMyCards()
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -27,6 +25,7 @@ namespace TrelloClone.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public IActionResult ListEmployeeCards(int employeeId)
         {
             int supervisorId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -36,16 +35,8 @@ namespace TrelloClone.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> ListSubordinateEmployees()
-        {
-            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
-
-            var model = await _userBoardService.ListSubordinateUsers(userId);
-
-            return View(model);
-        }
-
-        public IActionResult AddCard(int id)
+        [HttpGet]
+        public IActionResult AddCard()
         {
             return View();
         }
@@ -53,11 +44,30 @@ namespace TrelloClone.Controllers
         [HttpPost]
         public IActionResult AddCard(AddCard viewModel)
         {
-            if (!ModelState.IsValid) return View(viewModel);
+            viewModel.Id = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            //ViewBag добавить ошибки и выводить их в этой формочке (если они есть)
+            if (!ModelState.IsValid) return RedirectToAction(nameof(ListMyCards));
 
             _userBoardService.AddCard(viewModel);
 
-            return RedirectToAction(nameof(ListMyCards), new { id = viewModel.Id });
+            return RedirectToAction(nameof(ListMyCards));
+        }
+
+        [HttpGet]
+        public IActionResult GetCreateCardViewComponent()
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            return ViewComponent("CreateCard", new { id = userId });
+        }
+
+        [HttpGet]
+        public IActionResult GetEditCardViewComponent()
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            return ViewComponent("EditCard", new { id = userId });
         }
     }
 }

@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.ckeditor.com/4.17.2/standard/ckeditor.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
@@ -43,20 +44,18 @@
                 @if (User.IsInRole("Supervisor") || User.IsInRole("Combined"))
                 {
                     <li class="showMenu">
+
+
                         <div class="iocn-link">
-                            <a asp-controller="UserBoard" asp-action="ListMyCards"
-                               asp-route-id="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value)">
-                                <i class='bx bx-collection'></i>
-                                <span class="link_name">Мои проекты</span>
-                            </a>
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Мои проекты</span>
                             <i class='bx bxs-chevron-down arrow'></i>
                         </div>
-                        <ul class="sub-menu">
-                            <li><a class="link_name" href="#">Мои проекты</a></li>
-                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">УОП</a></li>
-                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">ОРААСУП</a></li>
-                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">УМСТ</a></li>
-                            <li><div class="stage_indicator_circle blue_bcolor"></div><a href="#">УРП</a></li>
+
+
+                        <ul class="sub-menu">                          
+                            @await Component.InvokeAsync("ListEmployees"
+                            , new { id = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value)})
                         </ul>
                     </li>
                 }
@@ -65,43 +64,54 @@
                 @if (User.IsInRole("Employee") || User.IsInRole("Combined"))
                 {
                     <li>
-                        <a asp-controller="UserBoard" asp-action="ListMyCards"
-                           asp-route-id="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value)">
+
+
+                        <a asp-controller="UserBoard" asp-action="ListMyCards">
                             <i class='bx bx-grid-alt'></i>
                             <span class="link_name">Мои задачи</span>
                         </a>
+
+
                         <ul class="sub-menu blank">
                             <li class=""><a class="link_name" href="#">Мои задачи</a></li>
                         </ul>
+
+
                     </li>
                 }
 
 
                 <li>
                     <div class="profile-details">
-                        <div class="profile-content">
-                            <img src="/image/profile.jpg" alt="profileImg">
-                        </div>
+
+
+                        @if (User.Claims.FirstOrDefault(c => c.Type == "ImagePath") != null)
+                        {
+                            <div class="profile-content">
+                                <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value" alt="profileImg">
+                            </div>
+                        }
+
+                        else
+                        {
+                            <div class="profile-content">
+                                <img src="/image/default_profile_icon.svg" alt="profileImg">
+                            </div>
+                        }
+
+
                         <div class="name-job">
                             <div class="profile_name">@User.Claims.FirstOrDefault(c => c.Type == "Name").Value</div>
                         </div>
+
+
                         <a asp-area="" asp-controller="Account" asp-action="Logout">
                             <i class='bx bx-log-out'></i>
                         </a>
+
+
                     </div>
                 </li>
-
-@*
-                <li>
-                    @if (User.Claims.FirstOrDefault(c => c.Type == "ImgPath") != null)
-                    {
-                        <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImgPath").Value" alt="profileImg">
-                    }
-                    else
-                    {
-                        <img style=" max-width: 50px; max-height: 50px;" src="../image/default_profile_icon.svg" alt="profileImg">
-                    }
-                </li>*@
             </ul>
         </div>
     }
@@ -113,7 +123,7 @@
 
             <div class="home_content_info">
                 <i class='bx bx-menu'></i>
-            </div>       
+            </div>
 
 
         </div>
@@ -126,8 +136,9 @@
 
 
     <script src="~/js/addCard.js"></script>
+    <script src="~/js/editCard.js"></script>
     <script src="~/js/editorJS.js"></script>
-    <script src="~/js/script.js"></script>
+    @*<script src="~/js/script.js"></script>*@
 
 
 </body>

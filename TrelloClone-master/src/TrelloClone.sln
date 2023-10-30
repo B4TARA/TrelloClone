@@ -5,7 +5,9 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrelloClone", "TrelloClone\TrelloClone.csproj", "{E0B986B1-2EFA-4DB1-9C22-8DF42FD7E838}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Import", "Import\Import.csproj", "{1CE466D3-6B03-47DB-A850-A5C2907BE0F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Import", "Import\Import.csproj", "{1CE466D3-6B03-47DB-A850-A5C2907BE0F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailService", "EmailService\EmailService.csproj", "{A34D8D0C-9F3A-43E9-843D-4F7DD206802A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1CE466D3-6B03-47DB-A850-A5C2907BE0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CE466D3-6B03-47DB-A850-A5C2907BE0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CE466D3-6B03-47DB-A850-A5C2907BE0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A34D8D0C-9F3A-43E9-843D-4F7DD206802A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A34D8D0C-9F3A-43E9-843D-4F7DD206802A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A34D8D0C-9F3A-43E9-843D-4F7DD206802A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A34D8D0C-9F3A-43E9-843D-4F7DD206802A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

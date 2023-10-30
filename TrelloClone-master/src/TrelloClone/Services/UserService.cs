@@ -1,4 +1,5 @@
-﻿using ExcelDataReader;
+﻿using EmailService;
+using ExcelDataReader;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,92 +20,94 @@ namespace TrelloClone.Services
     {
         private readonly TrelloCloneDbContext _dbContext;
         private readonly RepositoryManager _repository;
+        private readonly EmailSender _emailSender;
 
-        public UserService(TrelloCloneDbContext dbContext, RepositoryManager repository)
+        public UserService(TrelloCloneDbContext dbContext, RepositoryManager repository, EmailSender emailSender)
         {
             _dbContext = dbContext;
             _repository = repository;
+            _emailSender = emailSender;
         }
 
         public async Task<IBaseResponse<object>> CheckForNotifications(List<User> users)
         {
             try
             {
-                DateTime FakeToday = new DateTime(2023, 10, 20);
+                DateTime FakeToday = new DateTime(2023, 3, 20);
 
-                foreach(var user in users)
+                foreach (var user in users)
                 {
-                    switch(user.Role)
+
+                    if (FakeToday.Month == 3
+                        || FakeToday.Month == 6
+                        || FakeToday.Month == 9
+                        || FakeToday.Month == 12)
                     {
-                        case Roles.Employee:
+
+                        if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                        {
+                            user.IsActiveToAddCard = true;
+                            user.IsActiveLikeEmployee = true;
+                            user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
+
+                            var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24", null);
+                            await _emailSender.SendEmailAsync(message);
+                        }
+
+                        else if(FakeToday.Day == 25)
+                        {
+                            user.IsActiveToAddCard = false;
+                            user.IsActiveLikeEmployee = false;
+
+                            if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
                             {
+                                user.IsActiveLikeSupervisor = true;
+                                user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
 
-                                if(FakeToday.Day >= 20
-                                    && FakeToday.Day <= 24)
-                                {
-                                    user.IsActiveLikeEmployee = true;
-                                    user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
-                                }
+                                var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца", null);
+                                await _emailSender.SendEmailAsync(message);
+                            }                                                      
+                        }
+                    }
 
-                                else if(FakeToday.Day >= 1
-                                    && FakeToday.Day <= 7)
-                                {
-                                    user.IsActiveLikeEmployee = true;
-                                    user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
-                                }
+                    else if (FakeToday.Month == 4
+                        || FakeToday.Month == 7
+                        || FakeToday.Month == 10
+                        || FakeToday.Month == 1)
+                    {
 
-                                break;
-                            }
-                        case Roles.Supervisor:
+                        if (FakeToday.Day == 1)
+                        {
+                            user.IsActiveLikeSupervisor = false;
+
+                            if(user.Role == Roles.Employee || user.Role == Roles.Combined)
                             {
-                                if (FakeToday.Day >= 25
-                                   && FakeToday.Day <= 31)
-                                {
-                                    user.IsActiveLikeSupervisor = true;
-                                    user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
-                                }
+                                user.IsActiveLikeEmployee = true;
+                                user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
 
-                                else if (FakeToday.Day >= 8
-                                    && FakeToday.Day <= 14)
-                                {
-                                    user.IsActiveLikeSupervisor = true;
-                                    user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
-                                }
+                                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7", null);
+                                await _emailSender.SendEmailAsync(message);
+                            }                        
+                        }
 
-                                break;
-                            }
-                        case Roles.Combined:
+                        else if (FakeToday.Day == 8)
+                        {
+                            user.IsActiveLikeEmployee = false;
+
+                            if(user.Role == Roles.Supervisor || user.Role == Roles.Combined)
                             {
-                                if (FakeToday.Day >= 20
-                                     && FakeToday.Day <= 24)
-                                {
-                                    user.IsActiveLikeEmployee = true;
-                                    user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
-                                }
+                                user.IsActiveLikeSupervisor = true;
+                                user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
 
-                                else if (FakeToday.Day >= 1
-                                    && FakeToday.Day <= 7)
-                                {
-                                    user.IsActiveLikeEmployee = true;
-                                    user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
-                                }
+                                var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14", null);
+                                await _emailSender.SendEmailAsync(message);
+                            }                         
+                        }
 
-                                else if (FakeToday.Day >= 25
-                                  && FakeToday.Day <= 31)
-                                {
-                                    user.IsActiveLikeSupervisor = true;
-                                    user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
-                                }
-
-                                else if (FakeToday.Day >= 8
-                                    && FakeToday.Day <= 14)
-                                {
-                                    user.IsActiveLikeSupervisor = true;
-                                    user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
-                                }
-
-                                break;
-                            }
+                        else if (FakeToday.Day == 14)
+                        {
+                            user.IsActiveLikeSupervisor = false;
+                        }
                     }
                 }
 
@@ -183,6 +186,7 @@ namespace TrelloClone.Services
 
                         userTemp.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
                         userTemp.IsActiveLikeSupervisor = user.IsActiveLikeSupervisor;
+                        userTemp.IsActiveToAddCard = user.IsActiveToAddCard;
 
                         foreach (var notification in user.Notifications)
                         {
@@ -191,7 +195,7 @@ namespace TrelloClone.Services
                                 userTemp.Notifications.Add(notification);
                             }
                         }
-                        
+
                         userTemp.Login = user.Login;
                         userTemp.Password = user.Password;
                         userTemp.ImagePath = user.ImagePath;
@@ -199,8 +203,26 @@ namespace TrelloClone.Services
                         _repository.UserRepository.Update(userTemp);
                         await _repository.Save();
                     }
+
                     else
                     {
+                        if(user.Role == Roles.Employee || user.Role == Roles.Combined)
+                        {
+                            var firstColumn = new Column { Title = "Составление задач", Number = 1 };
+                            var secondColumn = new Column { Title = "Согласование задач", Number = 2 };
+                            var thirdColumn = new Column { Title = "Задачи согласованы", Number = 3 };
+                            var fourthColumn = new Column { Title = "Оценка директора, Начальника ССП", Number = 4 };
+                            var fifthColumn = new Column { Title = "Оценка Куратора/Директора", Number = 5 };
+                            var sixthColumn = new Column { Title = "Оценка согласована", Number = 6 };
+
+                            user.Columns.Add(firstColumn);
+                            user.Columns.Add(secondColumn);
+                            user.Columns.Add(thirdColumn);
+                            user.Columns.Add(fourthColumn);
+                            user.Columns.Add(fifthColumn);
+                            user.Columns.Add(sixthColumn);
+                        }
+
                         await _repository.UserRepository.CreateUser(user);
                         await _repository.Save();
                     }
@@ -295,9 +317,9 @@ namespace TrelloClone.Services
                     if (users.FirstOrDefault(x => x.Name == user.Name) == null)
                     {
                         user.Role = Roles.Employee;
-                        //user.IsActive = true;
                         users.Add(user);
                     }
+
                     else
                     {
                         users.FirstOrDefault(x => x.Name == user.Name).Position = user.Position;
@@ -330,8 +352,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();

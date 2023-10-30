@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace TrelloClone.Controllers
 {
@@ -34,5 +36,7 @@ namespace TrelloClone.Controllers
 
             return RedirectToAction("Login", "Account");
         }
+
+      
     }
 }

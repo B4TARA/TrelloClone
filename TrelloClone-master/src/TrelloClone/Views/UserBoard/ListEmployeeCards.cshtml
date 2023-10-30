@@ -1,61 +1,134 @@
 ﻿@model TrelloClone.ViewModels.UserBoardView
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 @foreach (var notification in Model.Notifications)
 {
+
+
     <font color="red">
         <center>
             @notification
         </center>
     </font>
+
+
 }
 
-<div class="container">
 
-    <h4 style="text-align:center">@Model.Name</h4>  
+<section class="main_container_content">
+    <div class="stages_main_wrapper">
 
-    <div class="row">
+
         @foreach (var column in Model.Columns)
         {
-            <div class="col m4">
+            <div class="stage_wrapper" id="@column.Id">
 
-                <h3 style="text-align:center">@column.Title</h3>
 
-                <div class="column" style="min-height: 600px" id="@column.Id">
+                <div class="stage_header_info_wrapper margin_container_bottom_middle">
+                    <div class="stage_info_main_wrapper margin_container_bottom_small">
 
-                    @foreach (var card in column.Cards)
-                    {
-                        <div class="card blue-grey darken-1 draggable" id="@card.Id">
-                            <div class="card-content">
-                                <p>
-                                    <a asp-controller="Card" asp-action="Details"
-                                       asp-route-id="@card.Id" class="white-text">
-                                        @card.Name
-                                    </a>
-                                </p>
+
+                        <div class="stage_info_wrapper">
+                            <div class="stage_indicator_circle default_bcolor"></div>
+                            <div class="mid_title">
+                                @column.Title
+                            </div>
+                            <!-- <textarea name="" id="" cols="0" rows="0" class="mid_title">Создано</textarea> -->
+                        </div>
+
+
+                        <div class="count_cards_wrapper">
+                            <div class="mid_description">@column.Cards.Count()</div>
+                        </div>
+
+
+                    </div>
+                    <div class="stage_indicator_line default_bcolor"></div>
+                </div>
+
+
+                @foreach (var card in column.Cards)
+                {
+                    <div class="cards_main_wrapper margin_container_bottom_middle">
+                        <div class="card_wrapper open-popup">
+
+
+                            <div class="card_header_wrapper margin_container_bottom_extrasmall">
+                                <div class="card_name_wrapper">
+                                    <div class="mid_description">
+                                        @card.Term
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="mid_title margin_container_bottom_extrasmall">
+                                <a asp-controller="Card" asp-action="Details"
+                                   asp-route-id="@card.Id" class="white-text">
+                                    @card.Name
+                                </a>
+                            </div>
+
+
+                            <div class="mid_description margin_container_bottom_small">
+                                @card.Requirement
+                            </div>
+
+
+                            <div class="card_footer_wrapper">
+
+
+                                @if(Model.ImgPath != null)
+                                {
+                                    <div class="card_holders_wrapper">
+                                        <div class="holder_image_wrapper">
+                                            <img src="@Model.ImgPath" alt="profileImg">
+                                        </div>
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="card_holders_wrapper">
+                                        <div class="holder_image_wrapper">
+                                            <img src="/image/default_profile_icon.svg" alt="profileImg">
+                                        </div>
+                                    </div>
+                                }
+
+
+                                <div class="card_details_info_wrapper">
+                                    <div class="card_detail_item">
+                                        <div class="item_icon">
+                                            <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                        </div>
+                                        <div class="item_count">
+                                            <div class="mid_description">
+                                                4
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card_detail_item">
+                                        <div class="item_icon">
+                                            <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                        </div>
+                                        <div class="item_count">
+                                            <div class="mid_description">
+                                                10
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         }
     </div>
-
-    @if (Model.IsActiveLikeSupervisor && Model.Columns.Count() > 0)
-    {
-        <div class="row">
-            <div class="col s10">
-                <button onclick="accept()">
-                    Перевести
-                </button>
-            </div>
-        </div>
-    }
-
-</div>
+</section>
 
 
 @if (@Model.Columns.FirstOrDefault(x => x.Cards.Count() > 0) != null)
@@ -74,7 +147,3 @@
 
     </script>
 }
-
-
-
-

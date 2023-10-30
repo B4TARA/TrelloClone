@@ -21,26 +21,6 @@ namespace TrelloClone.Services
             _repository = repository;
         }
 
-        public async Task<UserBoardList> ListSubordinateUsers(int userId)
-        {
-            var supervisor = await _repository.UserRepository.GetUserById(false, userId);
-
-            var model = new UserBoardList();
-            model.Notifications = supervisor.Notifications;
-
-            var subordinateUsers = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisor.Name, false);
-            foreach (var user in subordinateUsers)
-            {
-                model.Users.Add(new UserBoardList.UserBoard
-                {
-                    Id = user.Id,
-                    Name = user.Name
-                });
-            }
-
-            return model;
-        }
-
         public UserBoardView ListMyCards(int userId)
         {
             var model = new UserBoardView();
@@ -51,6 +31,7 @@ namespace TrelloClone.Services
                 .SingleOrDefault(x => x.Id == userId);
 
             model.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
+            model.IsActiveToAddCard = user.IsActiveToAddCard;
             model.Id = userId;
             model.Name = user.Name;
             model.Notifications = user.Notifications;
@@ -59,8 +40,9 @@ namespace TrelloClone.Services
             {
                 var modelColumn = new UserBoardView.Column
                 {
-                    Title = column.Title,
-                    Id = column.Id
+                    Id = column.Id,
+                    Number = column.Number,
+                    Title = column.Title
                 };
 
                 foreach (var card in column.Cards)
@@ -102,6 +84,7 @@ namespace TrelloClone.Services
                 .SingleOrDefault(x => x.Id == supervisorId);
 
             model.IsActiveLikeSupervisor = supervisor.IsActiveLikeSupervisor;
+            model.ImgPath = employee.ImagePath;
             model.Notifications = supervisor.Notifications;
 
             model.Id = employee.Id;
@@ -147,29 +130,7 @@ namespace TrelloClone.Services
 
             if (user != null)
             {
-                var firstColumn = user.Columns.FirstOrDefault();
-                var secondColumn = user.Columns.FirstOrDefault();
-                var thirdColumn = user.Columns.FirstOrDefault();
-                var fourthColumn = user.Columns.FirstOrDefault();
-                var fifthColumn = user.Columns.FirstOrDefault();
-                var sixthColumn = user.Columns.FirstOrDefault();
-
-                if (firstColumn == null || secondColumn == null || thirdColumn == null)
-                {
-                    firstColumn = new Column { Title = "Составление задач" };
-                    secondColumn = new Column { Title = "Согласование задач" };
-                    thirdColumn = new Column { Title = "Задачи согласованы" };
-                    fourthColumn = new Column { Title = "Оценка директора, Начальника ССП" };
-                    fifthColumn = new Column { Title = "Оценка Куратора/Директора" };
-                    sixthColumn = new Column { Title = "Оценка согласована" };
-
-                    user.Columns.Add(firstColumn);
-                    user.Columns.Add(secondColumn);
-                    user.Columns.Add(thirdColumn);
-                    user.Columns.Add(fourthColumn);
-                    user.Columns.Add(fifthColumn);
-                    user.Columns.Add(sixthColumn);
-                }
+                var firstColumn = user.Columns.First();
 
                 firstColumn.Cards.Add(new Card
                 {

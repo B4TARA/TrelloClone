@@ -1,16 +1,17 @@
 ﻿@model TrelloClone.ViewModels.UserBoardView
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 @foreach (var notification in Model.Notifications)
 {
+
+
     <font color="red">
         <center>
             @notification
         </center>
     </font>
+
+
 }
 
 
@@ -37,8 +38,10 @@
 
 
                         <div class="count_cards_wrapper">
-                            <div class="mid_description">4</div>
+                            <div class="mid_description">@column.Cards.Count()</div>
                         </div>
+
+
                     </div>
                     <div class="stage_indicator_line default_bcolor"></div>
                 </div>
@@ -73,11 +76,27 @@
 
 
                             <div class="card_footer_wrapper">
-                                <div class="card_holders_wrapper">
-                                    <div class="holder_image_wrapper">
-                                        <img src="/image/profile.jpg" alt="holder_image">
+
+
+                                @if (User.Claims.FirstOrDefault(c => c.Type == "ImagePath") != null)
+                                {
+                                    <div class="card_holders_wrapper">
+                                        <div class="holder_image_wrapper">
+                                            <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value" alt="profileImg">
+                                        </div>
                                     </div>
-                                </div>
+                                }
+
+                                else
+                                {
+                                    <div class="card_holders_wrapper">
+                                        <div class="holder_image_wrapper">
+                                            <img src="/image/default_profile_icon.svg" alt="profileImg">
+                                        </div>
+                                    </div>
+                                }
+
+
                                 <div class="card_details_info_wrapper">
                                     <div class="card_detail_item">
                                         <div class="item_icon">
@@ -108,9 +127,9 @@
                 }
 
                
-                @if (Model.IsActiveLikeEmployee)
+                @if (Model.IsActiveToAddCard && column.Number == 1)
                 {
-                    <div class="action_btn white_btn add_card_btn">
+                    <button class="action_btn white_btn add_card_btn">
 
 
                         <div class="action_btn_icon">
@@ -119,113 +138,17 @@
 
 
                         <div class="description">
-                            <a asp-controller="UserBoard"
-                               asp-action="AddCard"
-                               asp-route-id="@Model.Id"
-                               class="wave-effect waves-light btn">
                                 Добавить задачу
-                            </a>
                         </div>
-                    </div>
+                       
+
+                    </button>
                 }
 
 
             </div>
         }
 
-    </div>
-    <div class="popup__bg">
-        <div class="popup">
-            <div class="close-popup"><i class="fa-solid fa-xmark"></i></div>
-            <div class="info_popup_card_wrapper">
-                <div class="title_wrapper">
-                    <div class="container_description">
-                        <input type="text" value="MTSpace">
-                        <div class="title">
-                        </div>
-                    </div>
-                </div>
-                <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
-                    <div class="container_description first_row_grid_description">
-                        <div class="icon_description">
-                            <i class="fa-regular fa-calendar"></i>
-                        </div>
-                        <div class="mid_title">
-                            Срок
-                        </div>
-                    </div>
-                    <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
-                        <div></div>
-                        <div class="choose_date_wrapper" id="choose_date">
-                            <input type="month" id="input-datepicker" placeholder="Выберите период">
-                        </div>
-                        <!-- <div class="mid_description">Январь</div> -->
-                    </div>
-
-                </div>
-                <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
-
-                    <div class="container_description first_row_grid_description">
-                        <div class="icon_description">
-                            <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
-                        </div>
-
-                        <div class="mid_title">
-                            Описание
-                        </div>
-                    </div>
-                    <div class="second_row_grid_description" id="description">
-                        <div></div>
-
-                        <div class="mid_description" id="description_editor" onclick="createTextEditor(this)">
-                            Brainstorming brings team members' diverse experience into play. Brainstorming brings
-                            team members' diverse experience into play.
-                            Brainstorming brings team members' diverse experience into play.
-                            Brainstorming brings team members' diverse experience into play.
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="comment_popup_card_wrapper grid_description_2fr" id="comment_popup_card_wrapper">
-                    <div class="container_description first_row_grid_description">
-                        <div class="icon_description">
-                            <i class="fa-solid fa-bars-staggered" style="color: #0D062D;"></i>
-
-                        </div>
-                        <div class="mid_title">
-                            Действия
-                        </div>
-                    </div>
-                    <div class="comment_user_wrapper second_row_grid_description margin_container_bottom_middle">
-                        <div class="card_holders_wrapper">
-                            <div class="holder_image_wrapper">
-                                <img src="/image/profile.jpg" alt="holder_image">
-                            </div>
-                        </div>
-                        <div class="commentarea_wrapper" id="comment_editor" onclick="createTextEditor(this)">
-                            <div class="comment_area">
-                                <span id="placeholder" style="position: absolute; top: 10px; left: 10px; color: #999;">Напишите комментарий</span>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                    @if (Model.IsActiveLikeEmployee && Model.Columns.Count() > 0)
-                    {
-                        <div class="row">
-                            <div class="col s10">
-                                <button onclick="accept()">
-                                    Перевести
-                                </button>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 

@@ -24,7 +24,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(CardDetails cardDetails)
+        public async Task<IActionResult> Update(EditCard cardDetails)
         {
             var response = await _cardService.Update(cardDetails);
 
