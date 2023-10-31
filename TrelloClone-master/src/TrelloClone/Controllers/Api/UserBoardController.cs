@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using TrelloClone.Models.Enum;
 using TrelloClone.Services;
@@ -18,16 +19,30 @@ namespace TrelloClone.Controllers.Api
         }
 
         [HttpPost("movecard")]
-        public async Task<IActionResult> MoveCard([FromBody] MoveCardCommand command)
+        public async Task<IActionResult> MoveCard(int ColumnId, int CardId)
         {
+            var action = Request.Headers.Referer.ToString().Split("/")[4];
+
+            MoveCardCommand command = new MoveCardCommand();
+            command.ColumnId = ColumnId;
+            command.CardId = CardId;
+
             var response = await _userBoardService.Move(command);
 
             if (response.StatusCode == StatusCodes.OK)
             {
-                return Ok(new
+                //TempData["Message"] = "Данные обновлены";
+                if (action == "ListMyCards")
                 {
-                    Moved = true
-                });
+                    return RedirectToAction(action, "UserBoard");
+                }
+
+                else
+                {
+                    var employeeId = Convert.ToInt32(action.Split("=")[1]);
+                    action = action.Split("?")[0];
+                    return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
+                }
             }
 
             return NotFound(response.Description);           

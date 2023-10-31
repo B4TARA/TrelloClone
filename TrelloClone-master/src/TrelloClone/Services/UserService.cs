@@ -33,9 +33,11 @@ namespace TrelloClone.Services
         {
             try
             {
-                DateTime FakeToday = new DateTime(2023, 3, 20);
+                var cards = await _repository.CardRepository.GetAll(false);
 
-                foreach (var user in users.Where(x=>x.Name.Contains("Томчик")))
+                DateTime FakeToday = new DateTime(2023, 4, 8);
+
+                foreach (var card in cards)
                 {
 
                     if (FakeToday.Month == 3
@@ -44,29 +46,22 @@ namespace TrelloClone.Services
                         || FakeToday.Month == 12)
                     {
 
-                        if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                        if (FakeToday.Day == 20)
                         {
-                            user.IsActiveToAddCard = true;
-                            user.IsActiveLikeEmployee = true;
-                            user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
+                            card.IsActive = true;
 
-                            var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24", null);
-                            //await _emailSender.SendEmailAsync(message);
+                            _repository.CardRepository.Update(card);
+                            await _repository.Save();
                         }
 
-                        else if(FakeToday.Day == 25)
+                        else if (FakeToday.Day == 25)
                         {
-                            user.IsActiveToAddCard = false;
-                            user.IsActiveLikeEmployee = false;
+                            card.IsActive = true;
 
-                            if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
-                            {
-                                user.IsActiveLikeSupervisor = true;
-                                user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
+                            _repository.CardRepository.Update(card);
+                            await _repository.Save();
 
-                                var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца", null);
-                                //await _emailSender.SendEmailAsync(message);
-                            }                                                      
+
                         }
                     }
 
@@ -78,30 +73,92 @@ namespace TrelloClone.Services
 
                         if (FakeToday.Day == 1)
                         {
+                            card.ColumnId = card.ColumnId + 1;
+                            card.IsActive = true;
+
+                            _repository.CardRepository.Update(card);
+                            await _repository.Save();
+
+                        }
+
+                        else if (FakeToday.Day == 8)
+                        {
+                            card.IsActive = true;
+
+                            _repository.CardRepository.Update(card);
+                            await _repository.Save();
+
+                        }
+                    }
+                }
+
+                foreach (var user in users/*.Where(x=>x.Name.Contains("Томчик"))*/)
+                {
+
+                    if (FakeToday.Month == 3
+                        || FakeToday.Month == 6
+                        || FakeToday.Month == 9
+                        || FakeToday.Month == 12)
+                    {
+
+                        if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                        {                          
+                            user.IsActiveToAddCard = true;
+                            user.IsActiveLikeEmployee = true;
+                            user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
+
+                            var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24", null);
+                            //await _emailSender.SendEmailAsync(message);
+                        }
+
+                        else if (FakeToday.Day == 25)
+                        {                           
+                            user.IsActiveToAddCard = false;
+                            user.IsActiveLikeEmployee = false;
+
+                            if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
+                            {
+                                user.IsActiveLikeSupervisor = true;
+                                user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
+
+                                var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца", null);
+                                //await _emailSender.SendEmailAsync(message);
+                            }
+                        }
+                    }
+
+                    else if (FakeToday.Month == 4
+                        || FakeToday.Month == 7
+                        || FakeToday.Month == 10
+                        || FakeToday.Month == 1)
+                    {
+
+                        if (FakeToday.Day == 1)
+                        {                      
                             user.IsActiveLikeSupervisor = false;
 
-                            if(user.Role == Roles.Employee || user.Role == Roles.Combined)
+                            if (user.Role == Roles.Employee || user.Role == Roles.Combined)
                             {
                                 user.IsActiveLikeEmployee = true;
                                 user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
 
                                 var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7", null);
                                 //await _emailSender.SendEmailAsync(message);
-                            }                        
+                            }
                         }
 
                         else if (FakeToday.Day == 8)
-                        {
+                        {                         
                             user.IsActiveLikeEmployee = false;
 
-                            if(user.Role == Roles.Supervisor || user.Role == Roles.Combined)
+                            if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
                             {
                                 user.IsActiveLikeSupervisor = true;
                                 user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
 
                                 var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14", null);
                                 //await _emailSender.SendEmailAsync(message);
-                            }                         
+                            }
                         }
 
                         else if (FakeToday.Day == 14)
@@ -206,7 +263,7 @@ namespace TrelloClone.Services
 
                     else
                     {
-                        if(user.Role == Roles.Employee || user.Role == Roles.Combined)
+                        if (user.Role == Roles.Employee || user.Role == Roles.Combined)
                         {
                             var firstColumn = new Column { Title = "Составление задач", Number = 1 };
                             var secondColumn = new Column { Title = "Согласование задач", Number = 2 };
@@ -352,8 +409,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();

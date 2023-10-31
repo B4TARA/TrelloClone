@@ -23,46 +23,28 @@ namespace TrelloClone.Services
             _repository = repository;
             _userBoardService = userBoardService;
         }
-        
-        public CardDetails GetDetails(int id)
+       
+        public void Create(AddCard viewModel)
         {
-            var card = _dbContext
-                .Cards
-                .Include(c => c.Column)
-                .SingleOrDefault(x => x.Id == id);
-
-            if (card == null) 
-                return new CardDetails();
-           
-            // retrieve users
-            var user = _dbContext
-                .Users
+            var user = _dbContext.Users
                 .Include(b => b.Columns)
-                .SingleOrDefault(x => x.Id == card.Column.UserId);
+                .SingleOrDefault(x => x.Id == viewModel.Id);
 
-            // map user columns
-            if (user != null) 
+            if (user != null)
             {
-                var availableColumns = user
-                    .Columns
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Title,
-                        Value = x.Id.ToString()
-                    });
+                var firstColumn = user.Columns.First();
 
-
-                return new CardDetails
+                firstColumn.Cards.Add(new Card
                 {
-                    Id = card.Id,
-                    Name = card.Name,
-                    Requirement = card.Requirement,
-                    Term = card.Term,
-                    Columns = availableColumns.ToList(), // list available columns
-                    Column = card.ColumnId // map current column
-                };
+                    Name = viewModel.Name,
+                    Requirement = viewModel.Requirement,
+                    Term = viewModel.Term,
+                    UserId = viewModel.Id,
+                    IsActive = true,
+                });;
             }
-            return null;
+
+            _dbContext.SaveChanges();
         }
 
         public async Task<IBaseResponse<object>> Update(CardDetails cardDetails)
@@ -95,7 +77,7 @@ namespace TrelloClone.Services
                     addCard.Requirement = cardDetails.Requirement;
                     addCard.Term = cardDetails.Term.AddMonths(1);
 
-                    _userBoardService.AddCard(addCard);
+                    Create(addCard);
                 }
 
                 else if (card.SupervisorAssessment == 9)
@@ -108,7 +90,7 @@ namespace TrelloClone.Services
                     addCard.Requirement = cardDetails.Requirement;
                     addCard.Term = cardDetails.Term.AddMonths(1);
 
-                    _userBoardService.AddCard(addCard);
+                    Create(addCard);
                 }
 
                 _repository.CardRepository.Update(card);

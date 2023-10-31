@@ -12,9 +12,11 @@ namespace TrelloClone.Components
         {
             _repository = repository;
         }
-        public async Task<IViewComponentResult> InvokeAsync(int cardId)
-        {          
+        public async Task<IViewComponentResult> InvokeAsync(int cardId, int userId)
+        {
+            var user = await _repository.UserRepository.GetUserById(false, userId);
             var card = await _repository.CardRepository.GetCardById(false, cardId);
+            var column = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
 
             var model = new CardDetails
             {
@@ -22,8 +24,16 @@ namespace TrelloClone.Components
                 Name = card.Name,
                 Requirement = card.Requirement,
                 Term = card.Term,
-                //Columns = availableColumns.ToList(), // list available columns
-                Column = card.ColumnId // map current column
+                EmployeeAssessment = card.EmployeeAssessment,
+                EmployeeComment = card.EmployeeComment,
+                SupervisorAssessment = card.SupervisorAssessment,
+                SupervisorComment = card.SupervisorComment,
+                Column = column.Number, // map current column
+                ColumnId = column.Id,
+                IsActive = card.IsActive,
+                IsActiveLikeEmployee = user.IsActiveLikeEmployee,
+                IsActiveLikeSupervisor = user.IsActiveLikeSupervisor,
+                UserId = card.UserId,
             };
 
             return View("CardDetails", model);

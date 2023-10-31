@@ -88,13 +88,14 @@ namespace TrelloClone.Services
             model.Notifications = supervisor.Notifications;
 
             model.Id = employee.Id;
-            model.Name = employee.Name;           
+            model.Name = employee.Name;
 
             foreach (var column in employee.Columns)
             {
                 var modelColumn = new UserBoardView.Column
                 {
                     Title = column.Title,
+                    Number = column.Number,
                     Id = column.Id
                 };
 
@@ -122,47 +123,16 @@ namespace TrelloClone.Services
             return model;
         }
 
-        public void AddCard(AddCard viewModel)
-        {
-            var user = _dbContext.Users
-                .Include(b => b.Columns)
-                .SingleOrDefault(x => x.Id == viewModel.Id);
-
-            if (user != null)
-            {
-                var firstColumn = user.Columns.First();
-
-                firstColumn.Cards.Add(new Card
-                {
-                    Name = viewModel.Name,
-                    Requirement = viewModel.Requirement,
-                    Term = viewModel.Term
-                });
-            }
-
-            _dbContext.SaveChanges();
-        }
-
         public async Task<IBaseResponse<object>> Move(MoveCardCommand command)
         {
             try
             {
-                var cards = await _repository.CardRepository.GetByCondition(x => x.ColumnId == command.ColumnId, false);
-                var user = await _repository.UserRepository.GetUserById(false, command.UserId);
+                var card = await _repository.CardRepository.GetCardById(false, command.CardId);
 
-                foreach (var card in cards)
-                {
-                    card.ColumnId = command.ColumnId + 1;
+                card.ColumnId = command.ColumnId + 1;
+                card.IsActive = false;
 
-                    _repository.CardRepository.Update(card);
-                    await _repository.Save();
-                }
-
-                user.IsActiveLikeEmployee = false;
-                user.IsActiveLikeSupervisor = false;
-                user.Notifications.Clear();
-
-                _repository.UserRepository.Update(user);
+                _repository.CardRepository.Update(card);
                 await _repository.Save();
 
                 return new BaseResponse<object>()

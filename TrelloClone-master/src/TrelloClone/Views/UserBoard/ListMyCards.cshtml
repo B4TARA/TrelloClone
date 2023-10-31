@@ -1,5 +1,6 @@
 ﻿@model TrelloClone.ViewModels.UserBoardView
 
+
 <section class="main_container_content" id="main_container_content">
     <div class="stages_main_wrapper">
 
@@ -14,34 +15,35 @@
 
 
                         <div class="stage_info_wrapper">
-                            @if (column.Id == 1)
+                            @if (column.Number == 1)
                             {
                                 <div class="stage_indicator_circle default_bcolor"></div>
                             }
-                            else if (column.Id == 2)
+                            else if (column.Number == 2)
                             {
                                 <div class="stage_indicator_circle yellow_bcolor"></div>
                             }
-                            else if (column.Id == 3)
+                            else if (column.Number == 3)
                             {
                                 <div class="stage_indicator_circle green_bcolor"></div>
                             }
-                            else if (column.Id == 4)
+                            else if (column.Number == 4)
                             {
                                 <div class="stage_indicator_circle blue_bcolor"></div>
                             }
-                            else if (column.Id == 5)
+                            else if (column.Number == 5)
                             {
                                 <div class="stage_indicator_circle blue_bcolor"></div>
                             }
-                            else if (column.Id == 6)
+                            else if (column.Number == 6)
                             {
                                 <div class="stage_indicator_circle green_bcolor"></div>
                             }
+
+
                             <div class="mid_title">
                                 @column.Title
                             </div>
-                            <!-- <textarea name="" id="" cols="0" rows="0" class="mid_title">Создано</textarea> -->
                         </div>
 
 
@@ -51,57 +53,57 @@
 
 
                     </div>
-                    @if (column.Id == 1)
+                    @if (column.Number == 1)
                     {
                         <div class="stage_indicator_line default_bcolor"></div>
                     }
-                    else if (column.Id == 2)
+                    else if (column.Number == 2)
                     {
                         <div class="stage_indicator_line yellow_bcolor"></div>
                     }
-                    else if (column.Id == 3)
+                    else if (column.Number == 3)
                     {
                         <div class="stage_indicator_line green_bcolor"></div>
                     }
-                    else if (column.Id == 4)
+                    else if (column.Number == 4)
                     {
                         <div class="stage_indicator_line blue_bcolor"></div>
                     }
-                    else if (column.Id == 5)
+                    else if (column.Number == 5)
                     {
                         <div class="stage_indicator_line blue_bcolor"></div>
                     }
-                    else if (column.Id == 6)
+                    else if (column.Number == 6)
                     {
                         <div class="stage_indicator_line green_bcolor"></div>
                     }
+
+
                 </div>
 
 
-                
-                    <div class="cards_main_wrapper margin_container_bottom_middle">
+                <div class="cards_main_wrapper margin_container_bottom_middle">
                     @foreach (var card in column.Cards)
                     {
-                        <div class="card_wrapper open-popup" idcard ="@card.Id">
+                        <div class="card_wrapper open-popup" idcard="@card.Id">
+
 
                             <div class="card_header_wrapper margin_container_bottom_extrasmall">
                                 <div class="card_name_wrapper">
                                     <div class="mid_description">
                                         @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
-                                       
                                     </div>
                                 </div>
                             </div>
 
 
                             <div class="mid_title margin_container_bottom_extrasmall">
-                               
-                                    @card.Name
+                                @card.Name
                             </div>
 
 
                             <div class="mid_description margin_container_bottom_small">
-                               @card.Requirement
+                                @card.Requirement
                             </div>
 
 
@@ -154,13 +156,13 @@
                             </div>
                         </div>
                     }
-                    </div>
-                
+                </div>
 
-               
-                @*@if (Model.IsActiveToAddCard && column.Number == 1)
-                {*@
-                    <button class="action_btn white_btn open-popup">
+
+
+                @if (Model.IsActiveToAddCard && column.Number == 1)
+                {
+                    <button class="action_btn white_btn open-popup-add">
 
 
                         <div class="action_btn_icon">
@@ -169,12 +171,12 @@
 
 
                         <div class="description">
-                                Добавить задачу
+                            Добавить задачу
                         </div>
-                       
+
 
                     </button>
-                @*}*@
+                }
 
 
             </div>
@@ -182,6 +184,14 @@
 
     </div>
 </section>
+
+
+@if (TempData.ContainsKey("Message"))
+{
+    <script type="text/javascript">
+        M.toast({ html: '@TempData["Message"]' }, 3000);
+    </script>
+}
 
 
 @if (@Model.Columns.FirstOrDefault(x => x.Cards.Count() > 0) != null)

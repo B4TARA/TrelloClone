@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Linq;
+using TrelloClone.Models;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
 
@@ -34,30 +36,21 @@ namespace TrelloClone.Controllers
 
             return View(model);
         }
+        
+        [HttpGet]
+        public IActionResult AddCardViewComponent()
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            return ViewComponent("AddCard");
+        }      
 
         [HttpGet]
-        public IActionResult AddCard()
+        public IActionResult GetCardDetailsViewComponent(int cardId, string view)
         {
-            return View();
-        }
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
 
-        [HttpPost]
-        public IActionResult AddCard(AddCard viewModel)
-        {
-            viewModel.Id = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
-
-            //ViewBag добавить ошибки и выводить их в этой формочке (если они есть)
-            if (!ModelState.IsValid) return RedirectToAction(nameof(ListMyCards));
-
-            _userBoardService.AddCard(viewModel);
-
-            return RedirectToAction(nameof(ListMyCards));
-        }
-
-        [HttpGet]
-        public IActionResult GetCardDetailsViewComponent(int cardId)
-        {
-            return ViewComponent("CardDetails", new { cardId = cardId });
+            return ViewComponent("CardDetails", new { cardId = cardId, userId = userId});
         }
     }
 }

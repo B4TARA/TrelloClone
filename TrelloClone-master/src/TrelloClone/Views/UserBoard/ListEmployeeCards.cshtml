@@ -9,93 +9,96 @@
         {
             <div class="stage_wrapper" id="@column.Id">
 
+
                 <div class="stage_header_info_wrapper margin_container_bottom_middle">
                     <div class="stage_info_main_wrapper margin_container_bottom_small">
 
 
                         <div class="stage_info_wrapper">
-                            @if(column.Id == 1)
+                            @if (column.Number == 1)
                             {
                                 <div class="stage_indicator_circle default_bcolor"></div>
                             }
-                            else if (column.Id == 2)
+                            else if (column.Number == 2)
                             {
                                 <div class="stage_indicator_circle yellow_bcolor"></div>
                             }
-                            else if (column.Id == 3)
+                            else if (column.Number == 3)
                             {
                                 <div class="stage_indicator_circle green_bcolor"></div>
                             }
-                            else if (column.Id == 4)
+                            else if (column.Number == 4)
                             {
                                 <div class="stage_indicator_circle blue_bcolor"></div>
                             }
-                            else if (column.Id == 5)
+                            else if (column.Number == 5)
                             {
                                 <div class="stage_indicator_circle blue_bcolor"></div>
                             }
-                            else if (column.Id == 6)
+                            else if (column.Number == 6)
                             {
                                 <div class="stage_indicator_circle green_bcolor"></div>
                             }
 
+
                             <div class="mid_title">
-                                @column.Id
+                                @column.Title
                             </div>
                         </div>
+
 
                         <div class="count_cards_wrapper">
                             <div class="mid_description">@column.Cards.Count()</div>
                         </div>
 
+
                     </div>
-                    @if (column.Id == 1)
+                    @if (column.Number == 1)
                     {
                         <div class="stage_indicator_line default_bcolor"></div>
                     }
-                    else if (column.Id == 2)
+                    else if (column.Number == 2)
                     {
                         <div class="stage_indicator_line yellow_bcolor"></div>
                     }
-                    else if (column.Id == 3)
+                    else if (column.Number == 3)
                     {
                         <div class="stage_indicator_line green_bcolor"></div>
                     }
-                    else if (column.Id == 4)
+                    else if (column.Number == 4)
                     {
                         <div class="stage_indicator_line blue_bcolor"></div>
                     }
-                    else if (column.Id == 5)
+                    else if (column.Number == 5)
                     {
                         <div class="stage_indicator_line blue_bcolor"></div>
                     }
-                    else if (column.Id == 6)
+                    else if (column.Number == 6)
                     {
                         <div class="stage_indicator_line green_bcolor"></div>
                     }
-                    
+
+
                 </div>
 
-                    <div class="cards_main_wrapper margin_container_bottom_middle">
+
+                <div class="cards_main_wrapper margin_container_bottom_middle">
                     @foreach (var card in column.Cards)
                     {
-                        <div class="card_wrapper open-popup">
+                        <div class="card_wrapper open-popup" idcard="@card.Id">
 
 
                             <div class="card_header_wrapper margin_container_bottom_extrasmall">
                                 <div class="card_name_wrapper">
                                     <div class="mid_description">
-                                        @card.Term
+                                        @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
                                     </div>
                                 </div>
                             </div>
 
 
                             <div class="mid_title margin_container_bottom_extrasmall">
-                                <a asp-controller="Card" asp-action="Details"
-                                   asp-route-id="@card.Id" class="white-text">
-                                    @card.Name
-                                </a>
+                                @card.Name
                             </div>
 
 
@@ -107,7 +110,7 @@
                             <div class="card_footer_wrapper">
 
 
-                                @if(Model.ImgPath != null)
+                                @if (Model.ImgPath != null)
                                 {
                                     <div class="card_holders_wrapper">
                                         <div class="holder_image_wrapper">
@@ -153,8 +156,8 @@
                             </div>
                         </div>
                     }
-                    </div>
-                
+                </div>
+
             </div>
         }
     </div>

@@ -1,4 +1,5 @@
 const openPopupButtons = document.querySelectorAll('.open-popup');
+const openPopupAddButtons = document.querySelectorAll('.open-popup-add');
 const mainContainers = document.getElementById('main_container_content');
 
 
@@ -11,6 +12,14 @@ openPopupButtons.forEach((elem) => {
 })
 
 
+openPopupAddButtons.forEach((elem) => {
+
+    elem.addEventListener('click', () => {
+        addCard()
+    })
+})
+
+
 function closeCard(elem) {
     const elemTodelete = elem.parentElement.parentElement;
     elemTodelete.remove()
@@ -18,20 +27,33 @@ function closeCard(elem) {
 
 
 async function editCard(idCard) {
-    console.log(typeof(idCard))
-    let dataToSend = {};
-    dataToSend.idCard
 
     let div = document.createElement('div')
    
     await fetch('GetCardDetailsViewComponent?' + new URLSearchParams({
-        cardId: idCard,
-    }), {
+        cardId: idCard
+    }), 
+    {
         method: 'GET',
     })
         .then((response) => response.text())
         .then((data) => {
-            //console.log(data)
+            div.innerHTML = data;
+            mainContainers.appendChild(div)
+        })
+}
+
+
+async function addCard() {
+
+    let div = document.createElement('div')
+
+    await fetch('AddCardViewComponent',
+        {
+            method: 'GET',
+        })
+        .then((response) => response.text())
+        .then((data) => {
             div.innerHTML = data;
             mainContainers.appendChild(div)
         })

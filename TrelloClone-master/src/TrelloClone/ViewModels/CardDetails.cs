@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MimeKit.Cryptography;
 
 namespace TrelloClone.ViewModels
 {
@@ -24,6 +25,10 @@ namespace TrelloClone.ViewModels
         public string? SupervisorComment { get; set; }
         public double? Points { get; set; }
         public int Column { get; set; } = 1;
-        public List<SelectListItem> Columns { get; set; } = new List<SelectListItem>();
+        public bool IsActive { get; set; }  
+        public bool IsActiveLikeEmployee { get; set; }
+        public bool IsActiveLikeSupervisor { get; set; }
+        public int UserId { get; set; }
+        public int ColumnId { get; set; }
     }
 }
