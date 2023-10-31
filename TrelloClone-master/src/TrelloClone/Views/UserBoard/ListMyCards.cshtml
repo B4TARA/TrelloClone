@@ -1,21 +1,6 @@
 ﻿@model TrelloClone.ViewModels.UserBoardView
 
-
-@foreach (var notification in Model.Notifications)
-{
-
-
-    <font color="red">
-        <center>
-            @notification
-        </center>
-    </font>
-
-
-}
-
-
-<section class="main_container_content">
+<section class="main_container_content" id="main_container_content">
     <div class="stages_main_wrapper">
 
 
@@ -29,7 +14,30 @@
 
 
                         <div class="stage_info_wrapper">
-                            <div class="stage_indicator_circle default_bcolor"></div>
+                            @if (column.Id == 1)
+                            {
+                                <div class="stage_indicator_circle default_bcolor"></div>
+                            }
+                            else if (column.Id == 2)
+                            {
+                                <div class="stage_indicator_circle yellow_bcolor"></div>
+                            }
+                            else if (column.Id == 3)
+                            {
+                                <div class="stage_indicator_circle green_bcolor"></div>
+                            }
+                            else if (column.Id == 4)
+                            {
+                                <div class="stage_indicator_circle blue_bcolor"></div>
+                            }
+                            else if (column.Id == 5)
+                            {
+                                <div class="stage_indicator_circle blue_bcolor"></div>
+                            }
+                            else if (column.Id == 6)
+                            {
+                                <div class="stage_indicator_circle green_bcolor"></div>
+                            }
                             <div class="mid_title">
                                 @column.Title
                             </div>
@@ -43,30 +51,52 @@
 
 
                     </div>
-                    <div class="stage_indicator_line default_bcolor"></div>
+                    @if (column.Id == 1)
+                    {
+                        <div class="stage_indicator_line default_bcolor"></div>
+                    }
+                    else if (column.Id == 2)
+                    {
+                        <div class="stage_indicator_line yellow_bcolor"></div>
+                    }
+                    else if (column.Id == 3)
+                    {
+                        <div class="stage_indicator_line green_bcolor"></div>
+                    }
+                    else if (column.Id == 4)
+                    {
+                        <div class="stage_indicator_line blue_bcolor"></div>
+                    }
+                    else if (column.Id == 5)
+                    {
+                        <div class="stage_indicator_line blue_bcolor"></div>
+                    }
+                    else if (column.Id == 6)
+                    {
+                        <div class="stage_indicator_line green_bcolor"></div>
+                    }
                 </div>
 
 
-                @foreach (var card in column.Cards)
-                {
+                
                     <div class="cards_main_wrapper margin_container_bottom_middle">
-                        <div class="card_wrapper open-popup">
-
+                    @foreach (var card in column.Cards)
+                    {
+                        <div class="card_wrapper open-popup" idcard ="@card.Id">
 
                             <div class="card_header_wrapper margin_container_bottom_extrasmall">
                                 <div class="card_name_wrapper">
                                     <div class="mid_description">
-                                       @card.Term
+                                        @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
+                                       
                                     </div>
                                 </div>
                             </div>
 
 
                             <div class="mid_title margin_container_bottom_extrasmall">
-                                <a asp-controller="Card" asp-action="Details"
-                                   asp-route-id="@card.Id" class="white-text">
+                               
                                     @card.Name
-                                </a>
                             </div>
 
 
@@ -123,13 +153,14 @@
 
                             </div>
                         </div>
+                    }
                     </div>
-                }
+                
 
                
-                @if (Model.IsActiveToAddCard && column.Number == 1)
-                {
-                    <button class="action_btn white_btn add_card_btn">
+                @*@if (Model.IsActiveToAddCard && column.Number == 1)
+                {*@
+                    <button class="action_btn white_btn open-popup">
 
 
                         <div class="action_btn_icon">
@@ -143,7 +174,7 @@
                        
 
                     </button>
-                }
+                @*}*@
 
 
             </div>

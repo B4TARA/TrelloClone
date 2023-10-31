@@ -1,21 +1,7 @@
 ﻿@model TrelloClone.ViewModels.UserBoardView
 
 
-@foreach (var notification in Model.Notifications)
-{
-
-
-    <font color="red">
-        <center>
-            @notification
-        </center>
-    </font>
-
-
-}
-
-
-<section class="main_container_content">
+<section class="main_container_content" id="main_container_content">
     <div class="stages_main_wrapper">
 
 
@@ -23,33 +9,76 @@
         {
             <div class="stage_wrapper" id="@column.Id">
 
-
                 <div class="stage_header_info_wrapper margin_container_bottom_middle">
                     <div class="stage_info_main_wrapper margin_container_bottom_small">
 
 
                         <div class="stage_info_wrapper">
-                            <div class="stage_indicator_circle default_bcolor"></div>
-                            <div class="mid_title">
-                                @column.Title
-                            </div>
-                            <!-- <textarea name="" id="" cols="0" rows="0" class="mid_title">Создано</textarea> -->
-                        </div>
+                            @if(column.Id == 1)
+                            {
+                                <div class="stage_indicator_circle default_bcolor"></div>
+                            }
+                            else if (column.Id == 2)
+                            {
+                                <div class="stage_indicator_circle yellow_bcolor"></div>
+                            }
+                            else if (column.Id == 3)
+                            {
+                                <div class="stage_indicator_circle green_bcolor"></div>
+                            }
+                            else if (column.Id == 4)
+                            {
+                                <div class="stage_indicator_circle blue_bcolor"></div>
+                            }
+                            else if (column.Id == 5)
+                            {
+                                <div class="stage_indicator_circle blue_bcolor"></div>
+                            }
+                            else if (column.Id == 6)
+                            {
+                                <div class="stage_indicator_circle green_bcolor"></div>
+                            }
 
+                            <div class="mid_title">
+                                @column.Id
+                            </div>
+                        </div>
 
                         <div class="count_cards_wrapper">
                             <div class="mid_description">@column.Cards.Count()</div>
                         </div>
 
-
                     </div>
-                    <div class="stage_indicator_line default_bcolor"></div>
+                    @if (column.Id == 1)
+                    {
+                        <div class="stage_indicator_line default_bcolor"></div>
+                    }
+                    else if (column.Id == 2)
+                    {
+                        <div class="stage_indicator_line yellow_bcolor"></div>
+                    }
+                    else if (column.Id == 3)
+                    {
+                        <div class="stage_indicator_line green_bcolor"></div>
+                    }
+                    else if (column.Id == 4)
+                    {
+                        <div class="stage_indicator_line blue_bcolor"></div>
+                    }
+                    else if (column.Id == 5)
+                    {
+                        <div class="stage_indicator_line blue_bcolor"></div>
+                    }
+                    else if (column.Id == 6)
+                    {
+                        <div class="stage_indicator_line green_bcolor"></div>
+                    }
+                    
                 </div>
 
-
-                @foreach (var card in column.Cards)
-                {
                     <div class="cards_main_wrapper margin_container_bottom_middle">
+                    @foreach (var card in column.Cards)
+                    {
                         <div class="card_wrapper open-popup">
 
 
@@ -123,8 +152,9 @@
 
                             </div>
                         </div>
+                    }
                     </div>
-                }
+                
             </div>
         }
     </div>

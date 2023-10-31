@@ -35,7 +35,7 @@ namespace TrelloClone.Services
             {
                 DateTime FakeToday = new DateTime(2023, 3, 20);
 
-                foreach (var user in users)
+                foreach (var user in users.Where(x=>x.Name.Contains("Томчик")))
                 {
 
                     if (FakeToday.Month == 3
@@ -51,7 +51,7 @@ namespace TrelloClone.Services
                             user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
 
                             var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24", null);
-                            await _emailSender.SendEmailAsync(message);
+                            //await _emailSender.SendEmailAsync(message);
                         }
 
                         else if(FakeToday.Day == 25)
@@ -65,7 +65,7 @@ namespace TrelloClone.Services
                                 user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
 
                                 var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца", null);
-                                await _emailSender.SendEmailAsync(message);
+                                //await _emailSender.SendEmailAsync(message);
                             }                                                      
                         }
                     }
@@ -86,7 +86,7 @@ namespace TrelloClone.Services
                                 user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
 
                                 var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7", null);
-                                await _emailSender.SendEmailAsync(message);
+                                //await _emailSender.SendEmailAsync(message);
                             }                        
                         }
 
@@ -100,7 +100,7 @@ namespace TrelloClone.Services
                                 user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
 
                                 var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14", null);
-                                await _emailSender.SendEmailAsync(message);
+                                //await _emailSender.SendEmailAsync(message);
                             }                         
                         }
 
@@ -352,8 +352,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();

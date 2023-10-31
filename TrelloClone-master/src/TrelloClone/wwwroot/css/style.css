@@ -545,13 +545,14 @@
     max-height: calc(100vh - 100px);
 }
 
-.stage_header_info_wrapper{
+.stage_header_info_wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
-    /* border-bottom: 4px solid #1b74fd; */
-    /* padding-bottom: 15px; */
+    position: sticky;
+    top: 0;
+    background-color: #f5f5f5;
 }
 
 .stage_info_main_wrapper{
@@ -629,13 +630,14 @@
 /**/
 
 /*CARD*/
-.cards_main_wrapper{
-    overflow-y: scroll;
+.cards_main_wrapper {
     height: 100%;
+    overflow-y: scroll;
 }
 
 .cards_main_wrapper .card_wrapper{
     margin-bottom: 20px;
+    
 }
 
 .cards_main_wrapper .card_wrapper:last-child{
@@ -719,7 +721,7 @@
 
 .holder_image_wrapper img{
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 50%;
 }
 
@@ -836,36 +838,31 @@
 }
 
 .commentarea_wrapper{
-    width: 80%;
-    outline: none;
-    border: none;
-    resize: none;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    padding: 15px;
-    /* width: 100%; */
-    min-height: 40px;
-    cursor: pointer;
-    position: relative;
+    
 }
 
-/* .commentarea_wrapper .comment_area {
-    outline: none;
-    border: none;
-    resize: none;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    padding: 15px;
-    width: 100%;
-    min-height: 40px;
-    cursor: pointer;
-    position: relative;
-} */
-
-    .commentarea_wrapper .comment_area::placeholder {
-        font-size: 14px;
-        color: #707070;
+    .commentarea_wrapper .comment_area textarea {
+        background: #f5f5f5;
+        color:#0D062D;
+        border-radius: 10px;
+        box-shadow: none;
+        box-sizing: border-box;
+        border: none;
+        margin: 0;
+        max-height: 256px;
+        min-height: 40px;
+        overflow: hidden;
+        overflow-wrap: break-word;
+        padding: 15px;
+        resize: none;
+        width:80%;
     }
+
+        .commentarea_wrapper .comment_area textarea::placeholder {
+            font-size: 14px;
+            color: #707070;
+        }
+
 
     .commentarea_wrapper .action_btn{
         margin-top: 20px;
@@ -900,14 +897,25 @@
     cursor: pointer;
 }
 
+/*POPUP DESCRIPTION*/
+.description_popup_card_wrapper .mid_description {
+    background: #f5f5f5;
+    color: #0D062D;
+    border-radius: 10px;
+    box-shadow: none;
+    box-sizing: border-box;
+    border: none;
+    height: 20px;
+    margin: 0;
+    max-height: 256px;
+    min-height: 100px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding: 15px;
+    resize: none;
+}
 /**/
 .selected_todrag_card {
     border: 1px dashed rgba(80, 48, 229, 0.59);
     background: rgba(80, 48, 229, 0.06);
 }
-
-/* #editor{
-    width: 100px;
-    height: 100px;
-    background-color: #1B74FD;
-} */

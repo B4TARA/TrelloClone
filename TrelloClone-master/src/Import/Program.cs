@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EmailService;
+using Microsoft.EntityFrameworkCore;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Services;
@@ -11,10 +12,16 @@ var options = optionsBuilder
 TrelloCloneDbContext _db = new TrelloCloneDbContext(options);
 RepositoryManager _repository = new RepositoryManager(_db);
 
-UserService userService = new UserService(_db, _repository);
+EmailConfiguration _configuration = new EmailConfiguration();
+_configuration.Port = 25;
+_configuration.SmtpServer = "LDGate.mtb.minsk.by";
+_configuration.From = "KOPSender";
 
-//var path = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
-var path = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
+EmailSender _emailSender = new EmailSender(_configuration);
+UserService userService = new UserService(_db, _repository, _emailSender);
+
+var path = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
+//var path = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
 
 Task.Run(async () =>
 {

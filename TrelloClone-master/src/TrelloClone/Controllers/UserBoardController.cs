@@ -55,19 +55,9 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCreateCardViewComponent()
+        public IActionResult GetCardDetailsViewComponent(int cardId)
         {
-            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
-
-            return ViewComponent("CreateCard", new { id = userId });
-        }
-
-        [HttpGet]
-        public IActionResult GetEditCardViewComponent()
-        {
-            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
-
-            return ViewComponent("EditCard", new { id = userId });
+            return ViewComponent("CardDetails", new { cardId = cardId });
         }
     }
 }

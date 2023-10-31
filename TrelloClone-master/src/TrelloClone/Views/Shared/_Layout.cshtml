@@ -45,12 +45,11 @@
                 {
                     <li class="showMenu">
 
-
-                        <div class="iocn-link">
+                        <a href="#">
                             <i class='bx bx-collection'></i>
                             <span class="link_name">Мои проекты</span>
                             <i class='bx bxs-chevron-down arrow'></i>
-                        </div>
+                        </a>
 
 
                         <ul class="sub-menu">                          
@@ -59,7 +58,6 @@
                         </ul>
                     </li>
                 }
-
 
                 @if (User.IsInRole("Employee") || User.IsInRole("Combined"))
                 {
@@ -135,10 +133,8 @@
     </section>
 
 
-    <script src="~/js/addCard.js"></script>
-    <script src="~/js/editCard.js"></script>
-    <script src="~/js/editorJS.js"></script>
-    @*<script src="~/js/script.js"></script>*@
+    <script src="~/js/cardDetails.js"></script>
+    <script src="~/js/script.js"></script>
 
 
 </body>

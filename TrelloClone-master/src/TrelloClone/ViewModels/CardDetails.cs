@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TrelloClone.ViewModels
 {
-    public class EditCard
+    public class CardDetails
     {
         public int Id { get; set; }
 

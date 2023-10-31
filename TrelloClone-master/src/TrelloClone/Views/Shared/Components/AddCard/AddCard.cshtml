@@ -1,0 +1,128 @@
+﻿@model TrelloClone.ViewModels.CardDetails
+
+
+<div class="popup__bg">
+    <div class="popup">
+
+
+        <div class="close-popup" onclick="closeCard(this)"><i class="fa-solid fa-xmark"></i></div>
+
+
+        <div class="info_popup_card_wrapper">
+
+
+            <form asp-controller="UserBoard" asp-action="AddCard">
+
+
+                <div class="title_wrapper">
+                    <div class="container_description">
+                        <input type="text" asp-for="Name" />
+                        <div class="title"/>
+                    </div>
+                </div>
+
+
+                <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
+
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                        <div class="mid_title">
+                            Срок
+                        </div>
+                    </div>
+
+
+                    <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
+                        <div></div>
+                        <div class="choose_date_wrapper" id="choose_date">
+                            <input type="month" asp-for="Term" id="input-datepicker" placeholder="Выберите период">
+                        </div>
+                        <!-- <div class="mid_description">Январь</div> -->
+                    </div>
+
+
+                </div>
+
+
+                <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
+
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
+                        </div>
+
+                        <div class="mid_title">
+                            Описание
+                        </div>
+                    </div>
+
+
+                    <div class="second_row_grid_description" id="description">
+                        <div></div>
+
+                        <textarea class="mid_description" id="description_editor" asp-for="Requirement">
+                        </textarea>
+                    </div>
+
+
+                </div>
+
+
+                <div class="comment_popup_card_wrapper grid_description_2fr" id="comment_popup_card_wrapper">
+
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-solid fa-bars-staggered" style="color: #0D062D;"></i>
+                        </div>
+                        <div class="mid_title">
+                            Действия
+                        </div>
+                    </div>
+
+
+                    <div class="comment_user_wrapper second_row_grid_description margin_container_bottom_middle">
+                        <div class="card_holders_wrapper">
+                            <div class="holder_image_wrapper">
+                                <img src="/image/profile.jpg" alt="holder_image">
+                            </div>
+                        </div>
+                        <div class="commentarea_wrapper" id="comment_editor" onclick="createTextEditor(this)">
+                            <div class="comment_area">
+                                <span id="placeholder" style="position: absolute; top: 10px; left: 10px; color: #999;">Напишите комментарий</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    @*  @if (Model.IsActiveLikeEmployee && Model.Columns.Count() > 0)
+                    {
+                    <div class="row">
+                    <div class="col s10">
+                    <button onclick="accept()">
+                    Перевести
+                    </button>
+                    </div>
+                    </div>
+                    }*@
+
+
+                </div>
+
+
+                <button type="submit" class="action_btn primary_btn">
+                    <div class="description">Сохранить</div>
+                </button>
+
+
+            </form>
+
+
+        </div>
+    </div>
+</div>

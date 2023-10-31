@@ -1,4 +1,4 @@
-﻿@model TrelloClone.ViewModels.EditCard
+﻿@model TrelloClone.ViewModels.CardDetails
 
 
 <div class="popup__bg">
@@ -12,6 +12,9 @@
 
 
             <form asp-controller="Card" asp-action="Update">
+
+
+                <input type="hidden" asp-for="Id" value="@Model.Id"/>
 
 
                 <div class="title_wrapper">
@@ -64,12 +67,7 @@
                     <div class="second_row_grid_description" id="description">
                         <div></div>
 
-                        <div class="mid_description" id="description_editor" onclick="createTextEditor(this)">
-                            Brainstorming brings team members' diverse experience into play. Brainstorming brings
-                            team members' diverse experience into play.
-                            Brainstorming brings team members' diverse experience into play.
-                            Brainstorming brings team members' diverse experience into play.
-                        </div>
+                        <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание"></textarea>
                     </div>
 
 
@@ -97,7 +95,7 @@
                         </div>
                         <div class="commentarea_wrapper" id="comment_editor" onclick="createTextEditor(this)">
                             <div class="comment_area">
-                                <span id="placeholder" style="position: absolute; top: 10px; left: 10px; color: #999;">Напишите комментарий</span>
+                                <textarea class="mid_description" placeholder="Напишите комментарий"></textarea>
                             </div>
 
                         </div>

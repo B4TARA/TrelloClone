@@ -24,7 +24,7 @@ namespace TrelloClone.Services
             _userBoardService = userBoardService;
         }
         
-        public EditCard GetDetails(int id)
+        public CardDetails GetDetails(int id)
         {
             var card = _dbContext
                 .Cards
@@ -32,7 +32,7 @@ namespace TrelloClone.Services
                 .SingleOrDefault(x => x.Id == id);
 
             if (card == null) 
-                return new EditCard();
+                return new CardDetails();
            
             // retrieve users
             var user = _dbContext
@@ -52,7 +52,7 @@ namespace TrelloClone.Services
                     });
 
 
-                return new EditCard
+                return new CardDetails
                 {
                     Id = card.Id,
                     Name = card.Name,
@@ -65,7 +65,7 @@ namespace TrelloClone.Services
             return null;
         }
 
-        public async Task<IBaseResponse<object>> Update(EditCard cardDetails)
+        public async Task<IBaseResponse<object>> Update(CardDetails cardDetails)
         {
             try
             {
