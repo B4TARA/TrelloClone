@@ -89,3 +89,26 @@ arrowShowMenu.forEach(item => {
 sidebarBtn.addEventListener("click", () => {
     sidebar.classList.toggle("close_sidebar");
 });
+
+
+var searchBoxItem = document.getElementById("selectBox");
+
+
+function selectedContainerOpen() {
+    let optionsContainer = document.getElementById("options-container");
+
+    optionsContainer.classList.toggle("active");
+    
+}
+
+function optionClick(elem) {
+    const resultAssessmentWrapper = document.getElementById('valueAsessessment');
+    const descriptionAssessmentValElem = document.getElementById('descriptionAssessmentVal')
+
+    const resultAssessmentText = elem.querySelector("label").innerText
+    descriptionAssessmentValElem.innerHTML = resultAssessmentText;
+
+    const resultAssessmentVal = elem.querySelector("label").getAttribute('itemval')
+    console.log(resultAssessmentVal)
+    resultAssessmentWrapper.value = resultAssessmentVal;
+}

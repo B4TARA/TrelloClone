@@ -11,10 +11,12 @@ namespace TrelloClone.Controllers
     public class CardController : Controller
     {
         private readonly CardService _cardService;
+        private readonly UserService _userService;
 
-        public CardController(CardService cardService)
+        public CardController(CardService cardService, UserService userService)
         {
             _cardService = cardService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -35,6 +37,7 @@ namespace TrelloClone.Controllers
 
                 else
                 {
+                    await _userService.SendNotification(card.UserId, "Уведомление", "Ваша карточка " + card.Name + " была изменена");
                     var employeeId = Convert.ToInt32(action.Split("=")[1]);
                     action = action.Split("?")[0];
                     return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });

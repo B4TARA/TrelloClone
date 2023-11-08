@@ -18,13 +18,11 @@ namespace TrelloClone.Services
 {
     public class UserService
     {
-        private readonly TrelloCloneDbContext _dbContext;
         private readonly RepositoryManager _repository;
         private readonly EmailSender _emailSender;
 
-        public UserService(TrelloCloneDbContext dbContext, RepositoryManager repository, EmailSender emailSender)
+        public UserService(RepositoryManager repository, EmailSender emailSender)
         {
-            _dbContext = dbContext;
             _repository = repository;
             _emailSender = emailSender;
         }
@@ -60,8 +58,6 @@ namespace TrelloClone.Services
 
                             _repository.CardRepository.Update(card);
                             await _repository.Save();
-
-
                         }
                     }
 
@@ -78,7 +74,6 @@ namespace TrelloClone.Services
 
                             _repository.CardRepository.Update(card);
                             await _repository.Save();
-
                         }
 
                         else if (FakeToday.Day == 8)
@@ -87,12 +82,11 @@ namespace TrelloClone.Services
 
                             _repository.CardRepository.Update(card);
                             await _repository.Save();
-
                         }
                     }
                 }
 
-                foreach (var user in users/*.Where(x=>x.Name.Contains("Томчик"))*/)
+                foreach (var user in users)
                 {
 
                     if (FakeToday.Month == 3
@@ -107,8 +101,7 @@ namespace TrelloClone.Services
                             user.IsActiveLikeEmployee = true;
                             user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
 
-                            var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24", null);
-                            //await _emailSender.SendEmailAsync(message);
+                            //await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
                         }
 
                         else if (FakeToday.Day == 25)
@@ -121,8 +114,7 @@ namespace TrelloClone.Services
                                 user.IsActiveLikeSupervisor = true;
                                 user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
 
-                                var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца", null);
-                                //await _emailSender.SendEmailAsync(message);
+                                //await SendNotification(user.Id, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
                             }
                         }
                     }
@@ -142,8 +134,7 @@ namespace TrelloClone.Services
                                 user.IsActiveLikeEmployee = true;
                                 user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
 
-                                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7", null);
-                                //await _emailSender.SendEmailAsync(message);
+                                //await SendNotification(user.Id, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7");
                             }
                         }
 
@@ -156,8 +147,7 @@ namespace TrelloClone.Services
                                 user.IsActiveLikeSupervisor = true;
                                 user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
 
-                                var message = new Message(new string[] { "evgeniybaturel@gmail.com" }, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14", null);
-                                //await _emailSender.SendEmailAsync(message);
+                                //await SendNotification(user.Id, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14");
                             }
                         }
 
@@ -409,8 +399,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();
@@ -440,6 +430,31 @@ namespace TrelloClone.Services
                 {
                     StatusCode = StatusCodes.InternalServerError,
                     Description = $"Внутренняя ошибка: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<IBaseResponse<object>> SendNotification(int userId, string subject, string content)
+        {
+            try
+            {
+                var user = await _repository.UserRepository.GetUserById(false, userId);
+
+                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, subject, content, null);
+                await _emailSender.SendEmailAsync(message);
+
+                return new BaseResponse<object>()
+                {
+                    StatusCode = StatusCodes.OK,
+                };
+            }
+
+            catch (Exception ex)
+            {
+                return new BaseResponse<object>()
+                {
+                    Description = $"[SendNotification] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError
                 };
             }
         }

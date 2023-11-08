@@ -1,62 +1,48 @@
 ﻿@model TrelloClone.ViewModels.LoginViewModel
-
+<link rel="stylesheet" href="~/css/style_authorization.css">
 <body>
-    <section class="login_container">
-        <div class="login_main_wrapper">
 
-            <div class="form signup">
+				<div class="main_container_authorization">
+		<div class="container" id="container">
+			<div class="form-container sign-in-container">
+				<form autocomplete="on" method="post" asp-controller="Account" asp-action="Login" class="login_form">
+					<h1>Вход</h1>
+					<input asp-for="Login" type="login" class="form-control" placeholder="Логин" id="login-box" required />
 
-                <header class="header_login_form">Вход</header>
-
-                <form autocomplete="on" method="post" asp-controller="Account" asp-action="Login" class="login_form">
-
-                    <!--дизайн текста об ошибке при авторизации-->
-                    <div asp-validation-summary="All" style="font-size:23px; font-family:Impact" class="text-danger text-center"></div>
-
-                    <input asp-for="Login" type="login" class="form-control" placeholder="Логин" id="login-box" required />
-
-                    <input asp-for="Password" autocomplete="new-password" type="password" class="form-control" placeholder="Пароль" required />
-
-                    @*<a href="#" class="forgot_pass" id="forgot_pass">Забыли пароль?</a>*@
-
-                    <input type="submit" value="Войти" />
-                </form>
+					<input asp-for="Password" autocomplete="new-password" type="password" class="form-control" placeholder="Пароль" required />
+					@*<a href="#">Забыли пароль?</a>*@
+					<button>Войти</button>
+				</form>
+			</div>
+			<div class="overlay-container">
+				<div class="overlay">
+					<div class="overlay-panel overlay-right">
+						<h1>MTSmart</h1>
+						<img src="/image/smartproj_icon.svg" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+				</div>
+                
             </div>
 
-            <div class="form login">
-
-                <header class="header_login_form">Trello Clone</header>
-
-                <form autocomplete="on" method="post" asp-controller="Account" asp-action="RemindPassword" class="login_form">
-
-                    <div class="description">
-                        Пароль будет выслан Вам на рабочую почту Lotus
-                    </div>
-
-                    <input asp-for="Login" type="login" class="form-control" placeholder="Логин" id="login-box" required />
-
-                    <input type="submit" value="Напомнить пароль" />
-                </form>
-            </div>
-
-        </div>
-    </section>
 </body>
 
 <script>
-    const wrapper = document.querySelector(".login_main_wrapper"),
-        signupHeader = document.querySelector(".signup header"),
-        forgotPassBtn = document.getElementById("forgot_pass")
-    loginHeader = document.querySelector(".login header");
+    //const wrapper = document.querySelector(".login_main_wrapper"),
+    //    signupHeader = document.querySelector(".signup header"),
+    //    forgotPassBtn = document.getElementById("forgot_pass")
+    //loginHeader = document.querySelector(".login header");
 
-    forgotPassBtn.addEventListener("click", () => {
-        wrapper.classList.add("active");
-        console.log('add')
-        console.log(forgotPassBtn)
-    });
+    //forgotPassBtn.addEventListener("click", () => {
+    //    wrapper.classList.add("active");
+    //    console.log('add')
+    //    console.log(forgotPassBtn)
+    //});
 
-    signupHeader.addEventListener("click", () => {
-        wrapper.classList.remove("active");
-        console.log('remove')
-    });
+    //signupHeader.addEventListener("click", () => {
+    //    wrapper.classList.remove("active");
+    //    console.log('remove')
+    //});
 </script>

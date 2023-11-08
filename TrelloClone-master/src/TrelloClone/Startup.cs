@@ -54,9 +54,11 @@ namespace TrelloClone
             //email//
             var emailConfig = _config.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
-            services.AddScoped<IEmailSender, EmailSender>();
+            // services.AddScoped<IEmailSender, EmailSender>();
             //
 
+            services.AddScoped<EmailSender>();
+            services.AddScoped<UserService>();
             services.AddScoped<UserBoardService>();
             services.AddScoped<CardService>();
             services.AddScoped<AccountService>();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Data;
@@ -121,6 +122,30 @@ namespace TrelloClone.Services
             }
 
             return model;
+        }
+
+        public async Task<IBaseResponse<User>> GetFirstEmployee(int supervisorId)
+        {
+            try
+            {
+                var supervisor = await _repository.UserRepository.GetUserById(false, supervisorId);
+                var employees = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisor.Name, false);
+
+                return new BaseResponse<User>()
+                {
+                    Data = employees.FirstOrDefault(),
+                    StatusCode = StatusCodes.OK,
+                };
+            }
+
+            catch (Exception ex)
+            {
+                return new BaseResponse<User>()
+                {
+                    Description = $"[Move] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError
+                };
+            }
         }
 
         public async Task<IBaseResponse<object>> Move(MoveCardCommand command)
