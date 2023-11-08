@@ -299,7 +299,7 @@ namespace TrelloClone.Services
                 FileStream fStream = File.Open(path, FileMode.Open, FileAccess.Read);
                 IExcelDataReader excelDataReader = ExcelReaderFactory.CreateOpenXmlReader(fStream);
                 DataSet resultDataSet = excelDataReader.AsDataSet();
-                var table = resultDataSet.Tables[1];
+                var table = resultDataSet.Tables[0];
 
                 List<User> users = new List<User>();
 
