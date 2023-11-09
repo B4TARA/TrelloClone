@@ -30,7 +30,7 @@
                 <span class="logo_name">MTSmart</span>
             </div>
             <ul class="nav-links">
-                <li>
+                @*<li>
                     <a href="#">
                         <i class='bx bx-grid-alt'></i>
                         <span class="link_name">Главная</span>
@@ -38,7 +38,7 @@
                     <ul class="sub-menu blank">
                         <li class=""><a class="link_name" href="#">Главная</a></li>
                     </ul>
-                </li>
+                </li>*@
 
 
                 @if (User.IsInRole("Supervisor") || User.IsInRole("Combined"))
@@ -47,7 +47,7 @@
 
                         <a href="#">
                             <i class='bx bx-collection'></i>
-                            <span class="link_name">Мои проекты</span>
+                            <span class="link_name">Задачи работников</span>
                             <i class='bx bxs-chevron-down arrow'></i>
                         </a>
 

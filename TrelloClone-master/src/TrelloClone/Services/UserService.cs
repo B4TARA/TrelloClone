@@ -33,7 +33,7 @@ namespace TrelloClone.Services
             {
                 var cards = await _repository.CardRepository.GetAll(false);
 
-                DateTime FakeToday = new DateTime(2023, 4, 8);
+                DateTime FakeToday = new DateTime(2023, 3, 20);
 
                 foreach (var card in cards)
                 {
@@ -255,12 +255,12 @@ namespace TrelloClone.Services
                     {
                         if (user.Role == Roles.Employee || user.Role == Roles.Combined)
                         {
-                            var firstColumn = new Column { Title = "Составление задач", Number = 1 };
-                            var secondColumn = new Column { Title = "Согласование задач", Number = 2 };
-                            var thirdColumn = new Column { Title = "Задачи согласованы", Number = 3 };
-                            var fourthColumn = new Column { Title = "Оценка директора, Начальника ССП", Number = 4 };
-                            var fifthColumn = new Column { Title = "Оценка Куратора/Директора", Number = 5 };
-                            var sixthColumn = new Column { Title = "Оценка согласована", Number = 6 };
+                            var firstColumn = new Column { Title = "Составление SMART-задач работником", Number = 1 };
+                            var secondColumn = new Column { Title = "Согласование SMART-задач работником", Number = 2 };
+                            var thirdColumn = new Column { Title = "SMART-задачи к исполнению", Number = 3 };
+                            var fourthColumn = new Column { Title = "Самооценка работника", Number = 4 };
+                            var fifthColumn = new Column { Title = "Оценка непосредственного руководителя", Number = 5 };
+                            var sixthColumn = new Column { Title = "Итоговая оценка по SMART-задачам", Number = 6 };
 
                             user.Columns.Add(firstColumn);
                             user.Columns.Add(secondColumn);

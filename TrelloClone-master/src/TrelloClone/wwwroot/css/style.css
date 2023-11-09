@@ -1238,3 +1238,7 @@ section .details span {
     .uploaded-area i.fa-check {
         font-size: 16px;
     }
+
+.input_type_file {
+    display: none;
+}

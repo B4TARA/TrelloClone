@@ -33,7 +33,7 @@
                             <i class="fa-regular fa-calendar"></i>
                         </div>
                         <div class="mid_title">
-                            Срок
+                            Плановый срок реализации
                         </div>
                     </div>
 
@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="mid_title">
-                            Описание
+                            Требование к SMART-задаче
                         </div>
                     </div>
 
@@ -75,23 +75,22 @@
                 <div class="upload_files_main_wrapper grid_description_2fr margin_container_bottom">
                     <div class="container_description first_row_grid_description">
                         <div class="icon_description">
-                            <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
+                            <i class="fa-solid fa-paperclip" style="color: #191919;"></i>
                         </div>
 
                         <div class="mid_title">
                             Вложения
                         </div>
                     </div>
-                    @*<div class="upload_files_wrapper second_row_grid_description" >
+                    <div class="upload_files_wrapper second_row_grid_description" >
                         <div></div>
-                        <form action="#" class="form_upload" >
-                            <input class="file-input" type="file" name="file" hidden>
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p id="form_upload">Выберите файл для загрузки</p>
-                        </form>
-                        <section class="progress-area"></section>
-                        <section class="uploaded-area"></section>
-                    </div>*@
+                        <div>
+                            <form action="#" id="form_upload_file">
+                                <input type="file" onchange="start(this)"></input>
+                            </form>
+                            
+                        </div>
+                    </div>
 
                 </div>
 
@@ -267,7 +266,7 @@
                     )
                     {
                         <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
-                            <div class="description">Перевести</div>
+                            <div class="description">На согласование</div>
                         </button>
                     }
 
@@ -277,7 +276,7 @@
                     && Model.IsActive)
                     {
                         <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
-                            <div class="description">Перевести</div>
+                            <div class="description">На согласование</div>
                         </button>
                     }
                 </div>
