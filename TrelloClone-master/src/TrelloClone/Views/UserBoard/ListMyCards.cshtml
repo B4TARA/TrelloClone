@@ -1,5 +1,6 @@
 ﻿@model TrelloClone.ViewModels.UserBoardView
 
+
 <div class="home-content">
 
 
@@ -9,6 +10,8 @@
 
 
 </div>
+
+
 <section class="main_container_content" id="main_container_content">
     <div class="stages_main_wrapper">
 
@@ -168,7 +171,7 @@
 
 
 
-                @if (Model.IsActiveToAddCard && column.Number == 1 || column.Number == 2 || column.Number == 3 || column.Number == 4)
+                @if (Model.IsActiveToAddCard && column.Number == 1)
                 {
                     <button class="action_btn white_btn open-popup-add">
 

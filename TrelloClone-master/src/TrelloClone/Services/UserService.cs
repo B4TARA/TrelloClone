@@ -7,7 +7,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
 using TrelloClone.Models.Enum;
@@ -37,6 +36,7 @@ namespace TrelloClone.Services
 
                 foreach (var card in cards)
                 {
+                    var cardColumn = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
 
                     if (FakeToday.Month == 3
                         || FakeToday.Month == 6
@@ -44,7 +44,7 @@ namespace TrelloClone.Services
                         || FakeToday.Month == 12)
                     {
 
-                        if (FakeToday.Day == 20)
+                        if (FakeToday.Day == 20 && cardColumn.Number == 1)
                         {
                             card.IsActive = true;
 
@@ -52,7 +52,7 @@ namespace TrelloClone.Services
                             await _repository.Save();
                         }
 
-                        else if (FakeToday.Day == 25)
+                        else if (FakeToday.Day == 25 && cardColumn.Number == 2)
                         {
                             card.IsActive = true;
 
@@ -67,7 +67,7 @@ namespace TrelloClone.Services
                         || FakeToday.Month == 1)
                     {
 
-                        if (FakeToday.Day == 1)
+                        if (FakeToday.Day == 1 && cardColumn.Number == 4)
                         {
                             card.ColumnId = card.ColumnId + 1;
                             card.IsActive = true;
@@ -76,7 +76,7 @@ namespace TrelloClone.Services
                             await _repository.Save();
                         }
 
-                        else if (FakeToday.Day == 8)
+                        else if (FakeToday.Day == 8 && cardColumn.Number == 5)
                         {
                             card.IsActive = true;
 
@@ -96,26 +96,34 @@ namespace TrelloClone.Services
                     {
 
                         if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
-                        {                          
+                        {
                             user.IsActiveToAddCard = true;
                             user.IsActiveLikeEmployee = true;
-                            user.Notifications.Add("Внесите задачи на каждый месяц будущего квартала до 24");
 
                             //await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
                         }
 
+                        else if (FakeToday.Day == 24 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                        {
+                            //await SendNotification(user.Id, "Напоминание", "Последний день внесения задач на каждый месяц будущего квартала");
+                        }
+
                         else if (FakeToday.Day == 25)
-                        {                           
+                        {
                             user.IsActiveToAddCard = false;
                             user.IsActiveLikeEmployee = false;
 
                             if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
                             {
                                 user.IsActiveLikeSupervisor = true;
-                                user.Notifications.Add("Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
 
                                 //await SendNotification(user.Id, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
                             }
+                        }
+
+                        else if (DateTime.Today.Day == DateTime.DaysInMonth(FakeToday.Year, FakeToday.Month) && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                        {
+                            //await SendNotification(user.Id, "Напоминание", "Последний день согласования задач на каждый месяц будущего квартала");
                         }
                     }
 
@@ -126,7 +134,7 @@ namespace TrelloClone.Services
                     {
 
                         if (FakeToday.Day == 1)
-                        {                      
+                        {
                             user.IsActiveLikeSupervisor = false;
 
                             if (user.Role == Roles.Employee || user.Role == Roles.Combined)
@@ -138,8 +146,13 @@ namespace TrelloClone.Services
                             }
                         }
 
+                        if (FakeToday.Day == 7 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                        {
+                            //await SendNotification(user.Id, "Напоминание", "Последний день внесения оценки по задачам отченого квартала");
+                        }
+
                         else if (FakeToday.Day == 8)
-                        {                         
+                        {
                             user.IsActiveLikeEmployee = false;
 
                             if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
@@ -149,6 +162,11 @@ namespace TrelloClone.Services
 
                                 //await SendNotification(user.Id, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14");
                             }
+                        }
+
+                        if (FakeToday.Day == 13 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                        {
+                            //await SendNotification(user.Id, "Напоминание", "Последний день согласования оценок по задачам отченого квартала");
                         }
 
                         else if (FakeToday.Day == 14)
@@ -299,7 +317,7 @@ namespace TrelloClone.Services
                 FileStream fStream = File.Open(path, FileMode.Open, FileAccess.Read);
                 IExcelDataReader excelDataReader = ExcelReaderFactory.CreateOpenXmlReader(fStream);
                 DataSet resultDataSet = excelDataReader.AsDataSet();
-                var table = resultDataSet.Tables[0];
+                var table = resultDataSet.Tables[1];
 
                 List<User> users = new List<User>();
 
@@ -399,8 +417,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();
