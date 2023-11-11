@@ -17,9 +17,16 @@
                 <input type="hidden" asp-for="Id" value="@Model.Id" />
 
 
-                <div class="title_wrapper">
-                    <div class="container_description">
-                        <input type="text" asp-for="Name" required />
+                <div class="title_popup_wrapper grid_description_2fr" id="title_popup_wrapper">
+
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-regular fa-credit-card"></i>
+                        </div>
+                        <div class="card_name_input_wrapper card_detail_active">
+                            <input type="text" asp-for="Name" placeholder="Введите название" required />
+                        </div>
 
                     </div>
                 </div>
@@ -77,18 +84,32 @@
                         <div class="icon_description">
                             <i class="fa-solid fa-paperclip" style="color: #191919;"></i>
                         </div>
-
-                        <div class="mid_title">
-                            Вложения
+                        <div class="mid_title_wrapper">
+                            <div class="mid_title">
+                                Вложения
+                            </div>
+                            <div class="upload_file_btn_wrapper">
+                                <div class="input__wrapper">
+                                    <form>
+                                        <input name="file" type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
+                                        <label for="input__file" class="input__file-button">
+                                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
+                                            <span class="input__file-button-text">Добавить</span>
+                                        </label>
+                                    </form>
+                                    
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="upload_files_wrapper second_row_grid_description" >
                         <div></div>
-                        <div>
-                            <form action="#" id="form_upload_file">
-                                <input type="file" onchange="start(this)"></input>
-                            </form>
-                            
+                        <div class="upload_files_list_wrapper" id="upload_files_list_wrapper">
+                            @*<div class="upload_file_item_wrapper">
+                                <div class="mid_title upload_file_item_name"></div>
+                            </div>*@
+                            <section class="progress-area"></section>
+                            <section class="uploaded-area"></section>
                         </div>
                     </div>
 
@@ -132,7 +153,7 @@
                                 </div>
 
 
-                                <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen()">
+                                <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
                                     <i class="fa-solid fa-chevron-down"></i>
                                     <div class="description" id="descriptionAssessmentVal"></div>
                                     <input class="description" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden textresult="@(((TrelloClone.Models.Enum.Marks)Model.EmployeeAssessment))" required>
@@ -244,7 +265,7 @@
                             <div class="second_row_grid_description" id="description">
                                 <div></div>
 
-                                <textarea class="mid_description" id="description_editor" asp-for="SupervisorComment" placeholder="Введите описание" required></textarea>
+                                <textarea class="mid_description" id="description_editor" asp-for="SupervisorComment" placeholder="Введите описание" required onfocus="addCommentArea(this)"></textarea>
                             </div>
 
 

@@ -13,11 +13,20 @@
 
             <form asp-controller="Card" asp-action="Create">
 
+                
+                
 
-                <div class="title_wrapper">
-                    <div class="container_description">
-                        <input type="text" asp-for="Name" placeholder="Введите название"  required/>
-                        <div class="title" />
+                <div class="title_popup_wrapper grid_description_2fr" id="title_popup_wrapper">
+
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-regular fa-credit-card"></i>
+                        </div>
+                        <div class="card_name_input_wrapper">
+                            <input type="text" asp-for="Name" placeholder="Введите название" required />
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -30,7 +39,7 @@
                             <i class="fa-regular fa-calendar"></i>
                         </div>
                         <div class="mid_title">
-                            Срок
+                            Плановый срок реализации
                         </div>
                     </div>
 
@@ -38,7 +47,7 @@
                     <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
                         <div></div>
                         <div class="choose_date_wrapper" id="choose_date">
-                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период" required>
+                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период" required >
                         </div>
                         <!-- <div class="mid_description">Январь</div> -->
                     </div>
@@ -56,7 +65,7 @@
                         </div>
 
                         <div class="mid_title">
-                            Описание
+                            Требование к SMART-задаче
                         </div>
                     </div>
 

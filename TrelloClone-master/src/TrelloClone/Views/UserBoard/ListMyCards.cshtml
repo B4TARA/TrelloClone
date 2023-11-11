@@ -7,7 +7,9 @@
     <div class="home_content_info">
         <i class='bx bx-menu'></i>
     </div>
-
+    <div class="title">
+        @Model.Name
+    </div>
 
 </div>
 
@@ -103,6 +105,11 @@
                                 <div class="card_name_wrapper">
                                     <div class="mid_description">
                                         @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
+                                    </div>
+                                </div>
+                                <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="">
+                                    <div>
+                                        <i class="fa-solid fa-xmark" style="color: #000000;"></i>
                                     </div>
                                 </div>
                             </div>
