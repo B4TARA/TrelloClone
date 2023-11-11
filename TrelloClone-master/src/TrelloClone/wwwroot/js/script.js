@@ -43,3 +43,7 @@ function optionClick(elem) {
     console.log(resultAssessmentVal)
     resultAssessmentWrapper.value = resultAssessmentVal;
 }
+
+function deleteCard(elem) {
+    console.log(elem)
+}

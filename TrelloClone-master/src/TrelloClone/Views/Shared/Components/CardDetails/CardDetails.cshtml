@@ -114,7 +114,42 @@
                     </div>
 
                 </div>
+                <div class="comment_popup_card_wrapper grid_description_2fr margin_container_bottom" id="comment_popup_card_wrapper">
 
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-regular fa-comment" style="color: #0D062D;"></i>
+                        </div>
+
+                        <div class="mid_title">
+                            Комментарии
+                        </div>
+                    </div>
+
+
+                    <div class="second_row_grid_description" id="description">
+                        <div></div>
+
+                        <textarea class="mid_description" id="commentAreaElem" asp-for="EmployeeComment" placeholder="Введите комментарий" required onclick="addCommentArea(this)"></textarea>
+                        <div class="second_row_grid_description add_texteditor_buttons_wrapper add_comment_btns" id="addCommentBtns">
+                            <div></div>
+                            <div class="action_buttons_wrapper">
+                                <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
+                                    <div class="description">Сохранить</div>
+                                </div>
+                                <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
+                                    <div>
+                                        <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
                 @if (Model.Column > 3)
                 {
                     <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
@@ -171,28 +206,7 @@
                     </div>
 
 
-                    <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
-
-
-                        <div class="container_description first_row_grid_description">
-                            <div class="icon_description">
-                                <i class="fa-regular fa-comment" style="color: #0D062D;"></i>
-                            </div>
-
-                            <div class="mid_title">
-                                Комментарий работника
-                            </div>
-                        </div>
-
-
-                        <div class="second_row_grid_description" id="description">
-                            <div></div>
-
-                            <textarea class="mid_description" id="description_editor" asp-for="EmployeeComment" placeholder="Введите описание" required></textarea>
-                        </div>
-
-
-                    </div>
+                    
 
 
                     @if (Model.Column > 4)
@@ -248,7 +262,7 @@
                         </div>
 
 
-                        <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
+                        @*<div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
 
 
                             <div class="container_description first_row_grid_description">
@@ -265,11 +279,11 @@
                             <div class="second_row_grid_description" id="description">
                                 <div></div>
 
-                                <textarea class="mid_description" id="description_editor" asp-for="SupervisorComment" placeholder="Введите описание" required onfocus="addCommentArea(this)"></textarea>
+                                <textarea class="mid_description" id="description_editor" asp-for="SupervisorComment" placeholder="Введите описание" required ></textarea>
                             </div>
 
 
-                        </div>
+                        </div>*@
                     }
                 }
                 <div class="action_buttons_wrapper">

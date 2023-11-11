@@ -73,6 +73,10 @@
     margin-bottom: 5px;
 }
 
+.margin_container_top_middle {
+    margin-top: 25px;
+}
+
 .default_bcolor{
     background-color:#787486;
 }
@@ -647,22 +651,22 @@
     scrollbar-width: thin;
 }
 
-.cards_main_wrapper .card_wrapper{
+.cards_main_wrapper .card_wrapper_content{
     margin-bottom: 20px;
     border:2px solid transparent;
 }
 
-    .cards_main_wrapper .card_wrapper:hover{
+    .cards_main_wrapper .card_wrapper_content:hover {
         /*background-color:#f00;*/
-        border:2px solid #1b74fd;
+        border: 2px solid #1b74fd;
     }
 
-    .cards_main_wrapper .card_wrapper:last-child {
+    .cards_main_wrapper .card_wrapper_content:last-child {
         margin-bottom: 0px;
     }
 
-.card_wrapper{
-    background-color:#fff;
+.card_wrapper_content {
+    background-color: #fff;
     border-radius: 16px;
     padding: 20px;
     width: 100%;
@@ -671,11 +675,21 @@
     cursor: pointer;
 }
 
-.card_header_wrapper{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.card_wrapper{
+    position:relative;
 }
+
+    .card_wrapper .close_action_btn {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
+    .card_header_wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
 .card_name_wrapper{
     padding: 5px;
@@ -868,6 +882,7 @@
 
 .second_row_grid_description{
     display: grid;
+    align-items:center;
     grid-template-columns: 40px auto;
     grid-template-rows: 1fr;
     gap:15px;
@@ -904,8 +919,47 @@
         margin-top: 20px;
     }
 
-.title_wrapper .container_description input{
-    
+.comment_popup_card_wrapper textarea {
+    background: #f5f5f5;
+    color: #0D062D;
+    border-radius: 10px;
+    box-shadow: none;
+    box-sizing: border-box;
+    border: none;
+    height: 20px;
+    margin: 0;
+    max-height: 256px;
+    min-height: 100px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding: 15px;
+    resize: none;
+    overflow-y: scroll;
+    scrollbar-color: #c1c1c1 #eee;
+    scrollbar-width: thin;
+}
+
+    .comment_popup_card_wrapper textarea::-webkit-scrollbar {
+        height: 15px;
+        width: 8px;
+        background: #eee;
+        border-radius: 8px;
+    }
+
+    .comment_popup_card_wrapper textarea::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 8px;
+    }
+
+.add_comment_btns{
+    display:none;
+}
+
+.add_comment_btns.active{
+    display:grid;
+}
+
+.title_wrapper .container_description input {
 }
 
 .title_wrapper .container_description input:focus{
