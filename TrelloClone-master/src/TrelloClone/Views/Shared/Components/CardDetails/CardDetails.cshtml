@@ -11,7 +11,7 @@
         <div class="info_popup_card_wrapper">
 
 
-            <form asp-controller="Card" asp-action="Update">
+            <form asp-controller="Card" asp-action="Update" enctype="multipart/form-data">
 
 
                 <input type="hidden" asp-for="Id" value="@Model.Id" />
@@ -79,6 +79,8 @@
 
 
                 </div>
+
+
                 <div class="upload_files_main_wrapper grid_description_2fr margin_container_bottom">
                     <div class="container_description first_row_grid_description">
                         <div class="icon_description">
@@ -88,17 +90,33 @@
                             <div class="mid_title">
                                 Вложения
                             </div>
+
+
                             <div class="upload_file_btn_wrapper">
-                                <div class="input__wrapper">
-                                    <form>
-                                        <input name="file" type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
+                              @*  <div class="input__wrapper">
+
+
+                                        <input asp-for="File" type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
                                         <label for="input__file" class="input__file-button">
-                                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
-                                            <span class="input__file-button-text">Добавить</span>
+                                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>                                          
                                         </label>
-                                    </form>
-                                    
+
+                                   
                                 </div>
+
+
+                                <button type="submit" class="input__file-button-text">Добавить</button>*@
+
+                                <dl>
+                                    <dt>
+                                        <label asp-for="File"></label>
+                                    </dt>
+                                    <dd>
+                                        <input asp-for="File" type="file">
+                                        <span asp-validation-for="File"></span>
+                                    </dd>
+                                </dl>
+                                <button type="submit" value="Upload" >Добавить</button>
                             </div>
                         </div>
                     </div>
@@ -114,6 +132,8 @@
                     </div>
 
                 </div>
+
+
                 <div class="comment_popup_card_wrapper grid_description_2fr margin_container_bottom" id="comment_popup_card_wrapper">
 
 
@@ -130,26 +150,42 @@
 
                     <div class="second_row_grid_description" id="description">
                         <div></div>
+                        
 
-                        <textarea class="mid_description" id="commentAreaElem" asp-for="EmployeeComment" placeholder="Введите комментарий" required onclick="addCommentArea(this)"></textarea>
-                        <div class="second_row_grid_description add_texteditor_buttons_wrapper add_comment_btns" id="addCommentBtns">
-                            <div></div>
-                            <div class="action_buttons_wrapper">
-                                <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
-                                    <div class="description">Сохранить</div>
-                                </div>
-                                <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
-                                    <div>
-                                        <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                       @* <form asp-action="AddComment" asp-controller="Card">*@
+
+
+                            <textarea class="mid_description" id="commentAreaElem" asp-for="Comment" placeholder="Введите комментарий" onclick="addCommentArea(this)"></textarea>
+
+
+                            <div class="second_row_grid_description add_texteditor_buttons_wrapper add_comment_btns" id="addCommentBtns">
+                                <div></div>
+                                <div class="action_buttons_wrapper">
+
+
+                                    <button type="submit" class="action_btn primary_btn" id="saveTextArea" @*onclick="saveComment(this)"*@>
+                                        <div class="description">Сохранить</div>
+                                    </button>
+
+
+                                    <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
+                                        <div>
+                                            <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                                        </div>
                                     </div>
-                                </div>
 
+
+                                </div>
                             </div>
-                        </div>
+
+
+                      @*  </form>    *@               
                     </div>
 
 
                 </div>
+
+
                 @if (Model.Column > 3)
                 {
                     <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
@@ -302,9 +338,19 @@
                     && Model.IsActive)
                     )
                     {
-                        <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
-                            <div class="description">На согласование</div>
-                        </button>
+                        @if(Model.Column == 1)
+                        {
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                                <div class="description">На согласование</div>
+                            </button>
+                        }
+
+                        else if(Model.Column == 4)
+                        {
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                                <div class="description">Выставить оценочное суждение</div>
+                            </button>
+                        }
                     }
 
 
@@ -312,9 +358,23 @@
                     && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
                     && Model.IsActive)
                     {
-                        <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
-                            <div class="description">На согласование</div>
-                        </button>
+                        if(Model.Column == 2)
+                        {
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                                <div class="description">Согласовано</div>
+                            </button>
+
+                            <button asp-controller="UserBoard" asp-action="RejectCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                                <div class="description">Отклонить</div>
+                            </button>
+                        }
+
+                        else if(Model.Column == 5)
+                        {
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                                <div class="description">Выставить оценочное суждение</div>
+                            </button>
+                        }
                     }
 
 

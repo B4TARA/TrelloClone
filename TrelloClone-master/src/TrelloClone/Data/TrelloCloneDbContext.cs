@@ -16,6 +16,8 @@ namespace TrelloClone.Data
         public DbSet<Card> Cards { get; set; }
         public DbSet<Column> Columns { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<File> Files { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,6 +38,16 @@ namespace TrelloClone.Data
             builder.Entity<Column>(builder =>
             {
                 builder.ToTable("COLUMNS", schema: "public").HasKey(x => x.Id);
+            });
+
+            builder.Entity<Comment>(builder =>
+            {
+                builder.ToTable("COMMENTS", schema: "public").HasKey(x => x.Id);
+            });
+
+            builder.Entity<File>(builder =>
+            {
+                builder.ToTable("FILES", schema: "public").HasKey(x => x.Id);
             });
         }
     }

@@ -45,7 +45,26 @@ namespace TrelloClone.Controllers.Api
                 }
             }
 
-            return NotFound(response.Description);           
+            return NotFound(response.Description);
+        }
+
+        [HttpPost("rejectcard")]
+        public async Task<IActionResult> RejectCard(int CardId)
+        {
+            var action = Request.Headers.Referer.ToString().Split("/")[4];
+
+            var response = await _userBoardService.Reject(CardId);
+
+            if (response.StatusCode == StatusCodes.OK)
+            {
+                //TempData["Message"] = "Данные обновлены";
+
+                var employeeId = Convert.ToInt32(action.Split("=")[1]);
+                action = action.Split("?")[0];
+                return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
+            }
+
+            return NotFound(response.Description);
         }
     }
 }

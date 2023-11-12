@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -32,5 +34,12 @@ namespace TrelloClone.Data.Repositories
         public void Update(T entity) => Db.Set<T>().Update(entity);
         public async Task Create(T entity) => await Db.Set<T>().AddAsync(entity);
         public void Delete(T entity) => Db.Set<T>().Remove(entity);
+        public async Task<List<T>> FindBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            var query = Db.Set<T>().AsNoTracking().Where(predicate);
+            
+            return await includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).ToListAsync();
+        }
+
     }
 }

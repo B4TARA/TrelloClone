@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MimeKit.Cryptography;
+using TrelloClone.Models;
 
 namespace TrelloClone.ViewModels
 {
@@ -30,5 +33,9 @@ namespace TrelloClone.ViewModels
         public bool IsActiveLikeSupervisor { get; set; }
         public int UserId { get; set; }
         public int ColumnId { get; set; }
+        public List<Comment> Comments = new List<Comment>();
+        public List<File> Files = new List<File>();
+        public string Comment { get; set; }
+        public IFormFile File { get; set; }
     }
 }

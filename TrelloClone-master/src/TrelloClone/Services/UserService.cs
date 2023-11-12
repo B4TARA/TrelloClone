@@ -26,13 +26,13 @@ namespace TrelloClone.Services
             _emailSender = emailSender;
         }
 
-        public async Task<IBaseResponse<object>> CheckForNotifications(List<User> users)
+        public async Task<IBaseResponse<object>> CheckForNotifications(User user)
         {
             try
             {
-                var cards = await _repository.CardRepository.GetAll(false);
+                var cards = await _repository.CardRepository.GetUserCards(false, user.Id);
 
-                DateTime FakeToday = new DateTime(2023, 3, 20);
+                DateTime FakeToday = new DateTime(2023, 6, 25);
 
                 foreach (var card in cards)
                 {
@@ -44,86 +44,40 @@ namespace TrelloClone.Services
                         || FakeToday.Month == 12)
                     {
 
-                        if (FakeToday.Day == 20 && cardColumn.Number == 1)
+                        if (FakeToday.Day == 20)
                         {
-                            card.IsActive = true;
+                            if(cardColumn.Number == 1)
+                            {
+                                card.IsActive = true;
 
-                            _repository.CardRepository.Update(card);
-                            await _repository.Save();
-                        }
+                                _repository.CardRepository.Update(card);
+                                await _repository.Save();
+                            }
+                           
+                            else if(cardColumn.Number == 6 && card.SupervisorAssessment == 8)
+                            {
+                                card.ColumnId = card.ColumnId - 5;
+                                card.IsActive = true;
 
-                        else if (FakeToday.Day == 25 && cardColumn.Number == 2)
-                        {
-                            card.IsActive = true;
-
-                            _repository.CardRepository.Update(card);
-                            await _repository.Save();
-                        }
-                    }
-
-                    else if (FakeToday.Month == 4
-                        || FakeToday.Month == 7
-                        || FakeToday.Month == 10
-                        || FakeToday.Month == 1)
-                    {
-
-                        if (FakeToday.Day == 1 && cardColumn.Number == 4)
-                        {
-                            card.ColumnId = card.ColumnId + 1;
-                            card.IsActive = true;
-
-                            _repository.CardRepository.Update(card);
-                            await _repository.Save();
-                        }
-
-                        else if (FakeToday.Day == 8 && cardColumn.Number == 5)
-                        {
-                            card.IsActive = true;
-
-                            _repository.CardRepository.Update(card);
-                            await _repository.Save();
-                        }
-                    }
-                }
-
-                foreach (var user in users)
-                {
-
-                    if (FakeToday.Month == 3
-                        || FakeToday.Month == 6
-                        || FakeToday.Month == 9
-                        || FakeToday.Month == 12)
-                    {
-
-                        if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
-                        {
-                            user.IsActiveToAddCard = true;
-                            user.IsActiveLikeEmployee = true;
-
-                            //await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
-                        }
-
-                        else if (FakeToday.Day == 24 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
-                        {
-                            //await SendNotification(user.Id, "Напоминание", "Последний день внесения задач на каждый месяц будущего квартала");
+                                _repository.CardRepository.Update(card);
+                                await _repository.Save();
+                            }
                         }
 
                         else if (FakeToday.Day == 25)
                         {
-                            user.IsActiveToAddCard = false;
-                            user.IsActiveLikeEmployee = false;
-
-                            if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
+                            if (cardColumn.Number == 2 || cardColumn.Number == 1)
                             {
-                                user.IsActiveLikeSupervisor = true;
-
-                                //await SendNotification(user.Id, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
+                                card.IsActive = true;
                             }
-                        }
 
-                        else if (DateTime.Today.Day == DateTime.DaysInMonth(FakeToday.Year, FakeToday.Month) && (user.Role == Roles.Employee || user.Role == Roles.Combined))
-                        {
-                            //await SendNotification(user.Id, "Напоминание", "Последний день согласования задач на каждый месяц будущего квартала");
+                            else
+                            {
+                                card.IsActive = false;
+                            }
+
+                            _repository.CardRepository.Update(card);
+                            await _repository.Save();
                         }
                     }
 
@@ -135,46 +89,137 @@ namespace TrelloClone.Services
 
                         if (FakeToday.Day == 1)
                         {
-                            user.IsActiveLikeSupervisor = false;
-
-                            if (user.Role == Roles.Employee || user.Role == Roles.Combined)
+                            if (cardColumn.Number == 6 && card.SupervisorAssessment != 8)
                             {
-                                user.IsActiveLikeEmployee = true;
-                                user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
-
-                                //await SendNotification(user.Id, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7");
+                                card.IsRelevant = false;
+                                card.IsActive = false;
                             }
-                        }
 
-                        if (FakeToday.Day == 7 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
-                        {
-                            //await SendNotification(user.Id, "Напоминание", "Последний день внесения оценки по задачам отченого квартала");
+                            else if (cardColumn.Number == 3)
+                            {
+                                card.ColumnId = card.ColumnId + 1;
+                                card.IsActive = true;
+                            }
+
+                            else
+                            {
+                                card.IsActive = false;
+                            }
+
+                            _repository.CardRepository.Update(card);
+                            await _repository.Save();
                         }
 
                         else if (FakeToday.Day == 8)
                         {
-                            user.IsActiveLikeEmployee = false;
-
-                            if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
+                            if (cardColumn.Number == 4)
                             {
-                                user.IsActiveLikeSupervisor = true;
-                                user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
-
-                                //await SendNotification(user.Id, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14");
+                                card.ColumnId = card.ColumnId + 1;
+                                card.IsActive = true;
                             }
-                        }
 
-                        if (FakeToday.Day == 13 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
-                        {
-                            //await SendNotification(user.Id, "Напоминание", "Последний день согласования оценок по задачам отченого квартала");
-                        }
+                            else if (cardColumn.Number == 5)
+                            {
+                                card.IsActive = true;
+                            }
 
-                        else if (FakeToday.Day == 14)
-                        {
-                            user.IsActiveLikeSupervisor = false;
+                            else
+                            {
+                                card.IsActive = false;
+                            }
+
+                            _repository.CardRepository.Update(card);
+                            await _repository.Save();
                         }
                     }
                 }
+
+                if (FakeToday.Month == 3
+                    || FakeToday.Month == 6
+                    || FakeToday.Month == 9
+                    || FakeToday.Month == 12)
+                {
+
+                    if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                    {
+                        user.IsActiveToAddCard = true;
+                        user.IsActiveLikeEmployee = true;
+
+                        //await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
+                    }
+
+                    else if (FakeToday.Day == 24 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                    {
+                        //await SendNotification(user.Id, "Напоминание", "Последний день внесения задач на каждый месяц будущего квартала");
+                    }
+
+                    else if (FakeToday.Day == 25)
+                    {
+                        //user.IsActiveLikeEmployee = false;
+
+                        if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
+                        {
+                            user.IsActiveLikeSupervisor = true;
+
+                            //await SendNotification(user.Id, "Напоминание", "Согласуйте задачи на каждый месяц будущего квартала до конца месяца");
+                        }
+                    }
+
+                    else if (DateTime.Today.Day == DateTime.DaysInMonth(FakeToday.Year, FakeToday.Month) && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                    {
+                        //await SendNotification(user.Id, "Напоминание", "Последний день согласования задач на каждый месяц будущего квартала");
+                    }
+                }
+
+                else if (FakeToday.Month == 4
+                    || FakeToday.Month == 7
+                    || FakeToday.Month == 10
+                    || FakeToday.Month == 1)
+                {
+
+                    if (FakeToday.Day == 1)
+                    {
+                        user.IsActiveToAddCard = false;
+                        user.IsActiveLikeSupervisor = false;
+
+                        if (user.Role == Roles.Employee || user.Role == Roles.Combined)
+                        {
+                            user.IsActiveLikeEmployee = true;
+                            user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
+
+                            //await SendNotification(user.Id, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7");
+                        }
+                    }
+
+                    if (FakeToday.Day == 7 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                    {
+                        //await SendNotification(user.Id, "Напоминание", "Последний день внесения оценки по задачам отченого квартала");
+                    }
+
+                    else if (FakeToday.Day == 8)
+                    {
+                        user.IsActiveLikeEmployee = false;
+
+                        if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
+                        {
+                            user.IsActiveLikeSupervisor = true;
+                            user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
+
+                            //await SendNotification(user.Id, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14");
+                        }
+                    }
+
+                    if (FakeToday.Day == 13 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                    {
+                        //await SendNotification(user.Id, "Напоминание", "Последний день согласования оценок по задачам отченого квартала");
+                    }
+
+                    else if (FakeToday.Day == 14)
+                    {
+                        user.IsActiveLikeSupervisor = false;
+                    }
+                }
+
 
                 return new BaseResponse<object>()
                 {
@@ -205,14 +250,7 @@ namespace TrelloClone.Services
                         StatusCode = StatusCodes.InternalServerError
                     };
                 }
-                IEnumerable<ExtendedUser> extendedUserInfoRecords = response.Data;
-
-                var notificationsResponse = await CheckForNotifications(users.ToList());
-                if (notificationsResponse.StatusCode != StatusCodes.OK)
-                {
-                    Console.WriteLine("Unable to check for notifications : " + notificationsResponse.Description);
-                    throw new Exception(notificationsResponse.Description);
-                }
+                IEnumerable<ExtendedUser> extendedUserInfoRecords = response.Data;           
 
                 foreach (var user in users)
                 {
@@ -248,25 +286,19 @@ namespace TrelloClone.Services
                         userTemp.Position = user.Position;
                         userTemp.SspName = user.SspName;
                         userTemp.SupervisorName = user.SupervisorName;
-
-                        userTemp.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
-                        userTemp.IsActiveLikeSupervisor = user.IsActiveLikeSupervisor;
-                        userTemp.IsActiveToAddCard = user.IsActiveToAddCard;
-
-                        foreach (var notification in user.Notifications)
-                        {
-                            if (!userTemp.Notifications.Contains(notification))
-                            {
-                                userTemp.Notifications.Add(notification);
-                            }
-                        }
-
                         userTemp.Login = user.Login;
                         userTemp.Password = user.Password;
                         userTemp.ImagePath = user.ImagePath;
 
                         _repository.UserRepository.Update(userTemp);
                         await _repository.Save();
+
+                        var notificationsResponse = await CheckForNotifications(userTemp);
+                        if (notificationsResponse.StatusCode != StatusCodes.OK)
+                        {
+                            Console.WriteLine("Unable to check for notifications for user " + userTemp.Id + " : " + notificationsResponse.Description);
+                            throw new Exception(notificationsResponse.Description);
+                        }                
                     }
 
                     else
@@ -290,6 +322,13 @@ namespace TrelloClone.Services
 
                         await _repository.UserRepository.CreateUser(user);
                         await _repository.Save();
+
+                        var notificationsResponse = await CheckForNotifications(user);
+                        if (notificationsResponse.StatusCode != StatusCodes.OK)
+                        {
+                            Console.WriteLine("Unable to check for notifications for user " + userTemp.Id + " : " + notificationsResponse.Description);
+                            throw new Exception(notificationsResponse.Description);
+                        }
                     }
                 }
 
@@ -314,7 +353,7 @@ namespace TrelloClone.Services
             try
             {
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                FileStream fStream = File.Open(path, FileMode.Open, FileAccess.Read);
+                FileStream fStream = System.IO.File.Open(path, FileMode.Open, FileAccess.Read);
                 IExcelDataReader excelDataReader = ExcelReaderFactory.CreateOpenXmlReader(fStream);
                 DataSet resultDataSet = excelDataReader.AsDataSet();
                 var table = resultDataSet.Tables[1];
@@ -417,9 +456,9 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();
                 foreach (var value in values.values)

@@ -22,7 +22,7 @@ namespace TrelloClone.Models.Enum
         Bad = 7,
         [Display(Name = "Просрочено")]
         Overdue = 8,
-        [Display(Name = "Перенос")]
+        [Display(Name = "Закрыто")]
         Closed = 9,
     }
 

@@ -33,6 +33,8 @@ namespace TrelloClone.ViewModels
             public int? SupervisorAssessment { get; set; }
             public string? SupervisorComment { get; set; }
             public double? Points { get; set; }
+            public int CountOfComments { get; set; }
+            public int CountOfFiles { get; set; }
         }
     }
 }

@@ -1,8 +1,11 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
@@ -13,15 +16,17 @@ namespace TrelloClone.Services
 {
     public class CardService
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly TrelloCloneDbContext _dbContext;
         private readonly RepositoryManager _repository;
         private readonly UserBoardService _userBoardService;
 
-        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, UserBoardService userBoardService)
+        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, UserBoardService userBoardService, IHostingEnvironment hostingEnvironment)
         {
             _dbContext = dbContext;
             _repository = repository;
             _userBoardService = userBoardService;
+            _hostingEnvironment = hostingEnvironment;
         }
        
         public void Create(AddCard viewModel)
@@ -41,25 +46,42 @@ namespace TrelloClone.Services
                     Term = viewModel.Term,
                     UserId = viewModel.Id,
                     IsActive = true,
+                    IsRelevant = true
                 });;
             }
 
             _dbContext.SaveChanges();
         }
 
-        public async Task<IBaseResponse<object>> Update(CardDetails cardDetails)
+        public async Task<IBaseResponse<object>> Update(CardDetails cardDetails, int userId)
         {
             try
             {
                 var card = await _repository.CardRepository.GetCardById(false, cardDetails.Id);
                 card.Name = cardDetails.Name;
-                card.Requirement = cardDetails.Requirement;
-                card.Term = cardDetails.Term;
+                card.Requirement = cardDetails.Requirement;              
                 card.EmployeeAssessment = cardDetails.EmployeeAssessment;
                 card.EmployeeComment = cardDetails.EmployeeComment;
                 card.SupervisorAssessment = cardDetails.SupervisorAssessment;
-                card.SupervisorComment = cardDetails.SupervisorComment;
+                card.SupervisorComment = cardDetails.SupervisorComment;  
+                
+                if(cardDetails.Comment != null)
+                {
+                    card.Comments.Add(new Comment { CardId = cardDetails.Id, UserId = userId, Content = cardDetails.Comment});
+                }
 
+                if(cardDetails.File != null)
+                {
+                    string path = "/files/" + cardDetails.File.FileName;
+                    using (var fileStream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await cardDetails.File.CopyToAsync(fileStream);
+                    }
+                    Models.File file = new Models.File { Name = cardDetails.File.FileName, Path = path, CardId = cardDetails.Id, UserId = userId };
+                    card.Files.Add(file);
+                }
+
+                //выставление баллов
                 if(card.SupervisorAssessment != 0
                     && card.SupervisorAssessment != 8
                     && card.SupervisorAssessment != 9)
@@ -67,6 +89,7 @@ namespace TrelloClone.Services
                     card.Points = MarksAndPoints.Points[cardDetails.SupervisorAssessment];
                 }
                 
+                //просрочено
                 if (card.SupervisorAssessment == 8)
                 {
                     var column = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
@@ -80,17 +103,11 @@ namespace TrelloClone.Services
                     Create(addCard);
                 }
 
-                else if (card.SupervisorAssessment == 9)
+                //перенос
+                if (card.Term != cardDetails.Term)
                 {
-                    var column = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
+                    card.Term = cardDetails.Term;
 
-                    var addCard = new AddCard();
-                    addCard.Id = column.UserId;
-                    addCard.Name = cardDetails.Name;
-                    addCard.Requirement = cardDetails.Requirement;
-                    addCard.Term = cardDetails.Term.AddMonths(1);
-
-                    Create(addCard);
                 }
 
                 _repository.CardRepository.Update(card);
@@ -119,6 +136,25 @@ namespace TrelloClone.Services
             
             _dbContext.SaveChanges();
         }
-        
+
+        public void AddComment(int userId, int cardId, string comment)
+        {
+            var card = _dbContext.Cards
+                 .Include(b => b.Comments)
+                 .SingleOrDefault(x => x.Id == cardId);
+
+            if (card != null)
+            {
+
+                card.Comments.Add(new Comment
+                {
+                    CardId = cardId,
+                    UserId = userId,
+                    Content = comment,                   
+                }); ;
+            }
+
+            _dbContext.SaveChanges();
+        }
     }
 }

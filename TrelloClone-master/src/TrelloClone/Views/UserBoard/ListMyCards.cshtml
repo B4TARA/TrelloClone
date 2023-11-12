@@ -101,11 +101,18 @@
 
                         <div class="card_wrapper">
 
-                            <button class="action_btn close_action_btn white_btn" id="deleteCard">
-                                <div>
+                       
+                            <form asp-action="Delete" asp-controller="Card"
+                                  style="float: right;">
+                                <input type="hidden"
+                                       value="@card.Id"
+                                       name="id" />
+                                <button class="action_btn close_action_btn white_btn"
+                                        type="submit">
                                     <i class="fa-solid fa-xmark" style="color: #000000;"></i>
-                                </div>
-                            </button>
+                                </button>
+                            </form>
+
                             <div class="card_wrapper_content open-popup" idcard="@card.Id">
 
 
@@ -157,7 +164,7 @@
                                             </div>
                                             <div class="item_count">
                                                 <div class="mid_description">
-                                                    4
+                                                    @card.CountOfComments
                                                 </div>
                                             </div>
                                         </div>
@@ -167,7 +174,7 @@
                                             </div>
                                             <div class="item_count">
                                                 <div class="mid_description">
-                                                    10
+                                                    @card.CountOfFiles
                                                 </div>
                                             </div>
                                         </div>

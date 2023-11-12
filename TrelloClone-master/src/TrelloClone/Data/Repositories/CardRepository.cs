@@ -26,5 +26,14 @@ namespace TrelloClone.Data.Repositories
             }
             return cardsByCondition.First();
         }
+
+        public async Task<List<Card>> GetUserCards(bool trackChanges, int userId)
+        {
+            Expression<Func<Card, bool>> expression = m => m.UserId == userId;
+
+            List<Card> cardsByCondition = await GetByCondition(expression, trackChanges);
+
+            return cardsByCondition;
+        }
     }
 }

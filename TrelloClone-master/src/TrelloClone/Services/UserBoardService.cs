@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Data;
@@ -27,15 +26,14 @@ namespace TrelloClone.Services
             var model = new UserBoardView();
 
             var user = _dbContext.Users
-                .Include(b => b.Columns)
-                .ThenInclude(c => c.Cards)
+                .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Comments)
+                .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Files)
                 .SingleOrDefault(x => x.Id == userId);
 
             model.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
             model.IsActiveToAddCard = user.IsActiveToAddCard;
             model.Id = userId;
             model.Name = user.Name;
-            model.Notifications = user.Notifications;
 
             foreach (var column in user.Columns)
             {
@@ -46,7 +44,7 @@ namespace TrelloClone.Services
                     Title = column.Title
                 };
 
-                foreach (var card in column.Cards)
+                foreach (var card in column.Cards.Where(x=>x.IsRelevant))
                 {
                     var modelCard = new UserBoardView.Card
                     {
@@ -58,7 +56,9 @@ namespace TrelloClone.Services
                         EmployeeComment = card.EmployeeComment,
                         SupervisorAssessment = card.SupervisorAssessment,
                         SupervisorComment = card.SupervisorComment,
-                        Points = card.Points
+                        Points = card.Points,
+                        CountOfComments = card.Comments.Count(),
+                        CountOfFiles = card.Files.Count(),
                     };
 
                     modelColumn.Cards.Add(modelCard);
@@ -75,18 +75,14 @@ namespace TrelloClone.Services
             var model = new UserBoardView();
 
             var employee = _dbContext.Users
-                .Include(b => b.Columns)
-                .ThenInclude(c => c.Cards)
+                .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Comments)
+                .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Files)
                 .SingleOrDefault(x => x.Id == employeeId);
 
-            var supervisor = _dbContext.Users
-                .Include(b => b.Columns)
-                .ThenInclude(c => c.Cards)
-                .SingleOrDefault(x => x.Id == supervisorId);
+            var supervisor = _dbContext.Users.SingleOrDefault(x => x.Id == supervisorId);
 
             model.IsActiveLikeSupervisor = supervisor.IsActiveLikeSupervisor;
             model.ImgPath = employee.ImagePath;
-            model.Notifications = supervisor.Notifications;
 
             model.Id = employee.Id;
             model.Name = employee.Name;
@@ -100,7 +96,7 @@ namespace TrelloClone.Services
                     Id = column.Id
                 };
 
-                foreach (var card in column.Cards)
+                foreach (var card in column.Cards.Where(x => x.IsRelevant))
                 {
                     var modelCard = new UserBoardView.Card
                     {
@@ -112,7 +108,9 @@ namespace TrelloClone.Services
                         EmployeeComment = card.EmployeeComment,
                         SupervisorAssessment = card.SupervisorAssessment,
                         SupervisorComment = card.SupervisorComment,
-                        Points = card.Points
+                        Points = card.Points,
+                        CountOfComments = card.Comments.Count(),
+                        CountOfFiles = card.Files.Count(),
                     };
 
                     modelColumn.Cards.Add(modelCard);
@@ -152,10 +150,17 @@ namespace TrelloClone.Services
         {
             try
             {
-                var card = await _repository.CardRepository.GetCardById(false, command.CardId);
+                DateTime FakeToday = new DateTime(2023, 4, 1);
 
-                card.ColumnId = command.ColumnId + 1;
-                card.IsActive = false;
+                var card = await _repository.CardRepository.GetCardById(false, command.CardId);
+                var cardColumn = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
+
+                if(cardColumn.Number != 1 || FakeToday.Day < 25)
+                {
+                    card.IsActive = false;
+                }
+
+                card.ColumnId = command.ColumnId + 1;             
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
@@ -171,6 +176,33 @@ namespace TrelloClone.Services
                 return new BaseResponse<object>()
                 {
                     Description = $"[Move] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError
+                };
+            }
+        }
+
+        public async Task<IBaseResponse<object>> Reject(int CardId)
+        {
+            try
+            {              
+                var card = await _repository.CardRepository.GetCardById(false, CardId);
+
+                card.IsRelevant = false;
+
+                _repository.CardRepository.Update(card);
+                await _repository.Save();
+
+                return new BaseResponse<object>()
+                {
+                    StatusCode = StatusCodes.OK,
+                };
+            }
+
+            catch (Exception ex)
+            {
+                return new BaseResponse<object>()
+                {
+                    Description = $"[Reject] : {ex.Message}",
                     StatusCode = StatusCodes.InternalServerError
                 };
             }

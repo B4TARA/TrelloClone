@@ -22,9 +22,11 @@ namespace TrelloClone.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CardDetails card)
         {
+            var userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
-            var response = await _cardService.Update(card);
+            var response = await _cardService.Update(card, userId);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -59,5 +61,15 @@ namespace TrelloClone.Controllers
 
             return RedirectToAction("ListMyCards", "UserBoard");
         }
+
+        [HttpPost]
+        public IActionResult Delete(UserBoardView userBoardView)
+        {
+            _cardService.Delete(userBoardView.Id);
+
+            return RedirectToAction("ListMyCards", "UserBoard");
+        }
+
+        
     }
 }

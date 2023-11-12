@@ -9,6 +9,7 @@ namespace TrelloClone.Data.Repositories
         private CardRepository? _cardRepository;
         private ColumnRepository? _columnRepository;
         private UserRepository? _userRepository;
+        private CommentRepository? _commentRepository;
 
         public RepositoryManager(TrelloCloneDbContext db)
         {
@@ -46,7 +47,18 @@ namespace TrelloClone.Data.Repositories
 
                 return _userRepository;
             }
-        }   
+        }
+
+        public CommentRepository CommentRepository
+        {
+            get
+            {
+                if (_commentRepository == null)
+                    _commentRepository = new CommentRepository(_db);
+
+                return _commentRepository;
+            }
+        }
 
         public async Task Save() => await _db.SaveChangesAsync();
 

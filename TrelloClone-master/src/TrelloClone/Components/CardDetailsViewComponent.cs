@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Data.Repositories;
 using TrelloClone.ViewModels;
@@ -15,7 +16,12 @@ namespace TrelloClone.Components
         public async Task<IViewComponentResult> InvokeAsync(int cardId, int userId)
         {
             var user = await _repository.UserRepository.GetUserById(false, userId);
-            var card = await _repository.CardRepository.GetCardById(false, cardId);
+
+            ////
+            var cards = await _repository.CardRepository.FindBy(x => x.Id == cardId, x => x.Comments);
+            var card = cards.FirstOrDefault();
+            ////
+            
             var column = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
 
             var model = new CardDetails
@@ -34,6 +40,7 @@ namespace TrelloClone.Components
                 IsActiveLikeEmployee = user.IsActiveLikeEmployee,
                 IsActiveLikeSupervisor = user.IsActiveLikeSupervisor,
                 UserId = card.UserId,
+                Comments = card.Comments,
             };
 
             return View("CardDetails", model);
