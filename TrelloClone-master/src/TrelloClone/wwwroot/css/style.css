@@ -675,9 +675,21 @@
     cursor: pointer;
 }
 
-.card_wrapper{
-    position:relative;
-}
+    .card_wrapper_content.expired{
+        border:2px solid #f00;
+    }
+
+        .card_wrapper_content.expired .card_name_wrapper{
+            background-color:#f00;
+        }
+
+        .card_wrapper_content.expired .card_name_wrapper .mid_description{
+            color: #fff;
+        }
+
+        .card_wrapper {
+            position: relative;
+        }
 
     .card_wrapper .close_action_btn {
         position: absolute;
