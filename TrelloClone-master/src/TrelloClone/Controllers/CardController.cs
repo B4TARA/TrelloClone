@@ -24,9 +24,11 @@ namespace TrelloClone.Controllers
         {
             var userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
 
+            var userImg = Convert.ToString(User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value);
+
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
-            var response = await _cardService.Update(card, userId);
+            var response = await _cardService.Update(card, userId, userImg);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -39,7 +41,7 @@ namespace TrelloClone.Controllers
 
                 else
                 {
-                    await _userService.SendNotification(card.UserId, "Уведомление", "Ваша карточка " + card.Name + " была изменена");
+                    //await _userService.SendNotification(card.UserId, "Уведомление", "Ваша карточка " + card.Name + " была изменена");
                     var employeeId = Convert.ToInt32(action.Split("=")[1]);
                     action = action.Split("?")[0];
                     return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
@@ -70,6 +72,27 @@ namespace TrelloClone.Controllers
             return RedirectToAction("ListMyCards", "UserBoard");
         }
 
-        
+
+        [HttpPost]
+        public IActionResult DeleteFile(int id)
+        {
+            _cardService.DeleteFile(id);
+
+            var action = Request.Headers.Referer.ToString().Split("/")[4];
+
+            if (action == "ListMyCards")
+            {
+                return RedirectToAction(action, "UserBoard");
+            }
+
+            else
+            {
+                //await _userService.SendNotification(card.UserId, "Уведомление", "Ваша карточка " + card.Name + " была изменена");
+                var employeeId = Convert.ToInt32(action.Split("=")[1]);
+                action = action.Split("?")[0];
+                return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
+            }
+        }
+
     }
 }

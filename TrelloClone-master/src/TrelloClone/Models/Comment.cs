@@ -6,5 +6,6 @@
         public int CardId { get; set; }
         public int UserId { get; set; }
         public string Content { get; set; }
+        public string UserImg { get; set; }
     }
 }

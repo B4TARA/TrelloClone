@@ -10,12 +10,18 @@
     <div class="title">
         @Model.Name
     </div>
-
+    <div class="header_btns_wrapper">
+        <button class="action_btn header_btn " id="saveTextArea">
+            <div class="description">Архив</div>
+        </button>
+    </div>
 </div>
 
 
 <section class="main_container_content" id="main_container_content">
-    <div class="stages_main_wrapper">
+    
+    
+    <div class="stages_main_wrapper ">
 
 
         @foreach (var column in Model.Columns)
@@ -98,93 +104,182 @@
                 <div class="cards_main_wrapper margin_container_bottom_middle">
                     @foreach (var card in column.Cards)
                     {
-
-                        <div class="card_wrapper">
-
-                       
-                            <form asp-action="Delete" asp-controller="Card"
-                                  style="float: right;">
-                                <input type="hidden"
-                                       value="@card.Id"
-                                       name="id" />
-                                <button class="action_btn close_action_btn white_btn"
-                                        type="submit">
-                                    <i class="fa-solid fa-xmark" style="color: #000000;"></i>
-                                </button>
-                            </form>
-
-                            <div class="card_wrapper_content open-popup" idcard="@card.Id">
+                        if (card.SupervisorAssessment == 8)
+                        {
+                            <div class="card_wrapper">
 
 
-                                <div class="card_header_wrapper margin_container_bottom_extrasmall">
-                                    <div class="card_name_wrapper">
-                                        <div class="mid_description">
-                                            @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
+                                <form asp-action="Delete" asp-controller="Card"
+                                style="float: right;">
+                                    <input type="hidden"
+                                    value="@card.Id"
+                                    name="id" />
+                                    <button class="action_btn close_action_btn white_btn"
+                                    type="submit">
+                                        <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                                    </button>
+                                </form>
+
+                                <div class="card_wrapper_content expired open-popup" idcard="@card.Id">
+
+
+                                    <div class="card_header_wrapper margin_container_bottom_extrasmall">
+                                        <div class="card_name_wrapper">
+                                            <div class="mid_description">
+                                                @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
 
-                                <div class="mid_title margin_container_bottom_extrasmall">
-                                    @card.Name
-                                </div>
+                                    <div class="mid_title margin_container_bottom_extrasmall">
+                                        @card.Name
+                                    </div>
 
 
-                                <div class="mid_description margin_container_bottom_small">
-                                    @card.Requirement
-                                </div>
+                                    <div class="mid_description margin_container_bottom_small">
+                                        @card.Requirement
+                                    </div>
 
 
-                                <div class="card_footer_wrapper">
+                                    <div class="card_footer_wrapper">
 
 
-                                    @if (User.Claims.FirstOrDefault(c => c.Type == "ImagePath") != null)
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-                                                <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value" alt="profileImg">
-                                            </div>
-                                        </div>
-                                    }
-
-                                    else
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-                                                <img src="/image/default_profile_icon.svg" alt="profileImg">
-                                            </div>
-                                        </div>
-                                    }
-
-
-                                    <div class="card_details_info_wrapper">
-                                        <div class="card_detail_item">
-                                            <div class="item_icon">
-                                                <i class="fa-regular fa-message" style="color: #787486;"></i>
-                                            </div>
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                    @card.CountOfComments
+                                        @if (User.Claims.FirstOrDefault(c => c.Type == "ImagePath") != null)
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
+                                                    <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value" alt="profileImg">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card_detail_item">
-                                            <div class="item_icon">
-                                                <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
-                                            </div>
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                    @card.CountOfFiles
+                                        }
+
+                                        else
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
+                                                    <img src="/image/default_profile_icon.svg" alt="profileImg">
                                                 </div>
                                             </div>
+                                        }
+
+
+                                        <div class="card_details_info_wrapper">
+                                            <div class="card_detail_item">
+                                                <div class="item_icon">
+                                                    <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                                </div>
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfComments
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card_detail_item">
+                                                <div class="item_icon">
+                                                    <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                                </div>
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfFiles
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
-                        
+                        }
+                        else
+                        {
+                            <div class="card_wrapper">
+
+
+                                <form asp-action="Delete" asp-controller="Card"
+                                      style="float: right;">
+                                    <input type="hidden"
+                                           value="@card.Id"
+                                           name="id" />
+                                    <button class="action_btn close_action_btn white_btn"
+                                            type="submit">
+                                        <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                                    </button>
+                                </form>
+
+                                <div class="card_wrapper_content open-popup" idcard="@card.Id">
+
+
+                                    <div class="card_header_wrapper margin_container_bottom_extrasmall">
+                                        <div class="card_name_wrapper">
+                                            <div class="mid_description">
+                                                @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mid_title margin_container_bottom_extrasmall">
+                                        @card.Name
+                                    </div>
+
+
+                                    <div class="mid_description margin_container_bottom_small">
+                                        @card.Requirement
+                                    </div>
+
+
+                                    <div class="card_footer_wrapper">
+
+
+                                        @if (User.Claims.FirstOrDefault(c => c.Type == "ImagePath") != null)
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
+                                                    <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value" alt="profileImg">
+                                                </div>
+                                            </div>
+                                        }
+
+                                        else
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
+                                                    <img src="/image/default_profile_icon.svg" alt="profileImg">
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                        <div class="card_details_info_wrapper">
+                                            <div class="card_detail_item">
+                                                <div class="item_icon">
+                                                    <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                                </div>
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfComments
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card_detail_item">
+                                                <div class="item_icon">
+                                                    <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                                </div>
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfFiles
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
 

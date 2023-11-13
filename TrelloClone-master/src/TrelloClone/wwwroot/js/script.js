@@ -1,7 +1,7 @@
+﻿
+//SIDEBAR CODE
 
-    //SIDEBAR CODE
-
-    const arrowShowMenu = document.querySelectorAll(".arrow"),
+const arrowShowMenu = document.querySelectorAll(".arrow"),
     sidebar = document.querySelector(".sidebar"),
     sidebarBtn = document.querySelector(".bx-menu");
 
@@ -22,28 +22,26 @@ var searchBoxItem = document.getElementById("selectBox");
 
 
 function selectedContainerOpen(elem) {
-    let optionsContainer = document.getElementById("options-container");
-
+    let optionsContainer = elem.previousElementSibling;
     optionsContainer.classList.toggle("active");
     elem.classList.toggle("active_border");
 }
 
 function optionClick(elem) {
-    const resultAssessmentWrapper = document.getElementById('valueAsessessment');
-    const descriptionAssessmentValElem = document.getElementById('descriptionAssessmentVal');
+    console.log(elem)
+    const resultAssessmentWrapper = elem.parentElement.nextElementSibling.querySelector('.input_assessment_value');
+    const descriptionAssessmentValElem = elem.parentElement.nextElementSibling.querySelector('.value_asessessment');
 
-    const optionsContainer = document.getElementById("options-container");
+    //Открытие закрытие дива с селектом
+    const optionsContainer = elem.parentElement;
     optionsContainer.nextElementSibling.classList.toggle("active_border");
     optionsContainer.classList.toggle("active");
 
+    
     const resultAssessmentText = elem.querySelector("label").innerText
     descriptionAssessmentValElem.innerHTML = resultAssessmentText;
 
     const resultAssessmentVal = elem.querySelector("label").getAttribute('itemval')
     console.log(resultAssessmentVal)
     resultAssessmentWrapper.value = resultAssessmentVal;
-}
-
-function deleteCard(elem) {
-    console.log(elem)
 }

@@ -73,6 +73,10 @@
     margin-bottom: 5px;
 }
 
+.margin_container_top {
+    margin-top: 30px;
+}
+
 .margin_container_top_middle {
     margin-top: 25px;
 }
@@ -132,7 +136,21 @@
     /* color: #fff; */
 }
 
-.white_btn{
+
+
+    .action_btn.header_btn:hover {
+        background-color: #1b74fd30;
+        color: #1b74fd;
+    }
+
+.header_btn {
+    width: 200px;
+    background-color: transparent;
+    border:2px solid #1b74fd;
+    color: #1b74fd;
+}
+
+.white_btn {
     background-color: #fff;
     color: #787486;
 }
@@ -475,6 +493,11 @@
         font-weight: 600;
     }
 
+.home-content .title{
+    text-wrap:nowrap;
+    margin-right:40px;
+}
+
 .home_content_info {
     display: flex;
     align-items: center;
@@ -529,17 +552,23 @@
     border-radius: 8px;
 }
 
+/*HEADER BTNS*/
 
-
-
-
-/*STAGES*/
-.stages_main_wrapper{
+.header_btns_wrapper {
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    width: fit-content;
-    /* overflow-x: scroll; */
+    justify-content: flex-end;
 }
+    .header_btns_wrapper .header_btn{
+
+    }
+    /*STAGES*/
+    .stages_main_wrapper {
+        display: flex;
+        flex-direction: row;
+        width: fit-content;
+        /* overflow-x: scroll; */
+    }
 
 .stages_main_wrapper .stage_wrapper{
     margin-right: 30px;
@@ -651,17 +680,18 @@
     scrollbar-width: thin;
 }
 
-.cards_main_wrapper .card_wrapper_content{
+.cards_main_wrapper .card_wrapper{
     margin-bottom: 20px;
     border:2px solid transparent;
 }
 
-    .cards_main_wrapper .card_wrapper_content:hover {
+    .cards_main_wrapper .card_wrapper:hover {
         /*background-color:#f00;*/
         border: 2px solid #1b74fd;
+        border-radius: 16px;
     }
 
-    .cards_main_wrapper .card_wrapper_content:last-child {
+    .cards_main_wrapper .card_wrapper:last-child {
         margin-bottom: 0px;
     }
 
@@ -999,6 +1029,7 @@
 
 .card_name_input_wrapper.card_detail_active input {
     background-color: transparent;
+    width:100%;
 }
 
     .card_name_input_wrapper.card_detail_active input:focus {
@@ -1350,6 +1381,11 @@ section .details span {
     max-height: 232px;
     overflow-y: scroll;
 }
+
+    .uploaded-area a{
+        text-decoration:none;
+        color:#0D062D;
+    }
 
     .uploaded-area.onprogress {
         max-height: 150px;

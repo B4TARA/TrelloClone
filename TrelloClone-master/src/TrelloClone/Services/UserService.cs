@@ -32,7 +32,7 @@ namespace TrelloClone.Services
             {
                 var cards = await _repository.CardRepository.GetUserCards(false, user.Id);
 
-                DateTime FakeToday = new DateTime(2023, 6, 25);
+                DateTime FakeToday = new DateTime(2023, 4, 8);
 
                 foreach (var card in cards)
                 {
@@ -203,7 +203,6 @@ namespace TrelloClone.Services
                         if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
                         {
                             user.IsActiveLikeSupervisor = true;
-                            user.Notifications.Add("Согласуйте оценки по задачам отчетного квартала до 14");
 
                             //await SendNotification(user.Id, "Напоминание", "Согласуйте оценки по задачам отчетного квартала до 14");
                         }
@@ -306,7 +305,7 @@ namespace TrelloClone.Services
                         if (user.Role == Roles.Employee || user.Role == Roles.Combined)
                         {
                             var firstColumn = new Column { Title = "Составление SMART-задач работником", Number = 1 };
-                            var secondColumn = new Column { Title = "Согласование SMART-задач работником", Number = 2 };
+                            var secondColumn = new Column { Title = "Согласование SMART-задач руководителем", Number = 2 };
                             var thirdColumn = new Column { Title = "SMART-задачи к исполнению", Number = 3 };
                             var fourthColumn = new Column { Title = "Самооценка работника", Number = 4 };
                             var fifthColumn = new Column { Title = "Оценка непосредственного руководителя", Number = 5 };
@@ -456,8 +455,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();

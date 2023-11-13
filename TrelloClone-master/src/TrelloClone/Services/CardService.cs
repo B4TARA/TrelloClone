@@ -53,7 +53,7 @@ namespace TrelloClone.Services
             _dbContext.SaveChanges();
         }
 
-        public async Task<IBaseResponse<object>> Update(CardDetails cardDetails, int userId)
+        public async Task<IBaseResponse<object>> Update(CardDetails cardDetails, int userId, string userImg)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace TrelloClone.Services
                 
                 if(cardDetails.Comment != null)
                 {
-                    card.Comments.Add(new Comment { CardId = cardDetails.Id, UserId = userId, Content = cardDetails.Comment});
+                    card.Comments.Add(new Comment { CardId = cardDetails.Id, UserId = userId, Content = cardDetails.Comment, UserImg = userImg});
                 }
 
                 if(cardDetails.File != null)
@@ -134,6 +134,14 @@ namespace TrelloClone.Services
             var card = _dbContext.Cards.SingleOrDefault(x => x.Id == id);
             _dbContext.Remove(card ?? throw new Exception($"Could not remove {(Card) null}"));
             
+            _dbContext.SaveChanges();
+        }
+
+        public void DeleteFile(int id)
+        {
+            var file = _dbContext.Files.SingleOrDefault(x => x.Id == id);
+            _dbContext.Remove(file ?? throw new Exception($"Could not remove {(Card)null}"));
+
             _dbContext.SaveChanges();
         }
 

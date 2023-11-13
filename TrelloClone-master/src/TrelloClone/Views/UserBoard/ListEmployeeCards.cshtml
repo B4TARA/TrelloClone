@@ -96,11 +96,11 @@
                 <div class="cards_main_wrapper margin_container_bottom_middle">
                     @foreach (var card in column.Cards)
                     {
-                        if(card.SupervisorAssessment != 8)
+                        if(card.SupervisorAssessment == 8)
                         {
-                            <div class="card_wrapper open-popup expired" idcard="@card.Id">
+                            <div class="card_wrapper " idcard="@card.Id">
 
-
+                                <div class="card_wrapper_content expired open-popup" idcard="@card.Id">
                                 <div class="card_header_wrapper margin_container_bottom_extrasmall">
                                     <div class="card_name_wrapper">
                                         <div class="mid_description">
@@ -167,15 +167,16 @@
                                     </div>
 
                                 </div>
+                                </div>
                             </div>
                         }
 
 
                         else
                         {
-                            <div class="card_wrapper open-popup" idcard="@card.Id">
+                            <div class="card_wrapper" idcard="@card.Id">
 
-
+                                <div class="card_wrapper_content open-popup" idcard="@card.Id">
                                 <div class="card_header_wrapper margin_container_bottom_extrasmall">
                                     <div class="card_name_wrapper">
                                         <div class="mid_description">
@@ -224,7 +225,7 @@
                                             </div>
                                             <div class="item_count">
                                                 <div class="mid_description">
-                                                    4
+                                                        @card.CountOfComments
                                                 </div>
                                             </div>
                                         </div>
@@ -234,13 +235,14 @@
                                             </div>
                                             <div class="item_count">
                                                 <div class="mid_description">
-                                                    10
+                                                        @card.CountOfFiles
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
 
+                                </div>
                                 </div>
                             </div>
                         }

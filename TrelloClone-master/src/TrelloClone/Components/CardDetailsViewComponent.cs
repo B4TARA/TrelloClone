@@ -18,7 +18,7 @@ namespace TrelloClone.Components
             var user = await _repository.UserRepository.GetUserById(false, userId);
 
             ////
-            var cards = await _repository.CardRepository.FindBy(x => x.Id == cardId, x => x.Comments);
+            var cards = await _repository.CardRepository.FindBy(x => x.Id == cardId, x => x.Comments, x => x.Files);
             var card = cards.FirstOrDefault();
             ////
             
@@ -41,6 +41,7 @@ namespace TrelloClone.Components
                 IsActiveLikeSupervisor = user.IsActiveLikeSupervisor,
                 UserId = card.UserId,
                 Comments = card.Comments,
+                Files = card.Files,
             };
 
             return View("CardDetails", model);
