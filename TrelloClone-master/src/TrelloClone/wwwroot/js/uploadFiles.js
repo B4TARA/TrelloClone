@@ -34,13 +34,19 @@ function setFileData(target) {
     progressArea.innerHTML = "";
     let uploadedHTML = `<li class="row">
                             <div class="content upload">
-                              ${fileImg}
+                              
+                              <div class="content_upload_type_icon">
+                                                    ${fileImg}
+                                                </div>
                               <div class="details">
                                 <span class="name">${file.name} • Добавлено</span>
                                 <span class="size">${file.size}</span>
                               </div>
                             </div>
-                            <i class="fa-solid fa-xmark delete_upload_file" onclick="deleteUploadFile(this)"></i>
+                            <div class="content_upload_delete_icon">
+                                                <i class="fa-solid fa-xmark delete_upload_file" onclick="deleteUploadFile(this)"></i>
+                                            </div>
+                            
                           </li>`;
 
     uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);

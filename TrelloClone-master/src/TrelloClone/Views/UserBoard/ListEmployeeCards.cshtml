@@ -5,13 +5,41 @@
 
 
     <div class="home_content_info">
-        <i class='bx bx-menu'></i>
+        @*<i class='bx bx-menu'></i>*@
+        <div class="home_content_info_icon">
+            <i class="fa-solid fa-folder"></i>
+        </div>
+        <div class="mid_title">
+            @Model.Name
+        </div>
+
     </div>
 
 
 </div>
 
+<div class="header_btns_wrapper">
+    <button class="action_btn header_btn">
+        <div class="action_btn_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M2 2h20v2H2z"></path><rect x="5" y="6" width="6" height="16" rx="1"></rect><rect x="13" y="6" width="6" height="12" rx="1"></rect></svg>
+        </div>
 
+        <div class="description">Доска</div>
+    </button>
+    <button class="action_btn header_btn">
+        <div class="action_btn_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M2 2h2v20H2z"></path><rect x="6" y="13" width="16" height="6" rx="1"></rect><rect x="6" y="5" width="12" height="6" rx="1"></rect></svg>
+        </div>
+
+        <div class="description">Таблица</div>
+    </button>
+    <button class="action_btn header_btn">
+        <div class="action_btn_icon">
+            <i class="fa-solid fa-box-archive"></i>
+        </div>
+        <div class="description">Архив</div>
+    </button>
+</div>
 <section class="main_container_content" id="main_container_content">
     <div class="stages_main_wrapper">
 
@@ -98,10 +126,10 @@
                     {
                         if(card.SupervisorAssessment == 8)
                         {
-                            <div class="card_wrapper " idcard="@card.Id">
+                            <div class="card_wrapper expired" idcard="@card.Id">
 
-                                <div class="card_wrapper_content expired open-popup" idcard="@card.Id">
-                                <div class="card_header_wrapper margin_container_bottom_extrasmall">
+                                <div class="card_wrapper_content open-popup" idcard="@card.Id">
+                                <div class="card_header_wrapper margin_container_bottom_small">
                                     <div class="card_name_wrapper">
                                         <div class="mid_description">
                                             @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
@@ -174,10 +202,10 @@
 
                         else
                         {
-                            <div class="card_wrapper" idcard="@card.Id">
+                            <div class="card_wrapper primary" idcard="@card.Id">
 
                                 <div class="card_wrapper_content open-popup" idcard="@card.Id">
-                                <div class="card_header_wrapper margin_container_bottom_extrasmall">
+                                <div class="card_header_wrapper margin_container_bottom_small">
                                     <div class="card_name_wrapper">
                                         <div class="mid_description">
                                             @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")

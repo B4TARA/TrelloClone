@@ -31,6 +31,28 @@
                     </div>
                 </div>
 
+                <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
+
+
+                    <div class="container_description first_row_grid_description">
+                        <div class="icon_description">
+                            <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
+                        </div>
+
+                        <div class="mid_title">
+                            Требование к SMART-задаче
+                        </div>
+                    </div>
+
+
+                    <div class="second_row_grid_description" id="description">
+                        <div></div>
+
+                        <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание"></textarea>
+                    </div>
+
+
+                </div>
 
                 <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
 
@@ -55,31 +77,6 @@
 
 
                 </div>
-
-
-                <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
-
-
-                    <div class="container_description first_row_grid_description">
-                        <div class="icon_description">
-                            <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
-                        </div>
-
-                        <div class="mid_title">
-                            Требование к SMART-задаче
-                        </div>
-                    </div>
-
-
-                    <div class="second_row_grid_description" id="description">
-                        <div></div>
-
-                        <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание"></textarea>
-                    </div>
-
-
-                </div>
-
 
                 <div class="upload_files_main_wrapper grid_description_2fr margin_container_bottom">
                     <div class="container_description first_row_grid_description">
@@ -145,14 +142,20 @@
                                     <a href="@file.Path">
                                         <li class="row">
                                             <div class="content upload">
-                                                <i class="fa-solid fa-file-lines"></i>
+                                                <div class="content_upload_type_icon">
+                                                    <i class="fa-solid fa-file-lines"></i>
+                                                </div>
+                                                
                                                 <div class="details">
                                                     <span class="name">@file.Name • Добавлено</span>
                                                     <span class="size">2000</span>
                                                 </div>
                                             </div>
                                             @*<a asp-controller="CardController" asp-action="DeleteFile" asp-route-id="@file.Id">*@
+                                            <div class="content_upload_delete_icon">
                                                 <i class="fa-solid fa-xmark delete_upload_file"></i>
+                                            </div>
+                                                
                                             @*</a>*@
                                             
                                         </li>
@@ -189,14 +192,14 @@
                             <textarea class="mid_description" id="commentAreaElem" asp-for="Comment" placeholder="Введите комментарий" onclick="addCommentArea(this)"></textarea>
 
 
-                            @*<div class="second_row_grid_description add_texteditor_buttons_wrapper add_comment_btns" id="addCommentBtns">
+                            <div class="second_row_grid_description add_texteditor_buttons_wrapper add_comment_btns" id="addCommentBtns">
                                 <div></div>
                                 <div class="action_buttons_wrapper">
 
 
-                                    <button type="submit" class="action_btn primary_btn" id="saveTextArea" >
+                                <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
                                         <div class="description">Сохранить</div>
-                                    </button>
+                                    </div>
 
 
                                     <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
@@ -207,7 +210,7 @@
 
 
                                 </div>
-                            </div>*@
+                            </div>
 
 
                       @*  </form>    *@               
@@ -216,7 +219,7 @@
 
                     @foreach(var comment in Model.Comments)
                     {
-                        <div class="comment_user_wrapper second_row_grid_description margin_container_top">
+                        @*<div class="comment_user_wrapper second_row_grid_description margin_container_top">
                             <div class="card_holders_wrapper">
                                 <div class="holder_image_wrapper">
                                     <img src="@comment.UserImg" alt="holder_image">
@@ -225,6 +228,29 @@
                             <div class="commentarea_wrapper" id="commentarea_wrapper">
                                 <div class="comment_area">
                                     <div class="mid_title">@comment.Content</div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                        <div class="comment_user_wrapper">
+                            <div class="first_row_grid_description margin_container_top_middle">
+                                <div class="card_holders_wrapper">
+                                    <div class="holder_image_wrapper">
+                                        <img src="@comment.UserImg" alt="holder_image">
+                                    </div>
+                                </div>
+                                <div class="mid_title">
+                                    Фамилия Имя
+                                </div>
+                            </div>
+
+
+                            <div class="second_row_grid_description" id="description">
+                                <div></div>
+                                <div class="commentarea_wrapper" id="commentarea_wrapper">
+                                    <div class="comment_area">
+                                        <div class="mid_description">@comment.Content</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -252,10 +278,6 @@
 
                         <div class="second_row_grid_description" id="description">
                             <div></div>
-                            @*<div class="select_assessment_wrapper">
-                        <select asp-for="EmployeeAssessment" asp-items="Html.GetEnumSelectList<TrelloClone.Models.Enum.Marks>()">
-                        </select>
-                        </div>*@
 
                             <div class="select-box" id="selectBox">
 
@@ -264,8 +286,8 @@
                                     @foreach (var item in Html.GetEnumSelectList<TrelloClone.Models.Enum.Marks>())
                                     {
                                         <div class="option" onclick="optionClick(this)">
-                                            <input type="radio" value="" class="radio" id="film" name="category" disabled />
-                                            <label for="film" class="select_user_assessment" itemval="@item.Value">@item.Text</label>
+                                            <div class="select_user_assessment description" itemval="@item.Value">@item.Text</div>
+                                            <div class="mid_description">Описание</div>
                                         </div>
                                     }
 
@@ -274,7 +296,9 @@
 
                                 <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
                                     <i class="fa-solid fa-chevron-down"></i>
-                                    <div class="description value_asessessment" id="descriptionAssessmentVal"></div>
+                                    <div class="description value_asessessment" id="descriptionAssessmentVal">
+                                        <span class="placeholder_input">Введите оценочное суждение</span>
+                                    </div>
                                     <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden textresult="@(((TrelloClone.Models.Enum.Marks)Model.EmployeeAssessment))" required>
                                 </div>
 
@@ -331,7 +355,8 @@
                                     <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
                                         <i class="fa-solid fa-chevron-down"></i>
                                         <div class="description value_asessessment" id="descriptionAssessmentVal"></div>
-                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden textresult="" required>
+                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden textresult="@typeof(TrelloClone.Models.Enum.Marks).GetMember(Model.SupervisorAssessment.ToString()).FirstOrDefault().GetCustomAttributes(false)<Display>
+                                    .GetName();" required>
                                     </div>
                                     
 
@@ -348,7 +373,7 @@
                     @if (Model.Column != 6)
                     {
                         <button type="submit" class="action_btn primary_btn">
-                            <div class="description">Сохранить</div>
+                            <div class="description">Сохранить изменения</div>
                         </button>
                     }
 
@@ -385,7 +410,7 @@
                             </button>
 
                             <button asp-controller="UserBoard" asp-action="RejectCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
-                                <div class="description">Отклонить</div>
+                                <div class="description">В доработку</div>
                             </button>
                         }
 

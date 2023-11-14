@@ -47,7 +47,7 @@ namespace TrelloClone.Services
                     UserId = viewModel.Id,
                     IsActive = true,
                     IsRelevant = true
-                });;
+                });
             }
 
             _dbContext.SaveChanges();

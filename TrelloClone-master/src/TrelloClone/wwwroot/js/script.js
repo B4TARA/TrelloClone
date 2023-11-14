@@ -3,7 +3,7 @@
 
 const arrowShowMenu = document.querySelectorAll(".arrow"),
     sidebar = document.querySelector(".sidebar"),
-    sidebarBtn = document.querySelector(".bx-menu");
+    sidebarBtn = document.querySelector(".sidebar_close_btn_wrapper");
 
 
 arrowShowMenu.forEach(item => {
@@ -38,10 +38,10 @@ function optionClick(elem) {
     optionsContainer.classList.toggle("active");
 
     
-    const resultAssessmentText = elem.querySelector("label").innerText
+    const resultAssessmentText = elem.querySelector(".select_user_assessment").innerText
+    console.log(resultAssessmentText)
     descriptionAssessmentValElem.innerHTML = resultAssessmentText;
 
-    const resultAssessmentVal = elem.querySelector("label").getAttribute('itemval')
-    console.log(resultAssessmentVal)
+    const resultAssessmentVal = elem.querySelector(".select_user_assessment").getAttribute('itemval')
     resultAssessmentWrapper.value = resultAssessmentVal;
 }
