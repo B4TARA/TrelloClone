@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TrelloClone.Models.Enum;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
+using StatusCodes = TrelloClone.Models.Enum.StatusCodes;
 
 namespace TrelloClone.Controllers
 {
@@ -72,7 +73,6 @@ namespace TrelloClone.Controllers
             return RedirectToAction("ListMyCards", "UserBoard");
         }
 
-
         [HttpPost]
         public IActionResult DeleteFile(int id)
         {
@@ -94,5 +94,22 @@ namespace TrelloClone.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadFile()
+        {
+            var userId = Convert.ToInt32(User.FindFirst("Id").Value);
+
+            IFormFile fileToUpload = Request.Form.Files[0];
+            int cardId = Convert.ToInt32(Request.Form["cardId"]);
+
+            var response = await _cardService.UploadFile(fileToUpload, userId, cardId);
+
+            if (response.StatusCode == Models.Enum.StatusCodes.OK)
+            {
+                return Ok("Файл успешно добавлен!");
+            }
+
+            return NotFound(response.Description);
+        }
     }
 }

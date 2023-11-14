@@ -13,46 +13,53 @@
 
             <form asp-controller="Card" asp-action="Create">
 
-                
-                
-
+                               
                 <div class="title_popup_wrapper grid_description_2fr" id="title_popup_wrapper">
-
-
                     <div class="container_description first_row_grid_description">
+
+
                         <div class="icon_description">
                             <i class="fa-regular fa-credit-card"></i>
                         </div>
+
+
                         <div class="card_name_input_wrapper">
-                            <input type="text" asp-for="Name" placeholder="Введите название наименование SMART-задачи" required />
+                            <input type="text" asp-for="Name" placeholder="Введите название наименование SMART-задачи"/>
                         </div>
                         
+
                     </div>
                 </div>
+
 
                 <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
 
 
                     <div class="container_description first_row_grid_description">
+
+
                         <div class="icon_description">
                             <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
                         </div>
 
+
                         <div class="mid_title">
                             Требование к SMART-задаче
                         </div>
+
+
                     </div>
 
 
                     <div class="second_row_grid_description" id="description">
                         <div></div>
 
-                        <textarea class="mid_description" id="description_editor" asp-for="Requirement" required>
-                        </textarea>
+                        <textarea class="mid_description" id="description_editor" asp-for="Requirement"></textarea>
+
+
                     </div>
-
-
                 </div>
+
 
                 <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
 
@@ -69,21 +76,31 @@
 
                     <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
                         <div></div>
+
+
                         <div class="choose_date_wrapper" id="choose_date">
-                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период" required>
+                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период">
                         </div>
-                        <!-- <div class="mid_description">Январь</div> -->
+
+
                     </div>
-
-
                 </div>
 
+
                 <div class="upload_files_main_wrapper grid_description_2fr margin_container_bottom">
+
+
                     <div class="container_description first_row_grid_description">
+
+
                         <div class="icon_description">
                             <i class="fa-solid fa-paperclip" style="color: #191919;"></i>
                         </div>
+
+
                         <div class="mid_title_wrapper">
+
+
                             <div class="mid_title">
                                 Вложения
                             </div>
@@ -94,6 +111,8 @@
 
 
                                     <input  type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
+
+
                                     <label for="input__file" class="input__file-button">
                                         <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
                                         <span class="input__file-button-text">Добавить</span>
@@ -101,7 +120,6 @@
 
 
                                 </div>
-                                @*<button type="submit" value="Upload" >Добавить</button>*@
                             </div>
                         </div>
                     </div>
@@ -109,16 +127,21 @@
 
                     <div class="upload_files_wrapper second_row_grid_description">
                         <div></div>
+
+
                         <div class="upload_files_list_wrapper" id="upload_files_list_wrapper">
                             
-                            <section class="progress-area"></section>
-                            <section class="uploaded-area">
 
-                            </section>
+                            <section class="progress-area"></section>
+
+
+                            <section class="uploaded-area"></section>
+
+
                         </div>
                     </div>
-
                 </div>
+
 
                 <button type="submit" class="action_btn primary_btn">
                     <div class="description">Сохранить</div>
@@ -126,8 +149,6 @@
 
 
             </form>
-
-
         </div>
     </div>
 </div>

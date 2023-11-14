@@ -35,6 +35,6 @@ namespace TrelloClone.ViewModels
             public double? Points { get; set; }
             public int CountOfComments { get; set; }
             public int CountOfFiles { get; set; }
-        }
+        }      
     }
 }

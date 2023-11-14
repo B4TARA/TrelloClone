@@ -5,75 +5,112 @@
 
 
     <div class="home_content_info">
-        @*<i class='bx bx-menu'></i>*@
+
+
         <div class="home_content_info_icon">
             <i class="fa-solid fa-folder"></i>
         </div>
+
+
         <div class="mid_title">
             @Model.Name
         </div>
 
+
     </div>
-
-
 </div>
 
+
 <div class="header_btns_wrapper">
+
+
     <button class="action_btn header_btn">
+
+
         <div class="action_btn_icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M2 2h20v2H2z"></path><rect x="5" y="6" width="6" height="16" rx="1"></rect><rect x="13" y="6" width="6" height="12" rx="1"></rect></svg>
         </div>
 
+
         <div class="description">Доска</div>
     </button>
+
+
     <button class="action_btn header_btn">
+
+
         <div class="action_btn_icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M2 2h2v20H2z"></path><rect x="6" y="13" width="16" height="6" rx="1"></rect><rect x="6" y="5" width="12" height="6" rx="1"></rect></svg>
         </div>
 
+
         <div class="description">Таблица</div>
     </button>
+
+
     <button class="action_btn header_btn">
+
+
         <div class="action_btn_icon">
             <i class="fa-solid fa-box-archive"></i>
         </div>
+
+
         <div class="description">Архив</div>
     </button>
 </div>
+
+
 <section class="main_container_content" id="main_container_content">
     <div class="stages_main_wrapper">
 
 
         @foreach (var column in Model.Columns)
         {
+
+
             <div class="stage_wrapper" id="@column.Id">
 
 
                 <div class="stage_header_info_wrapper margin_container_bottom_middle">
+
+
                     <div class="stage_info_main_wrapper margin_container_bottom_small">
 
 
                         <div class="stage_info_wrapper">
+
+
                             @if (column.Number == 1)
                             {
                                 <div class="stage_indicator_circle default_bcolor"></div>
                             }
+
+
                             else if (column.Number == 2)
                             {
                                 <div class="stage_indicator_circle yellow_bcolor"></div>
                             }
+
+
                             else if (column.Number == 3)
                             {
                                 <div class="stage_indicator_circle green_bcolor"></div>
                             }
+
+
                             else if (column.Number == 4)
                             {
                                 <div class="stage_indicator_circle blue_bcolor"></div>
                             }
+
+
                             else if (column.Number == 5)
                             {
                                 <div class="stage_indicator_circle blue_bcolor"></div>
                             }
+
+
                             else if (column.Number == 6)
                             {
                                 <div class="stage_indicator_circle green_bcolor"></div>
@@ -83,6 +120,8 @@
                             <div class="mid_title">
                                 @column.Title
                             </div>
+
+
                         </div>
 
 
@@ -92,26 +131,38 @@
 
 
                     </div>
+
+
                     @if (column.Number == 1)
                     {
                         <div class="stage_indicator_line default_bcolor"></div>
                     }
+
+
                     else if (column.Number == 2)
                     {
                         <div class="stage_indicator_line yellow_bcolor"></div>
                     }
+
+
                     else if (column.Number == 3)
                     {
                         <div class="stage_indicator_line green_bcolor"></div>
                     }
+
+
                     else if (column.Number == 4)
                     {
                         <div class="stage_indicator_line blue_bcolor"></div>
                     }
+
+
                     else if (column.Number == 5)
                     {
                         <div class="stage_indicator_line blue_bcolor"></div>
                     }
+
+
                     else if (column.Number == 6)
                     {
                         <div class="stage_indicator_line green_bcolor"></div>
@@ -122,18 +173,25 @@
 
 
                 <div class="cards_main_wrapper margin_container_bottom_middle">
+
+
                     @foreach (var card in column.Cards)
                     {
-                        if(card.SupervisorAssessment == 8)
-                        {
-                            <div class="card_wrapper expired" idcard="@card.Id">
+                        
 
-                                <div class="card_wrapper_content open-popup" idcard="@card.Id">
+                        <div class="card_wrapper @(card.SupervisorAssessment == 8 ? "expired" : "primary")">
+                            <div class="card_wrapper_content open-popup" idcard="@card.Id">
+
+
                                 <div class="card_header_wrapper margin_container_bottom_small">
                                     <div class="card_name_wrapper">
+
+
                                         <div class="mid_description">
-                                            @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
+                                            @card.Term.ToString("MMMM yyyy")
                                         </div>
+
+
                                     </div>
                                 </div>
 
@@ -155,148 +213,76 @@
                                     {
                                         <div class="card_holders_wrapper">
                                             <div class="holder_image_wrapper">
+
+
                                                 <img src="@Model.ImgPath" alt="profileImg">
+
+
                                             </div>
                                         </div>
                                     }
+
 
                                     else
                                     {
                                         <div class="card_holders_wrapper">
                                             <div class="holder_image_wrapper">
+
+
                                                 <img src="/image/default_profile_icon.svg" alt="profileImg">
+
+
                                             </div>
                                         </div>
                                     }
 
 
                                     <div class="card_details_info_wrapper">
+
+
                                         <div class="card_detail_item">
+
+
                                             <div class="item_icon">
                                                 <i class="fa-regular fa-message" style="color: #787486;"></i>
                                             </div>
+
+
                                             <div class="item_count">
                                                 <div class="mid_description">
                                                     @card.CountOfComments
                                                 </div>
                                             </div>
+
+
                                         </div>
+
+
                                         <div class="card_detail_item">
+
+
                                             <div class="item_icon">
                                                 <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
                                             </div>
+
+
                                             <div class="item_count">
                                                 <div class="mid_description">
                                                     @card.CountOfFiles
                                                 </div>
                                             </div>
+
+
                                         </div>
 
-                                    </div>
 
-                                </div>
+                                    </div>
                                 </div>
                             </div>
-                        }
-
-
-                        else
-                        {
-                            <div class="card_wrapper primary" idcard="@card.Id">
-
-                                <div class="card_wrapper_content open-popup" idcard="@card.Id">
-                                <div class="card_header_wrapper margin_container_bottom_small">
-                                    <div class="card_name_wrapper">
-                                        <div class="mid_description">
-                                            @Convert.ToDateTime(card.Term).ToString("MMMM yyyy")
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="mid_title margin_container_bottom_extrasmall">
-                                    @card.Name
-                                </div>
-
-
-                                <div class="mid_description margin_container_bottom_small">
-                                    @card.Requirement
-                                </div>
-
-
-                                <div class="card_footer_wrapper">
-
-
-                                    @if (Model.ImgPath != null)
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-                                                <img src="@Model.ImgPath" alt="profileImg">
-                                            </div>
-                                        </div>
-                                    }
-
-                                    else
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-                                                <img src="/image/default_profile_icon.svg" alt="profileImg">
-                                            </div>
-                                        </div>
-                                    }
-
-
-                                    <div class="card_details_info_wrapper">
-                                        <div class="card_detail_item">
-                                            <div class="item_icon">
-                                                <i class="fa-regular fa-message" style="color: #787486;"></i>
-                                            </div>
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                        @card.CountOfComments
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card_detail_item">
-                                            <div class="item_icon">
-                                                <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
-                                            </div>
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                        @card.CountOfFiles
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                </div>
-                            </div>
-                        }
-
+                        </div>
                     }
                 </div>
-
             </div>
         }
     </div>
 </section>
-
-
-@if (@Model.Columns.FirstOrDefault(x => x.Cards.Count() > 0) != null)
-{
-    <script>
-
-        function accept() {
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json",
-                url: "/api/UserBoard/movecard",
-                data: JSON.stringify({ userId: @Model.Id, columnId: @Model.Columns.FirstOrDefault(x => x.Cards.Count() > 0).Id }),
-            })
-        }
-
-    </script>
-}

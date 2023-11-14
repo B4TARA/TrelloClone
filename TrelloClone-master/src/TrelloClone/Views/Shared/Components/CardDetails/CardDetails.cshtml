@@ -18,35 +18,45 @@
 
 
                 <div class="title_popup_wrapper grid_description_2fr" id="title_popup_wrapper">
-
-
                     <div class="container_description first_row_grid_description">
+
+
                         <div class="icon_description">
                             <i class="fa-regular fa-credit-card"></i>
                         </div>
+
+
                         <div class="card_name_input_wrapper card_detail_active">
-                            <input type="text" asp-for="Name" placeholder="Введите название" required />
+                            <input type="text" asp-for="Name" placeholder="Введите название" />
                         </div>
+
 
                     </div>
                 </div>
+
 
                 <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
 
 
                     <div class="container_description first_row_grid_description">
+
+
                         <div class="icon_description">
                             <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
                         </div>
 
+
                         <div class="mid_title">
                             Требование к SMART-задаче
                         </div>
+
+
                     </div>
 
 
                     <div class="second_row_grid_description" id="description">
                         <div></div>
+
 
                         <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание"></textarea>
                     </div>
@@ -54,90 +64,95 @@
 
                 </div>
 
+
                 <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
 
 
                     <div class="container_description first_row_grid_description">
+
+
                         <div class="icon_description">
                             <i class="fa-regular fa-calendar"></i>
                         </div>
+
+
                         <div class="mid_title">
                             Плановый срок реализации
                         </div>
+
+
                     </div>
 
 
                     <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
                         <div></div>
+
+
                         <div class="choose_date_wrapper" id="choose_date">
-                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период" required>
+                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период">
                         </div>
-                        <!-- <div class="mid_description">Январь</div> -->
+
+
                     </div>
-
-
                 </div>
 
+
                 <div class="upload_files_main_wrapper grid_description_2fr margin_container_bottom">
+
+
                     <div class="container_description first_row_grid_description">
+
+
                         <div class="icon_description">
                             <i class="fa-solid fa-paperclip" style="color: #191919;"></i>
                         </div>
+
+
                         <div class="mid_title_wrapper">
+
+
                             <div class="mid_title">
                                 Вложения
                             </div>
 
 
-                            <div class="upload_file_btn_wrapper">
-                              @*  <div class="input__wrapper">
+                            <input type="file" id="input"/>
 
 
-                                        <input asp-for="File" type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
-                                        <label for="input__file" class="input__file-button">
-                                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>                                          
-                                        </label>
-
-                                   
-                                </div>
+                            @*<div class="upload_file_btn_wrapper">
+                            <div class="input__wrapper">
 
 
-                                <button type="submit" class="input__file-button-text">Добавить</button>*@
-
-                                @*<dl>
-                                    <dd>
-                                        <input asp-for="File" type="file" onchange="setFileData(this)">
-                                        <span asp-validation-for="File"></span>
-                                    </dd>
-                                </dl>*@
-                                <div class="input__wrapper">
+                            <input type="file" id="input__file" class="input input__file">
 
 
-                                    <input asp-for="File" type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
-                                    <label for="input__file" class="input__file-button">
-                                        <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
-                                        <span class="input__file-button-text">Добавить</span>
-                                    </label>
+                            <label for="input__file" class="input__file-button">
 
 
-                                </div>
-                                @*<button type="submit" value="Upload" >Добавить</button>*@
+                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
+
+
+                            <span class="input__file-button-text" id="add__file">Добавить</span>
+
+
+                            </label>
                             </div>
+                            </div>*@
                         </div>
                     </div>
 
 
-                    <div class="upload_files_wrapper second_row_grid_description" >
+                    <div class="upload_files_wrapper second_row_grid_description">
                         <div></div>
                         <div class="upload_files_list_wrapper" id="upload_files_list_wrapper">
                             @*<div class="upload_file_item_wrapper">
-                                <div class="mid_title upload_file_item_name"></div>
+                            <div class="mid_title upload_file_item_name"></div>
                             </div>*@
                             <section class="progress-area"></section>
                             <section class="uploaded-area">
 
 
-                                @foreach(var file in Model.Files)
+                                @foreach (var file in Model.Files)
                                 {
                                     <a href="@file.Path">
                                         <li class="row">
@@ -145,7 +160,7 @@
                                                 <div class="content_upload_type_icon">
                                                     <i class="fa-solid fa-file-lines"></i>
                                                 </div>
-                                                
+
                                                 <div class="details">
                                                     <span class="name">@file.Name • Добавлено</span>
                                                     <span class="size">2000</span>
@@ -155,16 +170,15 @@
                                             <div class="content_upload_delete_icon">
                                                 <i class="fa-solid fa-xmark delete_upload_file"></i>
                                             </div>
-                                                
+
                                             @*</a>*@
-                                            
+
                                         </li>
                                     </a>
-                                }                                                          
+                                }
                             </section>
                         </div>
                     </div>
-
                 </div>
 
 
@@ -184,53 +198,53 @@
 
                     <div class="second_row_grid_description" id="description">
                         <div></div>
-                        
-
-                       @* <form asp-action="AddComment" asp-controller="Card">*@
 
 
-                            <textarea class="mid_description" id="commentAreaElem" asp-for="Comment" placeholder="Введите комментарий" onclick="addCommentArea(this)"></textarea>
+                        @* <form asp-action="AddComment" asp-controller="Card">*@
 
 
-                            <div class="second_row_grid_description add_texteditor_buttons_wrapper add_comment_btns" id="addCommentBtns">
-                                <div></div>
-                                <div class="action_buttons_wrapper">
+                        <textarea class="mid_description" id="commentAreaElem" asp-for="Comment" placeholder="Введите комментарий" onclick="addCommentArea(this)"></textarea>
+
+
+                        <div class="second_row_grid_description add_texteditor_buttons_wrapper add_comment_btns" id="addCommentBtns">
+                            <div></div>
+                            <div class="action_buttons_wrapper">
 
 
                                 <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
-                                        <div class="description">Сохранить</div>
-                                    </div>
-
-
-                                    <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
-                                        <div>
-                                            <i class="fa-solid fa-xmark" style="color: #000000;"></i>
-                                        </div>
-                                    </div>
-
-
+                                    <div class="description">Сохранить</div>
                                 </div>
+
+
+                                <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
+                                    <div>
+                                        <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                                    </div>
+                                </div>
+
+
                             </div>
+                        </div>
 
 
-                      @*  </form>    *@               
+                        @*  </form>    *@
                     </div>
 
 
-                    @foreach(var comment in Model.Comments)
+                    @foreach (var comment in Model.Comments)
                     {
                         @*<div class="comment_user_wrapper second_row_grid_description margin_container_top">
-                            <div class="card_holders_wrapper">
-                                <div class="holder_image_wrapper">
-                                    <img src="@comment.UserImg" alt="holder_image">
-                                </div>
-                            </div>
-                            <div class="commentarea_wrapper" id="commentarea_wrapper">
-                                <div class="comment_area">
-                                    <div class="mid_title">@comment.Content</div>
-                                </div>
-                            </div>
-                        </div>*@
+                    <div class="card_holders_wrapper">
+                    <div class="holder_image_wrapper">
+                    <img src="@comment.UserImg" alt="holder_image">
+                    </div>
+                    </div>
+                    <div class="commentarea_wrapper" id="commentarea_wrapper">
+                    <div class="comment_area">
+                    <div class="mid_title">@comment.Content</div>
+                    </div>
+                    </div>
+                    </div>*@
 
                         <div class="comment_user_wrapper">
                             <div class="first_row_grid_description margin_container_top_middle">
@@ -255,7 +269,7 @@
                             </div>
                         </div>
                     }
-                    
+
 
                 </div>
 
@@ -308,7 +322,7 @@
                     </div>
 
 
-                    
+
 
 
                     @if (Model.Column > 4)
@@ -351,20 +365,20 @@
 
                                     </div>
 
-                                    
+
                                     <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
                                         <i class="fa-solid fa-chevron-down"></i>
                                         <div class="description value_asessessment" id="descriptionAssessmentVal"></div>
                                         <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden textresult="@typeof(TrelloClone.Models.Enum.Marks).GetMember(Model.SupervisorAssessment.ToString()).FirstOrDefault().GetCustomAttributes(false)<Display>
                                     .GetName();" required>
                                     </div>
-                                    
+
 
                                 </div>
                             </div>
 
 
-                        </div>            
+                        </div>
                     }
                 }
                 <div class="action_buttons_wrapper">
@@ -383,14 +397,14 @@
                     && Model.IsActive)
                     )
                     {
-                        @if(Model.Column == 1)
+                        @if (Model.Column == 1)
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
                                 <div class="description">На согласование</div>
                             </button>
                         }
 
-                        else if(Model.Column == 4)
+                        else if (Model.Column == 4)
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
                                 <div class="description">Выставить оценочное суждение</div>
@@ -403,7 +417,7 @@
                     && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
                     && Model.IsActive)
                     {
-                        if(Model.Column == 2)
+                        if (Model.Column == 2)
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
                                 <div class="description">Согласовано</div>
@@ -414,7 +428,7 @@
                             </button>
                         }
 
-                        else if(Model.Column == 5)
+                        else if (Model.Column == 5)
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
                                 <div class="description">Выставить оценочное суждение</div>
@@ -431,3 +445,49 @@
         </div>
     </div>
 </div>
+
+
+@section scripts{
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+    <script>
+
+
+        const inputElement = document.getElementById("input");
+        inputElement.addEventListener("change", handleFile, false);
+
+
+        function handleFile() {
+
+            console.log("works!")
+            var files = $('#input__file').prop("files");
+            var url = "/Card/UploadFile";
+            formData = new FormData();
+            formData.append("fileToUpload", files[0]);
+            formData.append("cardId", @Model.Id);
+
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (message) {
+                    alert(message);
+                }
+            });
+
+
+        };
+
+
+
+    </script>
+
+
+}

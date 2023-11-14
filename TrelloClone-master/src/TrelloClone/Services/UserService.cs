@@ -32,7 +32,7 @@ namespace TrelloClone.Services
             {
                 var cards = await _repository.CardRepository.GetUserCards(false, user.Id);
 
-                DateTime FakeToday = new DateTime(2023, 4, 8);
+                DateTime FakeToday = new DateTime(2023, 3, 20);
 
                 foreach (var card in cards)
                 {
@@ -355,7 +355,7 @@ namespace TrelloClone.Services
                 FileStream fStream = System.IO.File.Open(path, FileMode.Open, FileAccess.Read);
                 IExcelDataReader excelDataReader = ExcelReaderFactory.CreateOpenXmlReader(fStream);
                 DataSet resultDataSet = excelDataReader.AsDataSet();
-                var table = resultDataSet.Tables[1];
+                var table = resultDataSet.Tables[0];
 
                 List<User> users = new List<User>();
 
@@ -455,8 +455,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();

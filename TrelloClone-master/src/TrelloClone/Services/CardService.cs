@@ -3,14 +3,17 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
+using Org.BouncyCastle.Bcpg;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
 using TrelloClone.Models.Enum;
 using TrelloClone.ViewModels;
+using StatusCodes = TrelloClone.Models.Enum.StatusCodes;
 
 namespace TrelloClone.Services
 {
@@ -28,7 +31,7 @@ namespace TrelloClone.Services
             _userBoardService = userBoardService;
             _hostingEnvironment = hostingEnvironment;
         }
-       
+
         public void Create(AddCard viewModel)
         {
             var user = _dbContext.Users
@@ -59,18 +62,18 @@ namespace TrelloClone.Services
             {
                 var card = await _repository.CardRepository.GetCardById(false, cardDetails.Id);
                 card.Name = cardDetails.Name;
-                card.Requirement = cardDetails.Requirement;              
+                card.Requirement = cardDetails.Requirement;
                 card.EmployeeAssessment = cardDetails.EmployeeAssessment;
                 card.EmployeeComment = cardDetails.EmployeeComment;
                 card.SupervisorAssessment = cardDetails.SupervisorAssessment;
-                card.SupervisorComment = cardDetails.SupervisorComment;  
-                
-                if(cardDetails.Comment != null)
+                card.SupervisorComment = cardDetails.SupervisorComment;
+
+                if (cardDetails.Comment != null)
                 {
-                    card.Comments.Add(new Comment { CardId = cardDetails.Id, UserId = userId, Content = cardDetails.Comment, UserImg = userImg});
+                    card.Comments.Add(new Comment { CardId = cardDetails.Id, UserId = userId, Content = cardDetails.Comment, UserImg = userImg });
                 }
 
-                if(cardDetails.File != null)
+                if (cardDetails.File != null)
                 {
                     string path = "/files/" + cardDetails.File.FileName;
                     using (var fileStream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
@@ -82,13 +85,13 @@ namespace TrelloClone.Services
                 }
 
                 //выставление баллов
-                if(card.SupervisorAssessment != 0
+                if (card.SupervisorAssessment != 0
                     && card.SupervisorAssessment != 8
                     && card.SupervisorAssessment != 9)
                 {
                     card.Points = MarksAndPoints.Points[cardDetails.SupervisorAssessment];
                 }
-                
+
                 //просрочено
                 if (card.SupervisorAssessment == 8)
                 {
@@ -132,9 +135,43 @@ namespace TrelloClone.Services
         public void Delete(int id)
         {
             var card = _dbContext.Cards.SingleOrDefault(x => x.Id == id);
-            _dbContext.Remove(card ?? throw new Exception($"Could not remove {(Card) null}"));
-            
+            _dbContext.Remove(card ?? throw new Exception($"Could not remove {(Card)null}"));
+
             _dbContext.SaveChanges();
+        }
+
+        public async Task<IBaseResponse<object>> UploadFile(IFormFile fileToUpload, int userId, int cardId)
+        {
+            try
+            {
+                var card = await _repository.CardRepository.GetCardById(false, cardId);
+
+                string path = "/files/" + fileToUpload.FileName;
+                using (var fileStream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await fileToUpload.CopyToAsync(fileStream);
+                }
+
+                Models.File file = new Models.File { Name = fileToUpload.FileName, Path = path, CardId = cardId, UserId = userId };
+                card.Files.Add(file);
+
+                _repository.CardRepository.Update(card);
+                await _repository.Save();
+
+                return new BaseResponse<object>()
+                {
+                    StatusCode = StatusCodes.OK,
+                };
+            }
+
+            catch (Exception ex)
+            {
+                return new BaseResponse<object>()
+                {
+                    Description = $"[UploadFile] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError
+                };
+            }
         }
 
         public void DeleteFile(int id)
@@ -158,7 +195,7 @@ namespace TrelloClone.Services
                 {
                     CardId = cardId,
                     UserId = userId,
-                    Content = comment,                   
+                    Content = comment,
                 }); ;
             }
 
