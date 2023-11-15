@@ -164,8 +164,8 @@
 
                                             <div class="details">
                                                 <span class="name">@file.Name • Добавлено</span>
-                                                <span class="size">@file.Size</span>
-                                                <a href="@file.Path"><span class="size">Скачать</span></a>
+                                                @*<span class="size">@file.Size</span>*@
+                                                <a href="@file.Path"><span class="description download">Скачать</span></a>
                                             </div>
                                         </div>
 
@@ -397,14 +397,14 @@
                     {
                         @if (Model.Column == 1)
                         {
-                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
                                 <div class="description">На согласование</div>
                             </button>
                         }
 
                         else if (Model.Column == 4)
                         {
-                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
                                 <div class="description">Выставить оценочное суждение</div>
                             </button>
                         }
@@ -417,7 +417,7 @@
                     {
                         if (Model.Column == 2)
                         {
-                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
                                 <div class="description">Согласовано</div>
                             </button>
 

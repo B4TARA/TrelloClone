@@ -107,7 +107,7 @@
 
 .action_btn {
     width: 100%;
-    height: 50px;
+    height: 45px;
     border-radius: 10px;
     padding: 15px 10px;
     border: none;
@@ -201,6 +201,16 @@
 .action_btn.red_btn:hover {
     background-color: #FF280C30;
     color: #FF280C;
+}
+
+.green_btn {
+    background-color: #5DAC50;
+    color: #fff;
+}
+
+.action_btn.green_btn:hover {
+    background-color: #5DAC5030;
+    color: #5DAC50;
 }
 
 .container_description {
@@ -951,11 +961,11 @@
     position: relative;
     background: #fff;
     width: 760px;
-    margin: 0px 0 80px;
+    /*margin: 0px 0 80px;*/
     padding: 20px;
     border-radius: 16px;
     min-height: 600px;
-    max-height: 90vh;
+    max-height: 96vh;
     transition: 0.3s all;
     overflow-y: scroll;
     scrollbar-color: #c1c1c1 #eee;
@@ -1059,6 +1069,7 @@
     .comment_area .mid_description {
         font-weight: 500;
         color: #292d34;
+        word-wrap: break-word;
     }
 
     .commentarea_wrapper .action_btn {
@@ -1497,6 +1508,10 @@ section .details span {
     align-items: center;
     margin-bottom: 7px;
     justify-content: space-between;
+}
+
+.details .download{
+    text-decoration:underline;
 }
 
 .progress-area .content .progress-bar {

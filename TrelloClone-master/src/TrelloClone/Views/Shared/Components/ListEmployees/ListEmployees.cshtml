@@ -12,7 +12,7 @@
         <div class="stage_indicator_circle blue_bcolor"></div>
 
 
-        <a asp-controller="UserBoard" asp-action="ListEmployeeCards" asp-route-employeeId="@user.Id">@user.Name</a>
+        <a asp-controller="UserBoard" asp-action="ListEmployeeCards" asp-route-employeeId="@user.Id">@user.Name.Split(' ')[0] @user.Name.Split(' ')[1]</a>
 
 
     </li>

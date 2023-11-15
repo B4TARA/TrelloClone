@@ -89,7 +89,7 @@
                         @if (User.Claims.FirstOrDefault(c => c.Type == "ImagePath") != null)
                         {
                             <div class="profile-content">
-                                <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value" alt="profileImg">
+                                <img src="@User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value" alt="profileImg" class="profile-content-image">
                             </div>
                         }
 
@@ -102,7 +102,7 @@
 
 
                         <div class="name-job">
-                            <div class="profile_name">@User.Claims.FirstOrDefault(c => c.Type == "Name").Value</div>
+                            <div class="profile_name">@User.Claims.FirstOrDefault(c => c.Type == "Name").Value.Split(' ')[0] @User.Claims.FirstOrDefault(c => c.Type == "Name").Value.Split(' ')[1]</div>
                         </div>
 
 
