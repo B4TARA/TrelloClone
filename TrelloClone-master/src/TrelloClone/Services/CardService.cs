@@ -71,18 +71,7 @@ namespace TrelloClone.Services
                 if (cardDetails.Comment != null)
                 {
                     card.Comments.Add(new Comment { CardId = cardDetails.Id, UserId = userId, Content = cardDetails.Comment, UserImg = userImg });
-                }
-
-                if (cardDetails.File != null)
-                {
-                    string path = "/files/" + cardDetails.File.FileName;
-                    using (var fileStream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
-                    {
-                        await cardDetails.File.CopyToAsync(fileStream);
-                    }
-                    Models.File file = new Models.File { Name = cardDetails.File.FileName, Path = path, CardId = cardDetails.Id, UserId = userId };
-                    card.Files.Add(file);
-                }
+                }             
 
                 //выставление баллов
                 if (card.SupervisorAssessment != 0
@@ -152,7 +141,14 @@ namespace TrelloClone.Services
                     await fileToUpload.CopyToAsync(fileStream);
                 }
 
-                Models.File file = new Models.File { Name = fileToUpload.FileName, Path = path, CardId = cardId, UserId = userId };
+                Models.File file = new Models.File {
+                    Name = fileToUpload.FileName,
+                    Size = fileToUpload.Length,
+                    Type = fileToUpload.ContentType,
+                    Path = path,
+                    CardId = cardId, 
+                    UserId = userId };
+
                 card.Files.Add(file);
 
                 _repository.CardRepository.Update(card);
@@ -174,32 +170,68 @@ namespace TrelloClone.Services
             }
         }
 
-        public void DeleteFile(int id)
+        public async Task<IBaseResponse<object>> DeleteFile(int fileId, int cardId)
         {
-            var file = _dbContext.Files.SingleOrDefault(x => x.Id == id);
-            _dbContext.Remove(file ?? throw new Exception($"Could not remove {(Card)null}"));
+            try
+            {
+                var fileToDelete = await _repository.FileRepository.GetFileById(false, fileId);
 
-            _dbContext.SaveChanges();
+                if (System.IO.File.Exists(fileToDelete.Path))
+                {
+                    System.IO.File.Delete(fileToDelete.Path);
+                }               
+
+                _repository.FileRepository.Delete(fileToDelete);
+                await _repository.Save();
+
+                return new BaseResponse<object>()
+                {
+                    StatusCode = StatusCodes.OK,
+                };
+            }
+
+            catch (Exception ex)
+            {
+                return new BaseResponse<object>()
+                {
+                    Description = $"[DeleteFile] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError
+                };
+            }
         }
 
-        public void AddComment(int userId, int cardId, string comment)
+        public async Task<IBaseResponse<object>> AddComment(string comment, int userId, string userName, string userImg, int cardId)
         {
-            var card = _dbContext.Cards
-                 .Include(b => b.Comments)
-                 .SingleOrDefault(x => x.Id == cardId);
-
-            if (card != null)
+            try
             {
+                var card = await _repository.CardRepository.GetCardById(false, cardId);
 
                 card.Comments.Add(new Comment
                 {
                     CardId = cardId,
                     UserId = userId,
+                    UserName = userName.Split(" ")[0] + " " + userName.Split(" ")[1],
                     Content = comment,
-                }); ;
+                    UserImg = userImg
+                });
+
+                _repository.CardRepository.Update(card);
+                await _repository.Save();
+
+                return new BaseResponse<object>()
+                {
+                    StatusCode = StatusCodes.OK,
+                };
             }
 
-            _dbContext.SaveChanges();
+            catch (Exception ex)
+            {
+                return new BaseResponse<object>()
+                {
+                    Description = $"[AddComment] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError
+                };
+            }
         }
     }
 }

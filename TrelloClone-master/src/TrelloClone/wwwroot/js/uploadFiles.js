@@ -19,47 +19,86 @@ const objIconsFiles = [
 ]
 
 function setFileData(target) {
-    const progressArea = document.querySelector(".progress-area"),
-        uploadedArea = document.querySelector(".uploaded-area");
-        let file = target.files[0]
-    //console.log(file.type)
-    const fileType = file.type
+
+    const progressArea = document.querySelector(".progress-area"), uploadedArea = document.querySelector(".uploaded-area");
+    let file = target.files[0];
+    const fileType = file.type;
     let fileImg = '';
+
     objIconsFiles.forEach((elem) => {
         if (elem.typeName == fileType) {
-            fileImg = elem.icon
+            fileImg = elem.icon;
         }
+    });
 
-    })
     progressArea.innerHTML = "";
-    let uploadedHTML = `<li class="row">
-                            <div class="content upload">
-                              
-                              <div class="content_upload_type_icon">
-                                                    ${fileImg}
-                                                </div>
-                              <div class="details">
-                                <span class="name">${file.name} • Добавлено</span>
-                                <span class="size">${file.size}</span>
-                              </div>
-                            </div>
-                            <div class="content_upload_delete_icon">
-                                                <i class="fa-solid fa-xmark delete_upload_file" onclick="deleteUploadFile(this)"></i>
-                                            </div>
-                            
-                          </li>`;
-
-    uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
-
     uploadFile(file)
 }
 
-function deleteUploadFile(elem) {
-    console.log(elem.parentNode)
-    elem.parentNode.remove()
+function deleteFile(fileId, cardId) {
+
+    var url = "/Card/DeleteFile";
+    formData = new FormData();
+    formData.append("fileId", fileId);
+    formData.append("cardId", cardId);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: async function () {
+
+            await fetch('GetCardDetailsViewComponent?' + new URLSearchParams({
+                cardId: cardId
+            }),
+                {
+                    method: 'GET',
+                })
+                .then((response) => response.text())
+                .then((data) => {
+                    cardDetails.innerHTML = data;
+                   /* alert("Файл успешно удалён!");*/
+                })
+        }
+    });
 }
+
 function uploadFile(files) {
+
     const maxFileSize = 1048576;//10мб
     const currentUrl = '';
-   
+    const cardDetails = document.getElementById("cardDetails");
+    const popupElement = document.querySelector(".popup");
+    const cardId = popupElement.getAttribute('cardId');
+
+    var url = "/Card/UploadFile";
+    formData = new FormData();
+    formData.append("fileToUpload", files);
+    formData.append("cardId", cardId);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: async function () {
+
+            await fetch('GetCardDetailsViewComponent?' + new URLSearchParams({
+                cardId: cardId
+            }),
+                {
+                    method: 'GET',
+                })
+                .then((response) => response.text())
+                .then((data) => {
+                    cardDetails.innerHTML = data;
+                    /*alert("Файл успешно прикреплён!");*/
+                })
+        }
+    });
 }

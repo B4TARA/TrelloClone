@@ -29,6 +29,7 @@ function closeCard(elem) {
 async function editCard(idCard) {
 
     let div = document.createElement('div')
+    div.setAttribute("id", "cardDetails")
    
     await fetch('GetCardDetailsViewComponent?' + new URLSearchParams({
         cardId: idCard

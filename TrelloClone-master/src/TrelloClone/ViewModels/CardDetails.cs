@@ -36,6 +36,5 @@ namespace TrelloClone.ViewModels
         public List<Comment> Comments = new List<Comment>();
         public List<File> Files = new List<File>();
         public string Comment { get; set; }
-        public IFormFile File { get; set; }
     }
 }

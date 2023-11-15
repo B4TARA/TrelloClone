@@ -10,6 +10,7 @@ namespace TrelloClone.Data.Repositories
         private ColumnRepository? _columnRepository;
         private UserRepository? _userRepository;
         private CommentRepository? _commentRepository;
+        private FileRepository? _fileRepository;
 
         public RepositoryManager(TrelloCloneDbContext db)
         {
@@ -57,6 +58,17 @@ namespace TrelloClone.Data.Repositories
                     _commentRepository = new CommentRepository(_db);
 
                 return _commentRepository;
+            }
+        }
+
+        public FileRepository FileRepository
+        {
+            get
+            {
+                if (_fileRepository == null)
+                    _fileRepository = new FileRepository(_db);
+
+                return _fileRepository;
             }
         }
 

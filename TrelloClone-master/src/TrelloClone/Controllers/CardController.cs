@@ -72,28 +72,7 @@ namespace TrelloClone.Controllers
 
             return RedirectToAction("ListMyCards", "UserBoard");
         }
-
-        [HttpPost]
-        public IActionResult DeleteFile(int id)
-        {
-            _cardService.DeleteFile(id);
-
-            var action = Request.Headers.Referer.ToString().Split("/")[4];
-
-            if (action == "ListMyCards")
-            {
-                return RedirectToAction(action, "UserBoard");
-            }
-
-            else
-            {
-                //await _userService.SendNotification(card.UserId, "Уведомление", "Ваша карточка " + card.Name + " была изменена");
-                var employeeId = Convert.ToInt32(action.Split("=")[1]);
-                action = action.Split("?")[0];
-                return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
-            }
-        }
-
+       
         [HttpPost]
         public async Task<IActionResult> UploadFile()
         {
@@ -104,7 +83,43 @@ namespace TrelloClone.Controllers
 
             var response = await _cardService.UploadFile(fileToUpload, userId, cardId);
 
-            if (response.StatusCode == Models.Enum.StatusCodes.OK)
+            if (response.StatusCode == StatusCodes.OK)
+            {
+                return Ok("Файл успешно добавлен!");
+            }
+
+            return NotFound(response.Description);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteFile()
+        {
+            int fileId = Convert.ToInt32(Request.Form["fileId"]);
+            int cardId = Convert.ToInt32(Request.Form["cardId"]);
+
+            var response = await _cardService.DeleteFile(fileId, cardId);
+
+            if (response.StatusCode == StatusCodes.OK)
+            {
+                return Ok("Файл успешно удалён!");
+            }
+
+            return NotFound(response.Description);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment()
+        {
+            var userId = Convert.ToInt32(User.FindFirst("Id").Value);
+            var userName = User.FindFirst("Name").Value;
+            var userImage = User.FindFirst("ImagePath").Value;
+
+            string comment = Request.Form["comment"];
+            int cardId = Convert.ToInt32(Request.Form["cardId"]);
+
+            var response = await _cardService.AddComment(comment, userId, userName, userImage, cardId);
+
+            if (response.StatusCode == StatusCodes.OK)
             {
                 return Ok("Файл успешно добавлен!");
             }
