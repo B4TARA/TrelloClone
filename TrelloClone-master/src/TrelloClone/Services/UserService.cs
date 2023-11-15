@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
 using TrelloClone.Models.Enum;
+using TrelloClone.Models.Term;
 using TrelloClone.ViewModels;
 using TrelloClone.ViewModels.XML;
 
@@ -32,7 +33,7 @@ namespace TrelloClone.Services
             {
                 var cards = await _repository.CardRepository.GetUserCards(false, user.Id);
 
-                DateTime FakeToday = new DateTime(2023, 3, 20);
+                DateTime FakeToday = new DateTime(2023, 1, 1);
 
                 foreach (var card in cards)
                 {
@@ -46,27 +47,37 @@ namespace TrelloClone.Services
 
                         if (FakeToday.Day == 20)
                         {
-                            if(cardColumn.Number == 1)
-                            {
-                                card.IsActive = true;
+                            //20 числа все карточки в 1 колонке(перенесенные с прошлого квартала) становятся активными
+                            //if(cardColumn.Number == 1)
+                            //{
+                            //    card.IsActive = true;
 
-                                _repository.CardRepository.Update(card);
-                                await _repository.Save();
-                            }
+                            //    _repository.CardRepository.Update(card);
+                            //    await _repository.Save();
+                            //}
                            
-                            else if(cardColumn.Number == 6 && card.SupervisorAssessment == 8)
-                            {
-                                card.ColumnId = card.ColumnId - 5;
-                                card.IsActive = true;
+                            ////20 числа все карточки в 6 колонке(перенос) переносятся автоматически на 1 колонку и становятся активными
+                            //if(cardColumn.Number == 6 && card.SupervisorAssessment == 7)
+                            //{
+                            //    card.ColumnId = card.ColumnId - 5;
+                            //    card.IsActive = true;
 
-                                _repository.CardRepository.Update(card);
-                                await _repository.Save();
-                            }
+                            //    _repository.CardRepository.Update(card);
+                            //    await _repository.Save();
+                            //}
                         }
 
                         else if (FakeToday.Day == 25)
                         {
-                            if (cardColumn.Number == 2 || cardColumn.Number == 1)
+                            //25 числа все карточки с 1 колонки автоматически на 2 колонку, если они в нужном квартале
+                            if(cardColumn.Number == 1)
+                            {
+                                card.ColumnId = card.ColumnId + 1;
+                                card.IsActive = true;
+                            }
+
+                            //25 числа все карточки во 2 колонки становятся активными, если они в нужном квартале
+                            if (cardColumn.Number == 2)
                             {
                                 card.IsActive = true;
                             }
@@ -89,13 +100,15 @@ namespace TrelloClone.Services
 
                         if (FakeToday.Day == 1)
                         {
-                            if (cardColumn.Number == 6 && card.SupervisorAssessment != 8)
+                            //1 числа все карточки из 6 колонки, кроме переноса, отправялются в архив
+                            if (cardColumn.Number == 6 && card.SupervisorAssessment != 7)
                             {
                                 card.IsRelevant = false;
                                 card.IsActive = false;
                             }
-
-                            else if (cardColumn.Number == 3)
+                            
+                            //1 числа все карточки предыдущего квартала автоматически переходят с 3 колонки на 4
+                            else if (cardColumn.Number == 3 && Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
                             {
                                 card.ColumnId = card.ColumnId + 1;
                                 card.IsActive = true;
@@ -112,12 +125,14 @@ namespace TrelloClone.Services
 
                         else if (FakeToday.Day == 8)
                         {
+                            //8 числа все карточки автоматически переходят с 4 колонки на 5 и становятся активными
                             if (cardColumn.Number == 4)
                             {
                                 card.ColumnId = card.ColumnId + 1;
                                 card.IsActive = true;
                             }
 
+                            //8 числа все карточки на 5 колонке становятся активными
                             else if (cardColumn.Number == 5)
                             {
                                 card.IsActive = true;
@@ -144,6 +159,7 @@ namespace TrelloClone.Services
                     {
                         user.IsActiveToAddCard = true;
                         user.IsActiveLikeEmployee = true;
+                        user.IsActiveLikeSupervisor = false;
 
                         //await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
                     }
@@ -180,12 +196,11 @@ namespace TrelloClone.Services
                     if (FakeToday.Day == 1)
                     {
                         user.IsActiveToAddCard = false;
-                        user.IsActiveLikeSupervisor = false;
+                        //user.IsActiveLikeSupervisor = false;
 
                         if (user.Role == Roles.Employee || user.Role == Roles.Combined)
                         {
                             user.IsActiveLikeEmployee = true;
-                            user.Notifications.Add("Внесите оценки по задачам отчетного квартала до 7");
 
                             //await SendNotification(user.Id, "Напоминание", "Внесите оценки по задачам отчетного квартала до 7");
                         }

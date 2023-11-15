@@ -42,6 +42,6 @@ function optionClick(elem) {
     console.log(resultAssessmentText)
     descriptionAssessmentValElem.innerHTML = resultAssessmentText;
 
-    const resultAssessmentVal = elem.querySelector(".select_user_assessment").getAttribute('itemval')
+    const resultAssessmentVal = elem.querySelector(".select_user_assessment").getAttribute('itemid')
     resultAssessmentWrapper.value = resultAssessmentVal;
 }

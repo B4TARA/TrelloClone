@@ -187,7 +187,7 @@ namespace TrelloClone.Services
             {              
                 var card = await _repository.CardRepository.GetCardById(false, CardId);
 
-                card.IsRelevant = false;
+                card.ColumnId = card.ColumnId - 1;
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();

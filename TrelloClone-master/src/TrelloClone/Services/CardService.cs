@@ -1,17 +1,14 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting.Internal;
-using Org.BouncyCastle.Bcpg;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
-using TrelloClone.Models.Enum;
+using TrelloClone.Models.Assessment;
 using TrelloClone.ViewModels;
 using StatusCodes = TrelloClone.Models.Enum.StatusCodes;
 
@@ -22,13 +19,11 @@ namespace TrelloClone.Services
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly TrelloCloneDbContext _dbContext;
         private readonly RepositoryManager _repository;
-        private readonly UserBoardService _userBoardService;
 
-        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, UserBoardService userBoardService, IHostingEnvironment hostingEnvironment)
+        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, IHostingEnvironment hostingEnvironment)
         {
             _dbContext = dbContext;
             _repository = repository;
-            _userBoardService = userBoardService;
             _hostingEnvironment = hostingEnvironment;
         }
 
@@ -60,6 +55,8 @@ namespace TrelloClone.Services
         {
             try
             {
+                DateTime FakeToday = new DateTime(2023, 1, 1);
+
                 var card = await _repository.CardRepository.GetCardById(false, cardDetails.Id);
                 card.Name = cardDetails.Name;
                 card.Requirement = cardDetails.Requirement;
@@ -67,40 +64,20 @@ namespace TrelloClone.Services
                 card.EmployeeComment = cardDetails.EmployeeComment;
                 card.SupervisorAssessment = cardDetails.SupervisorAssessment;
                 card.SupervisorComment = cardDetails.SupervisorComment;
-
-                if (cardDetails.Comment != null)
-                {
-                    card.Comments.Add(new Comment { CardId = cardDetails.Id, UserId = userId, Content = cardDetails.Comment, UserImg = userImg });
-                }             
-
-                //выставление баллов
-                if (card.SupervisorAssessment != 0
-                    && card.SupervisorAssessment != 8
-                    && card.SupervisorAssessment != 9)
-                {
-                    card.Points = MarksAndPoints.Points[cardDetails.SupervisorAssessment];
-                }
-
-                //просрочено
-                if (card.SupervisorAssessment == 8)
-                {
-                    var column = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
-
-                    var addCard = new AddCard();
-                    addCard.Id = column.UserId;
-                    addCard.Name = cardDetails.Name;
-                    addCard.Requirement = cardDetails.Requirement;
-                    addCard.Term = cardDetails.Term.AddMonths(1);
-
-                    Create(addCard);
-                }
+                card.Points = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Value;
 
                 //перенос
                 if (card.Term != cardDetails.Term)
                 {
                     card.Term = cardDetails.Term;
-
                 }
+
+                //просрочено
+                if (card.SupervisorAssessment == 7)
+                {
+                    card.ColumnId = card.ColumnId - 2;
+                    card.Term = FakeToday;
+                }          
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
@@ -141,13 +118,15 @@ namespace TrelloClone.Services
                     await fileToUpload.CopyToAsync(fileStream);
                 }
 
-                Models.File file = new Models.File {
+                Models.File file = new Models.File
+                {
                     Name = fileToUpload.FileName,
                     Size = fileToUpload.Length,
                     Type = fileToUpload.ContentType,
                     Path = path,
-                    CardId = cardId, 
-                    UserId = userId };
+                    CardId = cardId,
+                    UserId = userId
+                };
 
                 card.Files.Add(file);
 
@@ -179,7 +158,7 @@ namespace TrelloClone.Services
                 if (System.IO.File.Exists(fileToDelete.Path))
                 {
                     System.IO.File.Delete(fileToDelete.Path);
-                }               
+                }
 
                 _repository.FileRepository.Delete(fileToDelete);
                 await _repository.Save();

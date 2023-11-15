@@ -35,6 +35,5 @@ namespace TrelloClone.ViewModels
         public int ColumnId { get; set; }
         public List<Comment> Comments = new List<Comment>();
         public List<File> Files = new List<File>();
-        public string Comment { get; set; }
     }
 }

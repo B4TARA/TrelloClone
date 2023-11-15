@@ -278,9 +278,12 @@
 
 
                         <div class="container_description first_row_grid_description">
+
+
                             <div class="icon_description">
                                 <i class="fa-regular fa-square-check" style="color: #0d062d;"></i>
                             </div>
+
 
                             <div class="mid_title">
                                 Оценочное суждение работника
@@ -291,27 +294,41 @@
                         <div class="second_row_grid_description" id="description">
                             <div></div>
 
+
                             <div class="select-box" id="selectBox">
+
 
                                 <div class="options-container" id="options-container">
 
-                                    @foreach (var item in Html.GetEnumSelectList<TrelloClone.Models.Enum.Marks>())
+
+                                    @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
                                     {
+
+
                                         <div class="option" onclick="optionClick(this)">
-                                            <div class="select_user_assessment description" itemval="@item.Value">@item.Text</div>
-                                            <div class="mid_description">Описание</div>
+
+
+                                            <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
+
+
+                                            <div class="mid_description">@item.Description</div>
                                         </div>
                                     }
-
                                 </div>
 
 
                                 <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
+
+
                                     <i class="fa-solid fa-chevron-down"></i>
+
+
                                     <div class="description value_asessessment" id="descriptionAssessmentVal">
                                         <span class="placeholder_input">Введите оценочное суждение</span>
                                     </div>
-                                    <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden textresult="@(((TrelloClone.Models.Enum.Marks)Model.EmployeeAssessment))" required>
+
+
+                                    <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" required>
                                 </div>
 
 
@@ -339,46 +356,55 @@
                                 <div class="mid_title">
                                     Оценочное суждение непосредственного руководителя
                                 </div>
-
-
                             </div>
 
 
                             <div class="second_row_grid_description" id="description">
                                 <div></div>
+
+
                                 <div class="select-box" id="selectBox">
 
 
                                     <div class="options-container" id="options-container">
 
 
-                                        @foreach (var item in Html.GetEnumSelectList<TrelloClone.Models.Enum.Marks>())
+                                        @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
                                         {
+
+
                                             <div class="option" onclick="optionClick(this)">
+
+
                                                 <input type="radio" value="" class="radio" id="film" name="category" disabled />
-                                                <label for="film" class="select_user_assessment" itemval="@item.Value">@item.Text</label>
+
+
+                                                <label for="film" class="select_user_assessment" itemid="@item.Id">@item.Text</label>
                                             </div>
                                         }
-
-
                                     </div>
 
 
                                     <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
+
+
                                         <i class="fa-solid fa-chevron-down"></i>
+
+
                                         <div class="description value_asessessment" id="descriptionAssessmentVal"></div>
-                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden textresult="@typeof(TrelloClone.Models.Enum.Marks).GetMember(Model.SupervisorAssessment.ToString()).FirstOrDefault().GetCustomAttributes(false)<Display>
-                                    .GetName();" required>
+
+
+                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" required>
                                     </div>
 
 
                                 </div>
                             </div>
-
-
                         </div>
                     }
                 }
+
+
                 <div class="action_buttons_wrapper">
 
 
@@ -392,15 +418,17 @@
 
                     @if ((Model.IsActiveLikeEmployee
                     && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId
-                    && Model.IsActive)
-                    )
+                    @*&& Model.IsActive*@))
                     {
+
+
                         @if (Model.Column == 1)
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
                                 <div class="description">На согласование</div>
                             </button>
                         }
+
 
                         else if (Model.Column == 4)
                         {
@@ -413,18 +441,22 @@
 
                     else if (Model.IsActiveLikeSupervisor
                     && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
-                    && Model.IsActive)
+                    @*&& Model.IsActive*@)
                     {
+
+
                         if (Model.Column == 2)
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
                                 <div class="description">Согласовано</div>
                             </button>
 
+
                             <button asp-controller="UserBoard" asp-action="RejectCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
                                 <div class="description">В доработку</div>
                             </button>
                         }
+
 
                         else if (Model.Column == 5)
                         {
@@ -433,12 +465,7 @@
                             </button>
                         }
                     }
-
-
                 </div>
-
-
-
             </form>
         </div>
     </div>
