@@ -55,7 +55,7 @@ namespace TrelloClone.Services
         {
             try
             {
-                DateTime FakeToday = new DateTime(2023, 1, 1);
+                DateTime FakeToday = new DateTime(2023, 3, 20);
 
                 var card = await _repository.CardRepository.GetCardById(false, cardDetails.Id);
                 card.Name = cardDetails.Name;
@@ -64,7 +64,7 @@ namespace TrelloClone.Services
                 card.EmployeeComment = cardDetails.EmployeeComment;
                 card.SupervisorAssessment = cardDetails.SupervisorAssessment;
                 card.SupervisorComment = cardDetails.SupervisorComment;
-                card.Points = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Value;
+                //card.Points = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Value;
 
                 //перенос
                 if (card.Term != cardDetails.Term)

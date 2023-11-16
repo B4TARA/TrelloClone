@@ -771,6 +771,7 @@
 .cards_main_wrapper .card_wrapper{
     margin-bottom: 20px;
     border:2px solid transparent;
+
 }
 
     .cards_main_wrapper .card_wrapper.primary:hover {
@@ -1570,4 +1571,70 @@ section .details span {
 .delete_upload_file:hover {
     cursor: pointer;
     color: #292d34;
+}
+
+/*HISTORY CONTAINER*/
+
+.history_main_wrapper .icon_dropdown{
+    font-size:22px;
+    cursor:pointer;
+}
+
+.icon_dropdown:hover {
+    color:#1b74fd;
+}
+
+.icon_dropdown.active {
+    transform: rotate(180deg);
+    transition: all 0.5s ease;
+}
+
+.history_list_wrapper{
+    display:none;
+}
+
+    .history_list_wrapper.active {
+        display: grid;
+        animation: 0.7s show ease;
+    }
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+.history_list_wrapper .holder_image_wrapper{
+    width:35px;
+    height:35px;
+}
+
+.history_list_wrapper .mid_title{
+    font-size:16px;
+}
+
+    .history_list_wrapper .history_item_wrapper{
+        margin-top:15px;
+    }
+
+        .history_list_wrapper .history_item_wrapper:first-child {
+            margin-top: 0px;
+        }
+
+    .history_info_wrapper .date_description {
+        font-size: 14px;
+        margin-top: 6px;
+        color: #707070;
+        font-weight: 400;
+    }
+
+.history_description_wrapper .main_description_history{
+    font-style:italic;
+    font-weight:500;
+    color:#292d34;
 }

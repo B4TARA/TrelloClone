@@ -45,3 +45,10 @@ function optionClick(elem) {
     const resultAssessmentVal = elem.querySelector(".select_user_assessment").getAttribute('itemid')
     resultAssessmentWrapper.value = resultAssessmentVal;
 }
+
+
+function openDropdownList(elem) {
+    const historyListWrapper = document.getElementById('history_list_wrapper')
+    historyListWrapper.classList.toggle('active')
+    elem.classList.toggle('active')
+}

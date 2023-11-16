@@ -404,6 +404,72 @@
                     }
                 }
 
+                <div class="history_main_wrapper grid_description_2fr margin_container_bottom">
+
+
+                    <div class="container_description first_row_grid_description">
+
+
+                        <div class="icon_description">
+                            <i class="fa-solid fa-clock-rotate-left" style="color: #191919;"></i>
+                        </div>
+
+
+                        <div class="mid_title_wrapper">
+
+
+                            <div class="mid_title">
+                                История
+                            </div>
+                            <div class="icon_dropdown" onclick="openDropdownList(this)">
+                                <i class="fa-solid fa-caret-down"></i>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="history_list_wrapper" id="history_list_wrapper">
+                        @*БЛОК НИЖЕ В FOREACH*@
+                        <div class="history_item_wrapper">
+                            <div class="first_row_grid_description">
+
+
+                                <div class="card_holders_wrapper">
+                                    <div class="holder_image_wrapper">
+                                        @*СЮДА ФОТКУ*@
+                                        <img src="~/image/profile.jpg" alt="holder_image">
+                                    </div>
+                                </div>
+
+
+                                <div class="mid_title">
+                                    @*СЮДА ИМЯ КТО ВНЕС ИЗМЕНЕНИЯ*@
+                                    Томчик Ян
+                                </div>
+                            </div>
+
+
+                            <div class="second_row_grid_description" id="description">
+                                <div></div>
+                                <div class="history_info_wrapper">
+                                    <div class="history_description_wrapper mid_description">
+                                        @*extra_description - ЧТО СДЕЛАЛ ПОЛЬЗОВАТЕЛЬ ИЗМЕНИД/ПРИКРЕПИЛ/СЪЕБАЛСЯ НАХУЙ И ТД*@
+                                        @*main_description_history - ЧТО НА ЧТО ИЗМЕНИЛ*@
+                                        <span class="extra_description">Изменил(а)</span>
+                                        <span class="main_description_history">При нажатии "На доработку" задача возвращается на этап "Составление SMART-задач работником".</span>
+                                        <span class="extra_description">На</span>
+                                        <span class="main_description_history">При нажатии "На доработку"</span>
+                                    </div>
+                                    @*СЮДА ДАТУ ВНЕСЕННОГО ДЕЙСТВИЯ*@
+                                    <div class="date_description">15 ноября 2023</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
 
                 <div class="action_buttons_wrapper">
 
