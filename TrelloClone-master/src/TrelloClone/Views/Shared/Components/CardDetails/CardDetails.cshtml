@@ -328,7 +328,7 @@
                                     </div>
 
 
-                                    <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" required>
+                                    <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden required>
                                 </div>
 
 
@@ -375,11 +375,9 @@
 
                                             <div class="option" onclick="optionClick(this)">
 
+                                                <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
 
-                                                <input type="radio" value="" class="radio" id="film" name="category" disabled />
-
-
-                                                <label for="film" class="select_user_assessment" itemid="@item.Id">@item.Text</label>
+                                                <div class="mid_description">@item.Description</div>
                                             </div>
                                         }
                                     </div>
@@ -391,13 +389,15 @@
                                         <i class="fa-solid fa-chevron-down"></i>
 
 
-                                        <div class="description value_asessessment" id="descriptionAssessmentVal"></div>
+                                        <div class="description value_asessessment" id="descriptionAssessmentVal">
+                                            <span class="placeholder_input">Введите оценочное суждение</span>
+                                        </div>
 
 
-                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" required>
+                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden required>
                                     </div>
 
-
+                                    
                                 </div>
                             </div>
                         </div>
