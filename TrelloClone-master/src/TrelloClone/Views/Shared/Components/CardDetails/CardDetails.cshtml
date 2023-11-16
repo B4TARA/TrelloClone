@@ -17,6 +17,9 @@
                 <input type="hidden" asp-for="Id" value="@Model.Id" />
 
 
+                <input type="hidden" asp-for="Column" value="@Model.Column" />
+
+
                 <div class="title_popup_wrapper grid_description_2fr" id="title_popup_wrapper">
                     <div class="container_description first_row_grid_description">
 
@@ -324,7 +327,7 @@
 
 
                                     <div class="description value_asessessment" id="descriptionAssessmentVal">
-                                        @if (TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text != null)
+                                        @if (Model.EmployeeAssessment != null)
                                         {
                                             @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text
                                         }
@@ -397,22 +400,27 @@
 
 
                                         <div class="description value_asessessment" id="descriptionAssessmentVal">
-                                            @if (TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text != null)
+
+
+                                            @if (Model.SupervisorAssessment != null)
                                             {
                                                 @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text
-                                            }else
-                                            {
-                                                    <span class="placeholder_input">Введите оценочное суждение</span>
-                                                }
+                                            }
 
-                                            
+
+                                            else
+                                            {
+                                                <span class="placeholder_input">Введите оценочное суждение</span>
+                                            }
+
+
                                         </div>
 
 
                                         <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden required>
                                     </div>
 
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -482,7 +490,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
 
@@ -498,8 +506,7 @@
 
 
                     @if ((Model.IsActiveLikeEmployee
-                    && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId
-                    @*&& Model.IsActive*@))
+                    && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId))
                     {
 
 
@@ -513,7 +520,7 @@
 
                         else if (Model.Column == 4)
                         {
-                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
+                            <button type="submit" class="action_btn green_btn">
                                 <div class="description">Выставить оценочное суждение</div>
                             </button>
                         }
@@ -521,8 +528,7 @@
 
 
                     else if (Model.IsActiveLikeSupervisor
-                    && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
-                    @*&& Model.IsActive*@)
+                    && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId)
                     {
 
 
@@ -541,7 +547,7 @@
 
                         else if (Model.Column == 5)
                         {
-                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
+                            <button type="submit" class="action_btn primary_btn">
                                 <div class="description">Выставить оценочное суждение</div>
                             </button>
                         }

@@ -64,7 +64,12 @@ namespace TrelloClone.Services
                 card.EmployeeComment = cardDetails.EmployeeComment;
                 card.SupervisorAssessment = cardDetails.SupervisorAssessment;
                 card.SupervisorComment = cardDetails.SupervisorComment;
-                //card.Points = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Value;
+
+                //выставление оценочного суждения
+                if (cardDetails.Column == 4 || cardDetails.Column == 5)
+                {
+                    card.ColumnId = card.ColumnId + 1;
+                }
 
                 //перенос
                 if (card.Term != cardDetails.Term)
@@ -77,7 +82,7 @@ namespace TrelloClone.Services
                 {
                     card.ColumnId = card.ColumnId - 2;
                     card.Term = FakeToday;
-                }          
+                }
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();

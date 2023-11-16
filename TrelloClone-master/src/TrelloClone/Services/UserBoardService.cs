@@ -56,7 +56,6 @@ namespace TrelloClone.Services
                         EmployeeComment = card.EmployeeComment,
                         SupervisorAssessment = card.SupervisorAssessment,
                         SupervisorComment = card.SupervisorComment,
-                        Points = card.Points,
                         CountOfComments = card.Comments.Count(),
                         CountOfFiles = card.Files.Count(),
                     };
@@ -108,7 +107,6 @@ namespace TrelloClone.Services
                         EmployeeComment = card.EmployeeComment,
                         SupervisorAssessment = card.SupervisorAssessment,
                         SupervisorComment = card.SupervisorComment,
-                        Points = card.Points,
                         CountOfComments = card.Comments.Count(),
                         CountOfFiles = card.Files.Count(),
                     };
