@@ -20,7 +20,7 @@ const objIconsFiles = [
 
 function setFileData(target) {
 
-    const progressArea = document.querySelector(".progress-area"), uploadedArea = document.querySelector(".uploaded-area");
+    const progressArea = document.querySelector(".progress-area")
     let file = target.files[0];
     const fileType = file.type;
     let fileImg = '';
