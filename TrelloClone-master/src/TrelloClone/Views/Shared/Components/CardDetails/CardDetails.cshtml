@@ -324,7 +324,14 @@
 
 
                                     <div class="description value_asessessment" id="descriptionAssessmentVal">
-                                        <span class="placeholder_input">Введите оценочное суждение</span>
+                                        @if (TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text != null)
+                                        {
+                                            @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text
+                                        }
+                                        else
+                                        {
+                                            <span class="placeholder_input">Введите оценочное суждение</span>
+                                        }
                                     </div>
 
 
@@ -390,7 +397,15 @@
 
 
                                         <div class="description value_asessessment" id="descriptionAssessmentVal">
-                                            <span class="placeholder_input">Введите оценочное суждение</span>
+                                            @if (TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text != null)
+                                            {
+                                                @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text
+                                            }else
+                                            {
+                                                    <span class="placeholder_input">Введите оценочное суждение</span>
+                                                }
+
+                                            
                                         </div>
 
 
