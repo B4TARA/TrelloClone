@@ -28,6 +28,16 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        public IActionResult ListMyCardsTable()
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            var model = _userBoardService.ListMyCards(userId);
+
+            return View(model);
+        }
+
+        [HttpGet]
         public IActionResult ListEmployeeCards(int employeeId)
         {
             int supervisorId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -36,7 +46,25 @@ namespace TrelloClone.Controllers
 
             return View(model);
         }
-        
+
+        [HttpGet]
+        public IActionResult ListEmployeeCardsTable(int employeeId)
+        {
+            int supervisorId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            var model = _userBoardService.ListEmployeeCards(employeeId, supervisorId);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ListArchiveCards(int userId)
+        {
+            var model = _userBoardService.ListArchiveCards(userId);
+
+            return View(model);
+        }
+
         [HttpGet]
         public IActionResult AddCardViewComponent()
         {

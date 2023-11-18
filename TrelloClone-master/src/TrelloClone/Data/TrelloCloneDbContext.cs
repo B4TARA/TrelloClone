@@ -49,6 +49,11 @@ namespace TrelloClone.Data
             {
                 builder.ToTable("FILES", schema: "public").HasKey(x => x.Id);
             });
+
+            builder.Entity<Update>(builder =>
+            {
+                builder.ToTable("UPDATES", schema: "public").HasKey(x => x.Id);
+            });
         }
     }
 }

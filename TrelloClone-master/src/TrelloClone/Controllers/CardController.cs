@@ -23,13 +23,13 @@ namespace TrelloClone.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CardDetails card)
         {
-            var userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+            var userName = User.FindFirst("Name").Value;
 
-            var userImg = Convert.ToString(User.Claims.FirstOrDefault(c => c.Type == "ImagePath").Value);
+            var userImg = Convert.ToString(User.FindFirst("ImagePath").Value);
 
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
-            var response = await _cardService.Update(card, userId, userImg);
+            var response = await _cardService.Update(card, userName, userImg);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -47,6 +47,49 @@ namespace TrelloClone.Controllers
                     action = action.Split("?")[0];
                     return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
                 }
+            }
+
+            return NotFound(response.Description);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GiveSupervisorRating(int CardId, int SupervisorAssessment)
+        {
+            var userName = User.FindFirst("Name").Value;
+
+            var userImg = Convert.ToString(User.FindFirst("ImagePath").Value);
+
+            var action = Request.Headers.Referer.ToString().Split("/")[4];
+
+            var response = await _cardService.GiveSupervisorRating(CardId, SupervisorAssessment, userName, userImg);
+
+            if (response.StatusCode == StatusCodes.OK)
+            {
+                TempData["Message"] = "Данные обновлены";
+
+                var employeeId = Convert.ToInt32(action.Split("=")[1]);
+                action = action.Split("?")[0];
+                return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
+            }
+
+            return NotFound(response.Description);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GiveEmployeeRating(int CardId, int EmployeeAssessment)
+        {
+            var userName = User.FindFirst("Name").Value;
+
+            var userImg = Convert.ToString(User.FindFirst("ImagePath").Value);
+
+            var response = await _cardService.GiveEmployeeRating(CardId, EmployeeAssessment, userName, userImg);
+
+            if (response.StatusCode == StatusCodes.OK)
+            {
+                TempData["Message"] = "Данные обновлены";
+
+                return RedirectToAction("ListMyCards", "UserBoard");
+
             }
 
             return NotFound(response.Description);
@@ -72,16 +115,20 @@ namespace TrelloClone.Controllers
 
             return RedirectToAction("ListMyCards", "UserBoard");
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> UploadFile()
         {
             var userId = Convert.ToInt32(User.FindFirst("Id").Value);
 
+            var userName = User.FindFirst("Name").Value;
+
+            var userImg = Convert.ToString(User.FindFirst("ImagePath").Value);
+
             IFormFile fileToUpload = Request.Form.Files[0];
             int cardId = Convert.ToInt32(Request.Form["cardId"]);
 
-            var response = await _cardService.UploadFile(fileToUpload, userId, cardId);
+            var response = await _cardService.UploadFile(fileToUpload, userId, cardId, userName, userImg);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -94,10 +141,14 @@ namespace TrelloClone.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteFile()
         {
+            var userName = User.FindFirst("Name").Value;
+
+            var userImg = Convert.ToString(User.FindFirst("ImagePath").Value);
+
             int fileId = Convert.ToInt32(Request.Form["fileId"]);
             int cardId = Convert.ToInt32(Request.Form["cardId"]);
 
-            var response = await _cardService.DeleteFile(fileId, cardId);
+            var response = await _cardService.DeleteFile(fileId, cardId, userName, userImg);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -111,7 +162,9 @@ namespace TrelloClone.Controllers
         public async Task<IActionResult> AddComment()
         {
             var userId = Convert.ToInt32(User.FindFirst("Id").Value);
+
             var userName = User.FindFirst("Name").Value;
+
             var userImage = User.FindFirst("ImagePath").Value;
 
             string comment = Request.Form["comment"];

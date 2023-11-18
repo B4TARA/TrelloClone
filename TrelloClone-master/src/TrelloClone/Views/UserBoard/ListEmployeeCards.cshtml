@@ -24,7 +24,7 @@
 <div class="header_btns_wrapper">
 
 
-    <button class="action_btn header_btn">
+    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListEmployeeCards" asp-route-employeeId="@Model.Id">
 
 
         <div class="action_btn_icon">
@@ -33,10 +33,10 @@
 
 
         <div class="description">Доска</div>
-    </button>
+    </a>
 
 
-    <button class="action_btn header_btn">
+    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListEmployeeCardsTable" asp-route-employeeId="@Model.Id">
 
 
         <div class="action_btn_icon">
@@ -45,10 +45,10 @@
 
 
         <div class="description">Таблица</div>
-    </button>
+    </a>
 
 
-    <button class="action_btn header_btn">
+    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListArchiveCards" asp-route-userId="@Model.Id">
 
 
         <div class="action_btn_icon">
@@ -57,7 +57,7 @@
 
 
         <div class="description">Архив</div>
-    </button>
+    </a>
 </div>
 
 
@@ -67,14 +67,10 @@
 
         @foreach (var column in Model.Columns)
         {
-
-
             <div class="stage_wrapper" id="@column.Id">
 
 
                 <div class="stage_header_info_wrapper margin_container_bottom_middle">
-
-
                     <div class="stage_info_main_wrapper margin_container_bottom_small">
 
 

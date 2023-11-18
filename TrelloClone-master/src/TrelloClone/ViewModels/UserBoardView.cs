@@ -29,9 +29,7 @@ namespace TrelloClone.ViewModels
             public string Requirement { get; set; }
             public DateTime Term { get; set; }
             public int? EmployeeAssessment { get; set; }
-            public string? EmployeeComment { get; set; }
             public int? SupervisorAssessment { get; set; }
-            public string? SupervisorComment { get; set; }
             public double? Points { get; set; }
             public int CountOfComments { get; set; }
             public int CountOfFiles { get; set; }

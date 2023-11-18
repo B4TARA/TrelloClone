@@ -18,7 +18,7 @@ namespace TrelloClone.Components
             var user = await _repository.UserRepository.GetUserById(false, userId);
 
             ////
-            var cards = await _repository.CardRepository.FindBy(x => x.Id == cardId, x => x.Comments, x => x.Files);
+            var cards = await _repository.CardRepository.FindBy(x => x.Id == cardId, x => x.Comments, x => x.Files, x => x.Updates);
             var card = cards.FirstOrDefault();
             ////
             
@@ -31,10 +31,8 @@ namespace TrelloClone.Components
                 Requirement = card.Requirement,
                 Term = card.Term,
                 EmployeeAssessment = card.EmployeeAssessment,
-                EmployeeComment = card.EmployeeComment,
                 SupervisorAssessment = card.SupervisorAssessment,
-                SupervisorComment = card.SupervisorComment,
-                Column = column.Number, // map current column
+                Column = column.Number,
                 ColumnId = column.Id,
                 IsActive = card.IsActive,
                 IsActiveLikeEmployee = user.IsActiveLikeEmployee,
@@ -42,6 +40,7 @@ namespace TrelloClone.Components
                 UserId = card.UserId,
                 Comments = card.Comments,
                 Files = card.Files,
+                Updates = card.Updates,
             };
 
             return View("CardDetails", model);

@@ -21,18 +21,19 @@ namespace TrelloClone.ViewModels
 
         [Required]
         public DateTime Term { get; set; }
-
         public int? EmployeeAssessment { get; set; }
-        public string? EmployeeComment { get; set; }
         public int? SupervisorAssessment { get; set; }
-        public string? SupervisorComment { get; set; }
         public int Column { get; set; } = 1;
         public bool IsActive { get; set; }  
         public bool IsActiveLikeEmployee { get; set; }
         public bool IsActiveLikeSupervisor { get; set; }
         public int UserId { get; set; }
         public int ColumnId { get; set; }
+
         public List<Comment> Comments = new List<Comment>();
+
         public List<File> Files = new List<File>();
+
+        public List<Update> Updates = new List<Update>();
     }
 }

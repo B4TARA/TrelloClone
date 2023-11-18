@@ -53,9 +53,7 @@ namespace TrelloClone.Services
                         Requirement = card.Requirement,
                         Term = card.Term,
                         EmployeeAssessment = card.EmployeeAssessment,
-                        EmployeeComment = card.EmployeeComment,
                         SupervisorAssessment = card.SupervisorAssessment,
-                        SupervisorComment = card.SupervisorComment,
                         CountOfComments = card.Comments.Count(),
                         CountOfFiles = card.Files.Count(),
                     };
@@ -104,9 +102,53 @@ namespace TrelloClone.Services
                         Requirement = card.Requirement,
                         Term = card.Term,
                         EmployeeAssessment = card.EmployeeAssessment,
-                        EmployeeComment = card.EmployeeComment,
                         SupervisorAssessment = card.SupervisorAssessment,
-                        SupervisorComment = card.SupervisorComment,
+                        CountOfComments = card.Comments.Count(),
+                        CountOfFiles = card.Files.Count(),
+                    };
+
+                    modelColumn.Cards.Add(modelCard);
+                }
+
+                model.Columns.Add(modelColumn);
+            }
+
+            return model;
+        }
+
+        public UserBoardView ListArchiveCards(int userId)
+        {
+            var model = new UserBoardView();
+
+            var user = _dbContext.Users
+                .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Comments)
+                .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Files)
+                .SingleOrDefault(x => x.Id == userId);
+
+            model.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
+            model.IsActiveToAddCard = user.IsActiveToAddCard;
+            model.Id = userId;
+            model.Name = user.Name;
+
+            foreach (var column in user.Columns)
+            {
+                var modelColumn = new UserBoardView.Column
+                {
+                    Id = column.Id,
+                    Number = column.Number,
+                    Title = column.Title
+                };
+
+                foreach (var card in column.Cards.Where(x => !x.IsRelevant))
+                {
+                    var modelCard = new UserBoardView.Card
+                    {
+                        Id = card.Id,
+                        Name = card.Name,
+                        Requirement = card.Requirement,
+                        Term = card.Term,
+                        EmployeeAssessment = card.EmployeeAssessment,
+                        SupervisorAssessment = card.SupervisorAssessment,
                         CountOfComments = card.Comments.Count(),
                         CountOfFiles = card.Files.Count(),
                     };
