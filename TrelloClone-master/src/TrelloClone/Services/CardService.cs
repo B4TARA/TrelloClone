@@ -9,6 +9,7 @@ using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
 using TrelloClone.Models.Assessment;
+using TrelloClone.Models.Term;
 using TrelloClone.ViewModels;
 using StatusCodes = TrelloClone.Models.Enum.StatusCodes;
 
@@ -85,6 +86,12 @@ namespace TrelloClone.Services
                         Content = "Изменил(а) \"Плановый срок реализации\" с \"" + card.Term + "\" на \"" + cardDetails.Term + "\""
                     });
 
+                    //перенос на другой квартал
+                    if(Term.GetQuarter(card.Term) != Term.GetQuarter(cardDetails.Term))
+                    {
+                        card.ColumnId = card.ColumnId = 3;
+                    }
+
                     card.Term = cardDetails.Term;
                 }
 
@@ -137,7 +144,7 @@ namespace TrelloClone.Services
                 //просрочено
                 if (card.SupervisorAssessment == 7)
                 {
-                    card.ColumnId = card.ColumnId - 2;
+                    card.ColumnId = card.ColumnId = 3;
                     card.Term = FakeToday;
                 }
 
