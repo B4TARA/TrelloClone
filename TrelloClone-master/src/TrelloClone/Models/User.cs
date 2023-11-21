@@ -19,6 +19,5 @@ namespace TrelloClone.Models
 
         public bool IsActiveLikeEmployee { get; set; } = false;
         public bool IsActiveLikeSupervisor { get; set; } = false;
-        public bool IsActiveToAddCard { get; set; } = false;
     }
 }

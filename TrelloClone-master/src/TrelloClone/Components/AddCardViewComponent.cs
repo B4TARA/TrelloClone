@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System;
+using TrelloClone.Models.Term;
 using TrelloClone.ViewModels;
 
 namespace TrelloClone.Components
@@ -8,7 +9,15 @@ namespace TrelloClone.Components
     {
         public IViewComponentResult Invoke()
         {
-            return View("AddCard");
+            DateTime FakeToday = new DateTime(2023, 3, 20);
+
+            var quarter = Term.GetQuarter(FakeToday);
+            var min = Term.GetMin(quarter, FakeToday);
+            var max = Term.GetMax(quarter, FakeToday);
+
+            var model = new AddCard { Min = min, Max = max, Term = FakeToday };
+
+            return View("AddCard", model);
         }
     }
 }

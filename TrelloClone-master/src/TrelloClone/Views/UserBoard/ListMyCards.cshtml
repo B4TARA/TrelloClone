@@ -24,7 +24,7 @@
 <div class="header_btns_wrapper">
 
 
-    <a class="action_btn header_btn active" asp-controller="UserBoard" asp-action="ListMyCards" asp-route-employeeId="@Model.Id">
+    <a class="action_btn header_btn active" asp-controller="UserBoard" asp-action="ListMyCards">
 
 
         <div class="action_btn_icon ">
@@ -36,7 +36,7 @@
     </a>
 
 
-    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListMyCardsTable" asp-route-employeeId="@Model.Id">
+    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListMyCardsTable">
 
 
         <div class="action_btn_icon">
@@ -59,6 +59,7 @@
         <div class="description">Архив</div>
     </a>
 </div>
+
 
 <section class="main_container_content" id="main_container_content">
     <div class="stages_main_wrapper ">
@@ -129,12 +130,8 @@
                     @foreach (var card in column.Cards)
                     {
                         <div class="card_wrapper @(card.SupervisorAssessment == 7 ? "expired" : "primary")">
-                           @* <form asp-action="Delete" asp-controller="Card">
-                                <input type="hidden" value="@card.Id" name="id" />
-                                <button class="action_btn close_action_btn white_btn" type="submit">
-                                    <i class="fa-solid fa-trash" style="color:#787486;"></i>
-                                </button>
-                            </form>*@
+
+
                             <div class="action_btn close_action_btn white_btn" cardId="@card.Id" onclick="openVerifyPopup(this)">
                                 <i class="fa-solid fa-trash" style="color:#787486;"></i>
                             </div>
@@ -206,12 +203,18 @@
                         </div>
                     }
                 </div>
-                @if (Model.IsActiveToAddCard && column.Number == 1)
+
+
+                @if (column.Number == 1)
                 {
                     <button class="action_btn white_btn open-popup-add">
+
+
                         <div class="action_btn_icon">
                             <i class="fa-solid fa-plus"></i>
                         </div>
+
+
                         <div class="description">
                             Добавить задачу
                         </div>

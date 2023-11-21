@@ -339,17 +339,39 @@
                                     </div>
 
 
-                                    <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden required>
+                                    @if(Model.Column == 5)
+                                    {
+                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden>
+                                    }
+
+
+                                    else
+                                    {
+                                        <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden required>
+                                    }
                                 </div>
 
                                 
-                            </div>
-                            
-                            
+                            </div>            
                         </div>
-                        <div class="first_row_grid_description select_description_assessment">
+
+
+                        <div @*class="first_row_grid_description select_description_assessment"*@>
                             <div></div>
-                            <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" placeholder="Введите комментарий к оценке" required></textarea>
+
+
+                            @if (Model.Column == 5)
+                            {
+                                <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="EmployeeComment" placeholder="Комментарий не был введен"></textarea>
+                            }
+
+
+                            else
+                            {
+                                <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="EmployeeComment" placeholder="Введите комментарий к оценке" required></textarea>
+                            }
+                            
+
                         </div>
                     </div>
 
@@ -429,10 +451,17 @@
 
                                 </div>
                             </div>
-                            <div class="first_row_grid_description select_description_assessment">
+
+
+                            <div @*class="first_row_grid_description select_description_assessment"*@>
                                 <div></div>
-                                <textarea class="mid_description comment_assessment" id="commentBossAssessment" placeholder="Введите комментарий к оценке" required></textarea>
+
+
+
+                                <textarea class="mid_description comment_assessment" id="commentBossAssessment" asp-for="SupervisorComment" placeholder="Введите комментарий к оценке" required></textarea>
                             </div>
+
+
                         </div>
                     }
                 }
@@ -548,7 +577,14 @@
 
                         else if (Model.Column == 4)
                         {
-                            <button asp-controller="Card" asp-action="GiveEmployeeRating" asp-route-CardId="@Model.Id" asp-route-EmployeeAssessment="@Model.EmployeeAssessment" class="action_btn green_btn">
+                            <button asp-controller="Card" asp-action="GiveEmployeeRating" 
+                                asp-route-CardId="@Model.Id" 
+                                asp-route-Name="@Model.Name"
+                                asp-route-Term="@Model.Term"
+                                asp-route-Requirement="@Model.Requirement"
+                                asp-route-EmployeeAssessment="@Model.EmployeeAssessment" 
+                                asp-route-EmployeeComment="@Model.EmployeeComment"
+                                class="action_btn green_btn">
                                 <div class="description">Выставить оценочное суждение</div>
                             </button>
                         }
@@ -575,7 +611,15 @@
 
                         else if (Model.Column == 5)
                         {
-                            <button asp-controller="Card" asp-action="GiveSupervisorRating" asp-route-CardId="@Model.Id" asp-route-SupervisorAssessment="@Model.SupervisorAssessment" class="action_btn green_btn">
+                            <button asp-controller="Card" asp-action="GiveSupervisorRating"
+                                asp-route-CardId="@Model.Id"
+                                asp-route-Name="@Model.Name"
+                                asp-route-Term="@Model.Term"
+                                asp-route-FactTerm="@Model.FactTerm"
+                                asp-route-Requirement="@Model.Requirement"
+                                asp-route-SupervisorAssessment="@Model.SupervisorAssessment"
+                                asp-route-SupervisorComment="@Model.SupervisorComment"
+                                class="action_btn green_btn">
                                 <div class="description">Выставить оценочное суждение</div>
                             </button>
                         }

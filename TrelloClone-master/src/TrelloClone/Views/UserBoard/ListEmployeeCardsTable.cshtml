@@ -22,7 +22,7 @@
 <div class="header_btns_wrapper">
 
 
-    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListMyCards" asp-route-employeeId="@Model.Id">
+    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListEmployeeCards" asp-route-employeeId="@Model.Id">
 
 
         <div class="action_btn_icon">
@@ -34,7 +34,7 @@
     </a>
 
 
-    <a class="action_btn header_btn active" asp-controller="UserBoard" asp-action="ListMyCardsTable" asp-route-employeeId="@Model.Id">
+    <a class="action_btn header_btn active" asp-controller="UserBoard" asp-action="ListEmployeeCardsTable" asp-route-employeeId="@Model.Id">
 
 
         <div class="action_btn_icon ">
@@ -73,14 +73,10 @@
                         <tr>
 
 
-                            @if (Model.IsActiveToAddCard && column.Number == 1)
+                            @if (column.Number == 1)
                             {
                                 <th class="default_bcolor_highcontrast">
-                                    @column.Title
-                                    <div class="action_btn header_add_btn white_btn open-popup-add" type="submit">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </div>
-
+                                    @column.Title                                  
                                 </th>
                             }
 

@@ -35,6 +35,7 @@ function setFileData(target) {
     uploadFile(file)
 }
 
+
 function deleteFile(fileId, cardId) {
 
     var url = "/Card/DeleteFile";

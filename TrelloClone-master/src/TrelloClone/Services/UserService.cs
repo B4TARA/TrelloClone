@@ -51,18 +51,6 @@ namespace TrelloClone.Services
                             if(cardColumn.Number == 1 && Term.GetQuarter(card.Term) == Term.GetNextQuarter(FakeToday))
                             {
                                 card.ColumnId = card.ColumnId + 1;
-                                card.IsActive = true;
-                            }
-
-                            //25 числа все карточки во 2 колонки становятся активными, если они в нужном квартале
-                            else if (cardColumn.Number == 2 && Term.GetQuarter(card.Term) == Term.GetNextQuarter(FakeToday))
-                            {
-                                card.IsActive = true;
-                            }
-
-                            else
-                            {
-                                card.IsActive = false;
                             }
 
                             _repository.CardRepository.Update(card);
@@ -82,14 +70,12 @@ namespace TrelloClone.Services
                             if (cardColumn.Number == 6 && card.SupervisorAssessment != 7)
                             {
                                 card.IsRelevant = false;
-                                card.IsActive = false;
                             }
                             
                             //1 числа все карточки предыдущего квартала автоматически переходят с 3 колонки на 4
                             else if (cardColumn.Number == 3 && Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
                             {
                                 card.ColumnId = card.ColumnId + 1;
-                                card.IsActive = true;
                             }
 
                             
@@ -99,20 +85,13 @@ namespace TrelloClone.Services
                                 if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday))
                                 {
                                     card.ColumnId = card.ColumnId + 1;
-                                    card.IsActive = true;
                                 }
 
                                 //1 числа все карточки все карточки переходят со 2 колонки на 4 если они с предыдущего квартала
                                 else if (Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
                                 {
                                     card.ColumnId = card.ColumnId + 2;
-                                    card.IsActive = true;
                                 }                            
-                            }
-
-                            else
-                            {
-                                card.IsActive = false;
                             }
 
                             _repository.CardRepository.Update(card);
@@ -125,18 +104,6 @@ namespace TrelloClone.Services
                             if (cardColumn.Number == 4)
                             {
                                 card.ColumnId = card.ColumnId + 1;
-                                card.IsActive = true;
-                            }
-
-                            //8 числа все карточки на 5 колонке становятся активными
-                            else if (cardColumn.Number == 5)
-                            {
-                                card.IsActive = true;
-                            }
-
-                            else
-                            {
-                                card.IsActive = false;
                             }
 
                             _repository.CardRepository.Update(card);
@@ -153,11 +120,10 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        user.IsActiveToAddCard = true;
                         user.IsActiveLikeEmployee = true;
                         user.IsActiveLikeSupervisor = false;
 
-                        //await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
+                        await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
                     }
 
                     else if (FakeToday.Day == 24 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
@@ -191,9 +157,6 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 1)
                     {
-                        user.IsActiveToAddCard = false;
-                        //user.IsActiveLikeSupervisor = false;
-
                         if (user.Role == Roles.Employee || user.Role == Roles.Combined)
                         {
                             user.IsActiveLikeEmployee = true;
@@ -466,8 +429,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();
@@ -507,7 +470,7 @@ namespace TrelloClone.Services
             {
                 var user = await _repository.UserRepository.GetUserById(false, userId);
 
-                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, subject, content, null);
+                var message = new Message(new string[] { "yan.tomchik@mail.ru" }, subject, content, null);
                 await _emailSender.SendEmailAsync(message);
 
                 return new BaseResponse<object>()

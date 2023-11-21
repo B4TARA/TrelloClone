@@ -32,7 +32,6 @@ namespace TrelloClone.Services
                 .SingleOrDefault(x => x.Id == userId);
 
             model.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
-            model.IsActiveToAddCard = user.IsActiveToAddCard;
             model.Id = userId;
             model.Name = user.Name;
 
@@ -127,7 +126,6 @@ namespace TrelloClone.Services
                 .SingleOrDefault(x => x.Id == userId);
 
             model.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
-            model.IsActiveToAddCard = user.IsActiveToAddCard;
             model.Id = userId;
             model.Name = user.Name;
 
@@ -195,11 +193,6 @@ namespace TrelloClone.Services
 
                 var card = await _repository.CardRepository.GetCardById(false, command.CardId);
                 var cardColumn = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
-
-                if(cardColumn.Number != 1 || FakeToday.Day < 25)
-                {
-                    card.IsActive = false;
-                }
 
                 //25 числа все карточки с 1 колонки автоматически на 2 колонку, если они в нужном квартале
                 if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday))

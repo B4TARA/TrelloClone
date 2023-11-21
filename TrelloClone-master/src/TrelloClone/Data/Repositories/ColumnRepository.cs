@@ -26,5 +26,14 @@ namespace TrelloClone.Data.Repositories
             }
             return columnsByCondition.First();
         }
+
+        public async Task<List<Column>> GetColumnsByUser(bool trackChanges, int userId)
+        {
+            Expression<Func<Column, bool>> expression = m => m.UserId == userId;
+
+            List<Column> columnsByCondition = await GetByCondition(expression, trackChanges);
+
+            return columnsByCondition;
+        }
     }
 }

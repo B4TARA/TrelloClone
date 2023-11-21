@@ -1,5 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
+using MimeKit.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,10 @@ namespace EmailService
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
 
-            var bodyBuilder = new BodyBuilder { HtmlBody = string.Format("<h2 style='color:#1b74fd;'>{0}</h2>", message.Content) }; //colorrrrrrrrrrrrr
+            var bodyBuilder = new BodyBuilder();
+            var imageHead = bodyBuilder.LinkedResources.Add("/image/default_profile_icon.svg");
+            imageHead.ContentId = MimeUtils.GenerateMessageId();
+            bodyBuilder.HtmlBody = string.Format(@"<img src='cid:{0}'>< h2 style='color:#1b74fd;'>{1}</h2>", imageHead.ContentId, message.Content); //colorrrrrrrrrrrrr
 
             if (message.Attachments != null && message.Attachments.Any())
             {

@@ -83,28 +83,30 @@ function openVerifyPopup(elem) {
     mainContainerContentElement.append(div)
 }
 
+
 function closeVerifyPopup(elem) {
     const popupElem = document.querySelector('.popup_verify_bg_wrapper')
     popupElem.remove()
 }
 
-//раскоментить функцию ниже для удаления через пост
 
-//function sendInfoDeleteCard(cardId) {
-//    console.log(cardId)
-//    var url = "/Card/Delete";
+function sendInfoDeleteCard(cardId) {
+    
+    var url = "/Card/Delete";
+    formData = new FormData();
+    formData.append("cardId", cardId);
 
-//    $.ajax({
-//        url: url,
-//        type: 'POST',
-//        data: cardId,
-//        cache: false,
-//        contentType: false,
-//        processData: false,
-//        success: async function () {
-
-//        }
-//    });
-//}
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: async function () {
+            window.location.href = "/UserBoard/ListMyCards";
+        }
+    });
+}
 
 

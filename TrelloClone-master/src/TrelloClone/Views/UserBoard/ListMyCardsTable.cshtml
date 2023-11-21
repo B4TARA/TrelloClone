@@ -59,69 +59,70 @@
     </a>
 </div>
 <section class="main_container_content" id="main_container_content">
-<div class="list_view_container">
+    <div class="list_view_container">
 
 
-    @foreach (var column in Model.Columns)
-    {
+        @foreach (var column in Model.Columns)
+        {
 
-        <div class="list_view_main_wrapper">
-            <table class="table_list_view margin_container_bottom_middle">
-
-
-                <thead>
-                    <tr>
+            <div class="list_view_main_wrapper">
+                <table class="table_list_view margin_container_bottom_middle">
 
 
-                            @if (Model.IsActiveToAddCard && column.Number == 1)
-                        {
-                            <th class="default_bcolor_highcontrast open-popup-add">
-                                @column.Title
+                    <thead>
+                        <tr>
+
+
+                            @if (column.Number == 1)
+                            {
+                                <th class="default_bcolor_highcontrast">
+                                    @column.Title
                                     <div class="action_btn header_add_btn white_btn open-popup-add" type="submit">
-                                    <i class="fa-solid fa-plus"></i>
-                                </div>
-                                    
+                                        <i class="fa-solid fa-plus"></i>
+                                    </div>
+
                                 </th>
-                        }
+                            }
 
 
-                        else if (column.Number == 2)
-                        {
-                            <th class="yellow_bcolor_highcontrast">@column.Title
-                                    
-                            </th>
-                                
-                        }
+                            else if (column.Number == 2)
+                            {
+                                <th class="yellow_bcolor_highcontrast">
+                                    @column.Title
+
+                                </th>
+
+                            }
 
 
-                        else if (column.Number == 3 || column.Number == 6)
-                        {
-                            <th class="green_bcolor_highcontrast">@column.Title</th>
-                        }
+                            else if (column.Number == 3 || column.Number == 6)
+                            {
+                                <th class="green_bcolor_highcontrast">@column.Title</th>
+                            }
 
 
-                        else if (column.Number == 4 || column.Number == 5)
-                        {
-                            <th class="blue_bcolor_highcontrast">@column.Title</th>
-                        }
+                            else if (column.Number == 4 || column.Number == 5)
+                            {
+                                <th class="blue_bcolor_highcontrast">@column.Title</th>
+                            }
 
 
-                        <th class="extra_info"></th>
+                            <th class="extra_info"></th>
 
 
-                        <th>Создал</th>
+                            <th>Создал</th>
 
 
-                        <th>Дата создания</th>
+                            <th>Дата создания</th>
 
 
-                        <th class="delete_card"></th>
+                            <th class="delete_card"></th>
 
-                    </tr>
-                </thead>
+                        </tr>
+                    </thead>
 
 
-                <tbody>
+                    <tbody>
 
                         @if (column.Cards.Count() != 0)
                         {
@@ -251,33 +252,28 @@
 
 
                                 <td class="table_title_wrapper">
-
                                 </td>
 
 
                                 <td>
-                                    
                                 </td>
 
 
                                 <td>
-
                                 </td>
 
 
                                 <td>
-                                    
                                 </td>
 
 
                                 <td>
-                                    
                                 </td>
                             </tr>
                         }
                     </tbody>
-            </table>
-        </div>
-    }
-</div>
+                </table>
+            </div>
+        }
+    </div>
 </section>

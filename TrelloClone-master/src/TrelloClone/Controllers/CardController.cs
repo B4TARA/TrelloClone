@@ -42,7 +42,6 @@ namespace TrelloClone.Controllers
 
                 else
                 {
-                    //await _userService.SendNotification(card.UserId, "Уведомление", "Ваша карточка " + card.Name + " была изменена");
                     var employeeId = Convert.ToInt32(action.Split("=")[1]);
                     action = action.Split("?")[0];
                     return RedirectToAction(action, "UserBoard", new { employeeId = employeeId });
@@ -53,7 +52,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GiveSupervisorRating(int CardId, int SupervisorAssessment)
+        public async Task<IActionResult> GiveSupervisorRating(int CardId, string Name, DateTime Term, DateTime FactTerm, string Requirement, int SupervisorAssessment, string SupervisorComment)
         {
             var userName = User.FindFirst("Name").Value;
 
@@ -61,7 +60,7 @@ namespace TrelloClone.Controllers
 
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
-            var response = await _cardService.GiveSupervisorRating(CardId, SupervisorAssessment, userName, userImg);
+            var response = await _cardService.GiveSupervisorRating(CardId, Name, Term, FactTerm, Requirement, SupervisorAssessment, SupervisorComment, userName, userImg);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -76,13 +75,13 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GiveEmployeeRating(int CardId, int EmployeeAssessment)
+        public async Task<IActionResult> GiveEmployeeRating(int CardId, string Name, DateTime Term, string Requirement, int EmployeeAssessment, string EmployeeComment)
         {
             var userName = User.FindFirst("Name").Value;
 
             var userImg = Convert.ToString(User.FindFirst("ImagePath").Value);
 
-            var response = await _cardService.GiveEmployeeRating(CardId, EmployeeAssessment, userName, userImg);
+            var response = await _cardService.GiveEmployeeRating(CardId, Name, Term, Requirement, EmployeeAssessment, EmployeeComment, userName, userImg);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -98,22 +97,23 @@ namespace TrelloClone.Controllers
         [HttpPost]
         public IActionResult Create(AddCard viewModel)
         {
+            var action = Request.Headers.Referer.ToString().Split("/")[4];
+
             viewModel.Id = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
 
-            //ViewBag добавить ошибки и выводить их в этой формочке (если они есть)
-            if (!ModelState.IsValid) return RedirectToAction("ListMyCards", "UserBoard");
-
             _cardService.Create(viewModel);
-
-            return RedirectToAction("ListMyCards", "UserBoard");
+           
+            return RedirectToAction(action, "UserBoard");
         }
 
         [HttpPost]
-        public IActionResult Delete(int CardId)
+        public IActionResult Delete()
         {
-            _cardService.Delete(CardId);
+            int cardId = Convert.ToInt32(Request.Form["cardId"]);
 
-            return RedirectToAction("ListMyCards", "UserBoard");
+            _cardService.Delete(cardId);
+
+            return Ok();
         }
 
         [HttpPost]

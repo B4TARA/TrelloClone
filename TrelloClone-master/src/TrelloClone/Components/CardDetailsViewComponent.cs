@@ -34,7 +34,6 @@ namespace TrelloClone.Components
                 SupervisorAssessment = card.SupervisorAssessment,
                 Column = column.Number,
                 ColumnId = column.Id,
-                IsActive = card.IsActive,
                 IsActiveLikeEmployee = user.IsActiveLikeEmployee,
                 IsActiveLikeSupervisor = user.IsActiveLikeSupervisor,
                 UserId = card.UserId,

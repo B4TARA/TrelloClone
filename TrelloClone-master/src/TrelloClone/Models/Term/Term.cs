@@ -78,5 +78,78 @@ namespace TrelloClone.Models.Term
 
             return 0;
         }
+
+        //год учитывается
+        public static DateTime GetMin(int quarter, DateTime dateTime)
+        {
+            if (quarter == 1)
+            {
+                return new DateTime(dateTime.Year, 1, 1);
+            }
+
+            else if (quarter == 2)
+            {
+                return new DateTime(dateTime.Year, 4, 1);
+            }
+
+            else if (quarter == 3)
+            {
+                return new DateTime(dateTime.Year, 7, 1);
+            }
+
+            else if (quarter == 4)
+            {
+                return new DateTime(dateTime.Year, 10, 1);
+            }
+
+            return new DateTime();
+        }
+        public static DateTime GetMax(int quarter, DateTime dateTime)
+        {
+            if (quarter == 1)
+            {
+                if (dateTime.Month == 3 && dateTime.Day >= 20)
+                {
+                    return new DateTime(dateTime.Year, 6, DateTime.DaysInMonth(dateTime.Year, 6));
+                }
+
+                return new DateTime(dateTime.Year, 3, DateTime.DaysInMonth(dateTime.Year, 3));
+            }
+
+            else if (quarter == 2)
+            {
+                if (dateTime.Month == 6 && dateTime.Day >= 20)
+                {
+                    return new DateTime(dateTime.Year, 9, DateTime.DaysInMonth(dateTime.Year, 9));
+                }
+
+                return new DateTime(dateTime.Year, 6, DateTime.DaysInMonth(dateTime.Year, 6));
+            }
+
+            else if (quarter == 3)
+            {
+                if (dateTime.Month == 9 && dateTime.Day >= 20)
+                {
+                    return new DateTime(dateTime.Year, 12, DateTime.DaysInMonth(dateTime.Year, 12));
+                }
+
+                return new DateTime(dateTime.Year, 9, DateTime.DaysInMonth(dateTime.Year, 9));
+            }
+
+            else if (quarter == 4)
+            {
+                if(dateTime.Month == 12 && dateTime.Day >= 20)
+                {
+                    return new DateTime(dateTime.Year + 1, 3, DateTime.DaysInMonth(dateTime.Year + 1, 3));
+                }
+
+                else
+                {
+                    return new DateTime(dateTime.Year, 12, DateTime.DaysInMonth(dateTime.Year, 12));
+                }             
+            }
+
+            return new DateTime();
+        }
     }
 }
