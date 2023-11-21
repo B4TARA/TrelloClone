@@ -1,93 +1,25 @@
-﻿@model TrelloClone.ViewModels.UserBoardView
-
-<div class="home-content">
-
-
-    <div class="home_content_info">
-
-
-        <div class="home_content_info_icon">
-            <i class="fa-solid fa-folder"></i>
-        </div>
-
-
-        <div class="mid_title">
-            @Model.Name
-        </div>
-
-
-    </div>
-</div>
-
-
-<div class="header_btns_wrapper">
-
-
-    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListMyCards" asp-route-employeeId="@Model.Id">
-
-
-        <div class="action_btn_icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M2 2h20v2H2z"></path><rect x="5" y="6" width="6" height="16" rx="1"></rect><rect x="13" y="6" width="6" height="12" rx="1"></rect></svg>
-        </div>
-
-
-        <div class="description">Доска</div>
-    </a>
-
-
-    <a class="action_btn header_btn" asp-controller="UserBoard" asp-action="ListMyCardsTable" asp-route-employeeId="@Model.Id">
-
-
-        <div class="action_btn_icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M2 2h2v20H2z"></path><rect x="6" y="13" width="16" height="6" rx="1"></rect><rect x="6" y="5" width="12" height="6" rx="1"></rect></svg>
-        </div>
-
-
-        <div class="description">Список</div>
-    </a>
-
-
-    <a class="action_btn header_btn active" asp-controller="UserBoard" asp-action="ListArchiveCards" asp-route-userId="@Model.Id">
-
-
-        <div class="action_btn_icon ">
-            <i class="fa-solid fa-box-archive"></i>
-        </div>
-
-
-        <div class="description">Архив</div>
-    </a>
-</div>
-<section class="main_container_content" id="main_container_content">
 <div class="list_view_container">
-    @foreach (var column in Model.Columns)
-    {
-            @if (column.Number == 6)
-            {
+        @foreach (var column in Model.Columns)
+        {
         <div class="list_view_main_wrapper">
             <table class="table_list_view margin_container_bottom_middle">
-
-
                 <thead>
                     <tr>
-                        <th class="blue_bcolor_highcontrast">Архив</th>
-                        <th class="extra_info"></th>
-                        <th>Создал</th>
-                        <th>Дата создания</th>
-                        <th>Дата закрытия</th>
-                        <th>Оценка сотрудника</th>
-                        <th>Оценка руководителя</th>
+                        <th class="blue_bcolor_highcontrast">?????</th>
+                        <th class="extra_info">????????</th>
+                        <th>??????</th>
+                        <th>???? ????????</th>
+                        <th>???? ????????</th>
+                        <th>??????????</th>
+                        <th>?????? ????????????</th>
+                        <th class="delete_card"></th>
                     </tr>
                 </thead>
 
-
                 <tbody>
-                    @foreach (var card in column.Cards)
-                    {
-
-                                <tr class="open-popup" idcard="@card.Id">
-
-
+                        @foreach (var card in column.Cards)
+                        {
+                                <tr>
                                     <td class="table_title_wrapper">
                                         <div class="stage_indicator_circle blue_bcolor"></div>
                                         <div class="info_table_title_wrapper">
@@ -95,13 +27,10 @@
                                                 @card.Name
                                             </div>
                                         </div>
+
                                     </td>
-
-
                                     <td>
                                         <div class="card_details_info_wrapper">
-
-
                                             <div class="card_detail_item">
                                                 <div class="item_icon">
                                                     <i class="fa-regular fa-message" style="color: #787486;"></i>
@@ -112,8 +41,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                             <div class="card_detail_item">
                                                 <div class="item_icon">
                                                     <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
@@ -125,14 +52,9 @@
                                                 </div>
                                             </div>
 
-
                                         </div>
                                     </td>
-
-
                                     <td>
-
-
                                         @if (User.FindFirst("ImagePath") != null)
                                         {
                                             <div class="card_holders_wrapper">
@@ -160,20 +82,17 @@
                                             </div>
                                         }
                                     </td>
+                        <td>
+                            <div class="card_name_wrapper">
 
 
-                                    <td>
-                                        <div class="card_name_wrapper">
+                                <div class="mid_description">
+                                            @card.Term.ToString("MMMM yyyy")
+                                </div>
 
 
-                                            <div class="mid_description">
-                                                @card.Term.ToString("MMMM yyyy")
-                                            </div>
-
-
-                                        </div>
-                                    </td>
-
+                            </div>
+                        </td>
 
                                     <td>
                                         <div class="card_name_wrapper">
@@ -187,23 +106,22 @@
                                         </div>
                                     </td>
 
-
                                     <td>
-                                        @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment).Value
+                                        0,5
                                     </td>
 
-
                                     <td>
-                                        @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value
+                                        1
                                     </td>
 
-                                </tr>
-                            
-                        }
+                        <td>
+                            <i class="fa-solid fa-trash" style="color:#787486;"></i>
+                        </td>
+                    </tr>
+                    
+                    }
                 </tbody>
             </table>
         </div>
-            }
-    }
-</div>
-</section>
+        }
+    </div>

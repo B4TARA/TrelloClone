@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Hosting;
+п»їusing Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,7 +28,7 @@ namespace TrelloClone.Services
             _hostingEnvironment = hostingEnvironment;
         }
 
-        DateTime FakeToday = new DateTime(2023, 3, 20);
+        DateTime FakeToday = new DateTime(2023, 10, 1, 12, 10, 25);
 
         public void Create(AddCard viewModel)
         {
@@ -57,24 +57,24 @@ namespace TrelloClone.Services
         public async Task<IBaseResponse<object>> Update(CardDetails cardDetails, string userName, string userImg)
         {
             try
-            {             
+            {
                 var card = await _repository.CardRepository.GetCardById(false, cardDetails.Id);
 
                 if (card.Name != cardDetails.Name)
-                {                    
+                {
                     card.Updates.Add(new Update
                     {
                         CardId = card.Id,
                         UserName = userName,
                         UserImg = userImg,
                         Date = FakeToday,
-                        Content = "Изменил(а) \"Название\" с \"" + card.Name + "\" на \"" + cardDetails.Name + "\""
+                        Content = "РР·РјРµРЅРёР»(Р°) \"РќР°Р·РІР°РЅРёРµ\" СЃ \"" + card.Name + "\" РЅР° \"" + cardDetails.Name + "\""
                     });
 
                     card.Name = cardDetails.Name;
                 }
 
-                //перенос
+                //РїРµСЂРµРЅРѕСЃ
                 if (card.Term != cardDetails.Term)
                 {
                     card.Updates.Add(new Update
@@ -83,13 +83,13 @@ namespace TrelloClone.Services
                         UserName = userName,
                         UserImg = userImg,
                         Date = FakeToday,
-                        Content = "Изменил(а) \"Плановый срок реализации\" с \"" + card.Term + "\" на \"" + cardDetails.Term + "\""
+                        Content = "РР·РјРµРЅРёР»(Г ) \"РџР»Р°РЅРѕРІС‹Р№ СЃСЂРѕРє СЂРµР°Р»РёР·Р°С†РёРё\" СЃ \"" + card.Term + "\" РЅР° \"" + cardDetails.Term + "\""
                     });
 
-                    //перенос на другой квартал
-                    if(Term.GetQuarter(card.Term) != Term.GetQuarter(cardDetails.Term))
+                    //РїРµСЂРµРЅРѕСЃ РЅР° РґСЂСѓРіРѕР№ РєРІР°СЂС‚Р°Р»
+                    if (Term.GetQuarter(card.Term) != Term.GetQuarter(cardDetails.Term))
                     {
-                        card.ColumnId = card.ColumnId = 3;
+                        card.ColumnId = card.ColumnId - 2;
                     }
 
                     card.Term = cardDetails.Term;
@@ -103,50 +103,50 @@ namespace TrelloClone.Services
                         UserName = userName,
                         UserImg = userImg,
                         Date = FakeToday,
-                        Content = "Изменил(а) \"Требование к SMART-задаче\" с \"" + card.Requirement + "\" на \"" + cardDetails.Requirement + "\""
+                        Content = "РР·РјРµРЅРёР»(Р°) \"РўСЂРµР±РѕРІР°РЅРёРµ Рє SMART-Р·Р°РґР°С‡Рµ\" СЃ \"" + card.Requirement + "\" РЅР° \"" + cardDetails.Requirement + "\""
                     });
 
                     card.Requirement = cardDetails.Requirement;
                 }
-                
-                if(card.EmployeeAssessment != cardDetails.EmployeeAssessment)
-                {
-                    card.Updates.Add(new Update
-                    {
-                        CardId = card.Id,
-                        UserName = userName,
-                        UserImg = userImg,
-                        Date = FakeToday,
-                        Content = "Изменил(а) \"Оценочное суждение работника\" с \""
-                        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment).Text + "\" на \""
-                        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == cardDetails.EmployeeAssessment).Text + "\""
-                    });
 
-                    card.EmployeeAssessment = cardDetails.EmployeeAssessment;
-                }
-               
-                if(card.SupervisorAssessment != cardDetails.SupervisorAssessment)
-                {
-                    card.Updates.Add(new Update
-                    {
-                        CardId = card.Id,
-                        UserName = userName,
-                        UserImg = userImg,
-                        Date = FakeToday,
-                        Content = "Изменил(а) \"Оценочное суждение непосредственного руководителя\" с \"" 
-                        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text + "\" на \"" 
-                        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == cardDetails.SupervisorAssessment).Text + "\""
-                    });
+                //if(card.EmployeeAssessment != cardDetails.EmployeeAssessment)
+                //{
+                //    card.Updates.Add(new Update
+                //    {
+                //        CardId = card.Id,
+                //        UserName = userName,
+                //        UserImg = userImg,
+                //        Date = FakeToday,
+                //        Content = "РР·РјРµРЅРёР»Р°(Р°) \"РѕС†РµРЅРѕС‡РЅРѕРµ СЃСѓР¶РґРµРЅРёРµ СЂР°Р±РѕС‚РЅРёРєР°\" СЃ \""
+                //        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment).Text + "\" РЅР° \""
+                //        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == cardDetails.EmployeeAssessment).Text + "\""
+                //    });
 
-                    card.SupervisorAssessment = cardDetails.SupervisorAssessment;
-                }             
+                //    card.EmployeeAssessment = cardDetails.EmployeeAssessment;
+                //}
 
-                //просрочено
-                if (card.SupervisorAssessment == 7)
-                {
-                    card.ColumnId = card.ColumnId = 3;
-                    card.Term = FakeToday;
-                }
+                //if(card.SupervisorAssessment != cardDetails.SupervisorAssessment)
+                //{
+                //    card.Updates.Add(new Update
+                //    {
+                //        CardId = card.Id,
+                //        UserName = userName,
+                //        UserImg = userImg,
+                //        Date = FakeToday,
+                //        Content = "РР·РјРµРЅРёР»(Г ) \"ГЋГ¶ГҐГ­Г®Г·Г­Г®ГҐ Г±ГіГ¦Г¤ГҐГ­ГЁГҐ Г­ГҐГЇГ®Г±Г°ГҐГ¤Г±ГІГўГҐГ­Г­Г®ГЈГ® Г°ГіГЄГ®ГўГ®Г¤ГЁГІГҐГ«Гї\" Г± \"" 
+                //        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text + "\" Г­Г  \"" 
+                //        + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == cardDetails.SupervisorAssessment).Text + "\""
+                //    });
+
+                //    card.SupervisorAssessment = cardDetails.SupervisorAssessment;
+                //}             
+
+                ////РїСЂРѕСЃСЂРѕС‡РєР°
+                //if (card.SupervisorAssessment == 7)
+                //{
+                //    card.ColumnId = card.ColumnId - 3;
+                //    card.Term = FakeToday;
+                //}
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
@@ -179,13 +179,24 @@ namespace TrelloClone.Services
                     UserName = userName,
                     UserImg = userImg,
                     Date = FakeToday,
-                    Content = "Выставил(а) \"Оценочное суждение непосредственного руководителя\" : \""
+                    Content = "Р’С‹СЃС‚Р°РІРёР»(Р°) РѕС†РµРЅРѕС‡РЅРѕРµ СЃСѓР¶РґРµРЅРёРµ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕРіРѕ СЂСѓРєРѕРІРѕРґРёС‚РµР»СЏ : \""
                         + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == SupervisorAssessment).Text + "\""
                 });
 
                 card.SupervisorAssessment = SupervisorAssessment;
-                card.ColumnId = card.ColumnId + 1;
-                
+
+                //РїСЂРѕСЃСЂРѕС‡РєР°
+                if (card.SupervisorAssessment == 7)
+                {                
+                    card.ColumnId = card.ColumnId - 2;
+                    card.Term = FakeToday;
+                }
+
+                else
+                {
+                    card.ColumnId = card.ColumnId + 1;
+                }                
+
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
 
@@ -217,12 +228,12 @@ namespace TrelloClone.Services
                     UserName = userName,
                     UserImg = userImg,
                     Date = FakeToday,
-                    Content = "Выставил(а) \"Оценочное суждение работника\" : \""
+                    Content = "Р’С‹СЃС‚Р°РІРёР»(Р°) РѕС†РµРЅРѕС‡РЅРѕРµ СЃСѓР¶РґРµРЅРёРµ СЂР°Р±РѕС‚РЅРёРєР°\" : \""
                         + AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == EmployeeAssessment).Text + "\""
                 });
 
                 card.EmployeeAssessment = EmployeeAssessment;
-                card.ColumnId = card.ColumnId + 1;               
+                card.ColumnId = card.ColumnId + 1;
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
@@ -279,7 +290,7 @@ namespace TrelloClone.Services
                     UserName = userName,
                     UserImg = userImg,
                     Date = FakeToday,
-                    Content = "Прикрепил(а) Файл : \"" + fileToUpload.FileName + "\""
+                    Content = "РџСЂРёРєСЂРµРїРёР»(Р°) С„Р°Р№Р» : \"" + fileToUpload.FileName + "\""
                 });
 
                 _repository.CardRepository.Update(card);
@@ -305,7 +316,7 @@ namespace TrelloClone.Services
         {
             try
             {
-                var card = await _repository.CardRepository.GetCardById(false, cardId);               
+                var card = await _repository.CardRepository.GetCardById(false, cardId);
 
                 var fileToDelete = await _repository.FileRepository.GetFileById(false, fileId);
 
@@ -315,7 +326,7 @@ namespace TrelloClone.Services
                     UserName = userName,
                     UserImg = userImg,
                     Date = FakeToday,
-                    Content = "Открепил(а) Файл : \"" + fileToDelete.Name + "\""
+                    Content = "РћС‚РєСЂРµРїРёР»(Р°) С„Р°Р№Р» : \"" + fileToDelete.Name + "\""
                 });
 
                 if (System.IO.File.Exists(fileToDelete.Path))
@@ -363,7 +374,7 @@ namespace TrelloClone.Services
                     UserName = userName,
                     UserImg = userImg,
                     Date = FakeToday,
-                    Content = "Добавил(а) Комментарий"
+                    Content = "Р”РѕР±Р°РІРёР»(Р°) РєРѕРјРјРµРЅС‚Р°СЂРёР№"
                 });
 
                 _repository.CardRepository.Update(card);

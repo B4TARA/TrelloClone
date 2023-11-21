@@ -6,6 +6,7 @@ using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
 using TrelloClone.Models.Enum;
+using TrelloClone.Models.Term;
 using TrelloClone.ViewModels;
 
 namespace TrelloClone.Services
@@ -190,7 +191,7 @@ namespace TrelloClone.Services
         {
             try
             {
-                DateTime FakeToday = new DateTime(2023, 4, 1);
+                DateTime FakeToday = new DateTime(2023, 10, 1);
 
                 var card = await _repository.CardRepository.GetCardById(false, command.CardId);
                 var cardColumn = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
@@ -200,7 +201,18 @@ namespace TrelloClone.Services
                     card.IsActive = false;
                 }
 
-                card.ColumnId = command.ColumnId + 1;             
+                //25 числа все карточки с 1 колонки автоматически на 2 колонку, если они в нужном квартале
+                if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday))
+                {
+                    card.ColumnId = card.ColumnId + 1;
+                }
+
+                //1 числа все карточки все карточки переходят со 2 колонки на 4 если они с предыдущего квартала
+                else if (Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
+                {
+                    card.ColumnId = card.ColumnId + 2;
+                    //card.IsActive = true;
+                }
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();

@@ -28,7 +28,7 @@
 
 
                         <div class="card_name_input_wrapper card_detail_active">
-                            <input type="text" asp-for="Name" placeholder="Введите название" />
+                            <input type="text" asp-for="Name" placeholder="Введите название" required/>
                         </div>
 
 
@@ -59,7 +59,7 @@
                         <div></div>
 
 
-                        <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание"></textarea>
+                        <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание" required></textarea>
                     </div>
 
 
@@ -90,7 +90,7 @@
 
 
                         <div class="choose_date_wrapper" id="choose_date">
-                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период">
+                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период" required>
                         </div>
 
 
@@ -211,7 +211,7 @@
 
 
                                 <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
-                                    <div class="description">Сохранить</div>
+                                    <div class="description">Добавить</div>
                                 </div>
 
 
@@ -292,31 +292,34 @@
                         </div>
 
 
-                        <div class="second_row_grid_description" id="description">
+                        <div class="second_row_grid_description margin_container_bottom_small" id="description">
                             <div></div>
 
 
                             <div class="select-box" id="selectBox">
 
-
-                                <div class="options-container" id="options-container">
-
-
-                                    @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
-                                    {
+                                @*@if (Model.Column != 5)
+                                {*@
+                                    <div class="options-container" id="options-container">
 
 
-                                        <div class="option" onclick="optionClick(this)">
+                                        @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
+                                        {
 
 
-                                            <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
+                                            <div class="option" onclick="optionClick(this)">
 
 
-                                            <div class="mid_description">@item.Description</div>
-                                        </div>
-                                    }
-                                </div>
+                                                <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
 
+
+                                                <div class="mid_description">@item.Description</div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    
+                                @*}*@
 
                                 <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
 
@@ -339,8 +342,14 @@
                                     <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden required>
                                 </div>
 
-
+                                
                             </div>
+                            
+                            
+                        </div>
+                        <div class="first_row_grid_description select_description_assessment">
+                            <div></div>
+                            <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" placeholder="Введите комментарий к оценке" required></textarea>
                         </div>
                     </div>
 
@@ -367,34 +376,33 @@
                             </div>
 
 
-                            <div class="second_row_grid_description" id="description">
+                            <div class="second_row_grid_description margin_container_bottom_small" id="description">
                                 <div></div>
 
 
                                 <div class="select-box" id="selectBox">
 
-
-                                    <div class="options-container" id="options-container">
-
-
-                                        @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
-                                        {
+                                        <div class="options-container" id="options-container">
 
 
-                                            <div class="option" onclick="optionClick(this)">
+                                            @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
+                                            {
 
-                                                <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
 
-                                                <div class="mid_description">@item.Description</div>
-                                            </div>
-                                        }
-                                    </div>
+                                                <div class="option" onclick="optionClick(this)">
 
+                                                    <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
+
+                                                    <div class="mid_description">@item.Description</div>
+                                                </div>
+                                            }
+                                        </div>
 
                                     <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
 
 
                                         <i class="fa-solid fa-chevron-down"></i>
+
 
 
                                         <div class="description value_asessessment" id="descriptionAssessmentVal">
@@ -420,6 +428,10 @@
 
 
                                 </div>
+                            </div>
+                            <div class="first_row_grid_description select_description_assessment">
+                                <div></div>
+                                <textarea class="mid_description comment_assessment" id="commentBossAssessment" placeholder="Введите комментарий к оценке" required></textarea>
                             </div>
                         </div>
                     }
@@ -496,16 +508,11 @@
 
 
                                         <div class="history_description_wrapper mid_description">
-                                            @*extra_description - ЧТО СДЕЛАЛ ПОЛЬЗОВАТЕЛЬ ИЗМЕНИД/ПРИКРЕПИЛ/СЪЕБАЛСЯ НАХУЙ И ТД*@
-                                            @*main_description_history - ЧТО НА ЧТО ИЗМЕНИЛ*@
-                                            @*<span class="extra_description">Изменил(а)</span>*@
                                             <span class="main_description_history">@update.Content</span>
-                                            @*<span class="extra_description">На</span>
-                                            <span class="main_description_history">При нажатии "На доработку"</span>*@
                                         </div>
-          
-                                        
-                                        <div class="date_description">@update.Date</div>
+
+
+                                        <div class="date_description">@update.Date.ToString("dd MMMM yyyy HH:mm")</div>
                                     </div>
 
                                 </div>
@@ -560,8 +567,8 @@
                             </button>
 
 
-                            <button asp-controller="UserBoard" asp-action="RejectCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn primary_btn">
-                                <div class="description">В доработку</div>
+                            <button asp-controller="UserBoard" asp-action="RejectCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn yellow_btn">
+                                <div class="description">На доработку</div>
                             </button>
                         }
 

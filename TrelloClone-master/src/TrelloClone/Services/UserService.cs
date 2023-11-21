@@ -33,7 +33,7 @@ namespace TrelloClone.Services
             {
                 var cards = await _repository.CardRepository.GetUserCards(false, user.Id);
 
-                DateTime FakeToday = new DateTime(2023, 1, 1);
+                DateTime FakeToday = new DateTime(2023, 3, 20);
 
                 foreach (var card in cards)
                 {
@@ -43,41 +43,19 @@ namespace TrelloClone.Services
                         || FakeToday.Month == 6
                         || FakeToday.Month == 9
                         || FakeToday.Month == 12)
-                    {
+                    {                       
 
-                        if (FakeToday.Day == 20)
-                        {
-                            //20 числа все карточки в 1 колонке(перенесенные с прошлого квартала) становятся активными
-                            //if(cardColumn.Number == 1)
-                            //{
-                            //    card.IsActive = true;
-
-                            //    _repository.CardRepository.Update(card);
-                            //    await _repository.Save();
-                            //}
-                           
-                            ////20 числа все карточки в 6 колонке(перенос) переносятся автоматически на 1 колонку и становятся активными
-                            //if(cardColumn.Number == 6 && card.SupervisorAssessment == 7)
-                            //{
-                            //    card.ColumnId = card.ColumnId - 5;
-                            //    card.IsActive = true;
-
-                            //    _repository.CardRepository.Update(card);
-                            //    await _repository.Save();
-                            //}
-                        }
-
-                        else if (FakeToday.Day == 25)
+                        if (FakeToday.Day == 25)
                         {
                             //25 числа все карточки с 1 колонки автоматически на 2 колонку, если они в нужном квартале
-                            if(cardColumn.Number == 1)
+                            if(cardColumn.Number == 1 && Term.GetQuarter(card.Term) == Term.GetNextQuarter(FakeToday))
                             {
                                 card.ColumnId = card.ColumnId + 1;
                                 card.IsActive = true;
                             }
 
                             //25 числа все карточки во 2 колонки становятся активными, если они в нужном квартале
-                            if (cardColumn.Number == 2)
+                            else if (cardColumn.Number == 2 && Term.GetQuarter(card.Term) == Term.GetNextQuarter(FakeToday))
                             {
                                 card.IsActive = true;
                             }
@@ -112,6 +90,24 @@ namespace TrelloClone.Services
                             {
                                 card.ColumnId = card.ColumnId + 1;
                                 card.IsActive = true;
+                            }
+
+                            
+                            else if (cardColumn.Number == 2)
+                            {
+                                //1 числа все карточки все карточки переходят со 2 колонки на 3 если они в текущем квартале
+                                if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday))
+                                {
+                                    card.ColumnId = card.ColumnId + 1;
+                                    card.IsActive = true;
+                                }
+
+                                //1 числа все карточки все карточки переходят со 2 колонки на 4 если они с предыдущего квартала
+                                else if (Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
+                                {
+                                    card.ColumnId = card.ColumnId + 2;
+                                    card.IsActive = true;
+                                }                            
                             }
 
                             else
@@ -470,8 +466,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();

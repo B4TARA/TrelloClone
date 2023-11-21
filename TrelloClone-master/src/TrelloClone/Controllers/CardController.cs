@@ -109,9 +109,9 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(UserBoardView userBoardView)
+        public IActionResult Delete(int CardId)
         {
-            _cardService.Delete(userBoardView.Id);
+            _cardService.Delete(CardId);
 
             return RedirectToAction("ListMyCards", "UserBoard");
         }

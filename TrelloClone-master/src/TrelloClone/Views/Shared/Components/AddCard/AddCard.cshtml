@@ -24,7 +24,7 @@
 
 
                         <div class="card_name_input_wrapper">
-                            <input type="text" asp-for="Name" placeholder="Введите название наименование SMART-задачи"/>
+                            <input type="text" asp-for="Name" placeholder="Введите наименование SMART-задачи" required/>
                         </div>
                         
 
@@ -54,7 +54,7 @@
                     <div class="second_row_grid_description" id="description">
                         <div></div>
 
-                        <textarea class="mid_description" id="description_editor" asp-for="Requirement"></textarea>
+                        <textarea class="mid_description" id="description_editor" asp-for="Requirement" required></textarea>
 
 
                     </div>
@@ -78,8 +78,8 @@
                         <div></div>
 
 
-                        <div class="choose_date_wrapper" id="choose_date">
-                            <input type="date" asp-for="Term" id="input-datepicker" placeholder="Выберите период">
+                        <div class="choose_date_wrapper">
+                            <input type="date" asp-for="Term" id="choose_date_add_card" placeholder="Выберите период" required>
                         </div>
 
 
@@ -152,3 +152,4 @@
         </div>
     </div>
 </div>
+

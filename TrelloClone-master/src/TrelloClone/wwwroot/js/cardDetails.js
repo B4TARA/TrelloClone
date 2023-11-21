@@ -16,7 +16,10 @@ openPopupAddButtons.forEach((elem) => {
 
     elem.addEventListener('click', () => {
         addCard()
+        
     })
+    
+    
 })
 
 
@@ -59,6 +62,7 @@ async function addCard() {
             mainContainers.appendChild(div)
         })
 }
+
 
 
 

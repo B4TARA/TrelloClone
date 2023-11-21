@@ -23,7 +23,14 @@ var searchBoxItem = document.getElementById("selectBox");
 
 function selectedContainerOpen(elem) {
     let optionsContainer = elem.previousElementSibling;
+    console.log(elem.parentElement.parentElement.nextElementSibling)
+
+    //Отображение секции с комментом к оценке
+    elem.parentElement.parentElement.nextElementSibling.classList.toggle('active')
+
+    //Отображение секции с опшинами в селекте
     optionsContainer.classList.toggle("active");
+
     elem.classList.toggle("active_border");
 }
 
@@ -37,6 +44,8 @@ function optionClick(elem) {
     optionsContainer.nextElementSibling.classList.toggle("active_border");
     optionsContainer.classList.toggle("active");
 
+    //Закрытие секции с комментом к оценке
+    elem.parentElement.parentElement.parentElement.nextElementSibling.classList.toggle('active')
     
     const resultAssessmentText = elem.querySelector(".select_user_assessment").innerText
     console.log(resultAssessmentText)
@@ -52,3 +61,50 @@ function openDropdownList(elem) {
     historyListWrapper.classList.toggle('active')
     elem.classList.toggle('active')
 }
+
+function openVerifyPopup(elem) {
+    const mainContainerContentElement = document.getElementById('main_container_content');
+    let cardId = elem.getAttribute('cardId')
+    let div = document.createElement('div')
+    div.classList.add('popup_verify_bg_wrapper')
+    div.innerHTML = `<div class="popup_verify_wrapper">
+    <div class="mid_title margin_container_bottom_middle">Вы действительно хотите удалить карточку?</div>
+    <div class="action_buttons_wrapper">
+        
+            <div class="action_btn green_btn" onclick="sendInfoDeleteCard(${cardId})">
+                Да
+            </div>
+        <div class="action_btn red_btn" onclick="closeVerifyPopup(this)">
+            Нет
+        </div>
+    </div>
+        
+</div>`
+    mainContainerContentElement.append(div)
+}
+
+function closeVerifyPopup(elem) {
+    const popupElem = document.querySelector('.popup_verify_bg_wrapper')
+    popupElem.remove()
+}
+
+//раскоментить функцию ниже для удаления через пост
+
+//function sendInfoDeleteCard(cardId) {
+//    console.log(cardId)
+//    var url = "/Card/Delete";
+
+//    $.ajax({
+//        url: url,
+//        type: 'POST',
+//        data: cardId,
+//        cache: false,
+//        contentType: false,
+//        processData: false,
+//        success: async function () {
+
+//        }
+//    });
+//}
+
+
