@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace TrelloClone.Models.Assessment
 {
     public static class AssessmentsForDropdown
-    {     
+    {
         public static IEnumerable<Assessment> GetAssessments()
         {
             return new List<Assessment>
@@ -17,9 +17,9 @@ namespace TrelloClone.Models.Assessment
                 Description = "100%"
             },
 
-            new Assessment{ 
+            new Assessment{
                 Id = 2,
-                Value = 1, 
+                Value = 1,
                 Text = "Выполнено в надлежащем качестве с нарушением срока до 7 календарных дней, включительно",
                 Description = "90%"
             },
@@ -59,7 +59,7 @@ namespace TrelloClone.Models.Assessment
                 Description = "0%\r\nПрисваивается, когда задача ещё не выполнена, но её действие продолжается, и она подлежит дальнейшему мониторингу. Задача участвует в текущей оценке, а также переносится в план следующего оцениваемого периода.\r\n"
             },
 
-            new Assessment{ 
+            new Assessment{
                 Id = 8,
                 Value = 0,
                 Text = "В процессе выполнения",

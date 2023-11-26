@@ -48,34 +48,29 @@ namespace EmailService
             image.IsAttachment = false;
             image.ContentId = MimeUtils.GenerateMessageId();
 
-            bodyBuilder.HtmlBody = string.Format(@"
+            bodyBuilder.HtmlBody = string.Format(@$"
             <center><div style=""border: 15px solid #EDF4FF; width:700px; border-radius: 16px;"">
-		            <div style=""padding:15px; font-family:Tahoma; border-radius: 16px;"">
-		            
-			            <center>
-				
+		            <div style=""padding:15px; font-family:Tahoma; border-radius: 16px;"">		            
+			            <center>			
 				            <div style=""text-align: left; padding: 0px 10px 10px 10px; color: #1B74FD;"">
+
 					            <h3><b>Уважаемый(ая),</b></h3>
-					            <h2><b>Дмитрий Петрович</b></h2>
+
+					            <h2><b>{message.AddresseeName}</b></h2>
+
 					            <div style=""color:#333;"">
 						            <br>
-                                    <div class=""MAIN_BLOCKMESSAGE"">
-                                        <div>Заполните, пожалуйста, <b>SMART-задачи на следующий квартал.</b> 
-							            Заполнение SMART-задач доступно по <a href= ""https://10.117.11.77:44370/Account/Login"" target = ""blanc"">ссылке<a/> <span style=""width:50px; height:50px;""><img style=""width:50px; height:50px;"" src='cid:{0}'></span>
-						                </div>
-						                <br>
-						                <div>
-							                Просим Вас заполнить список задач <b>с 20 по 24 число текущего месяца</b> и направить их на согласование непосредственному руководителю, нажав на кнопку <b>«На согласование».</b>
-						                </div>
-                                    </div>
-						            	
+                                        <div class=""MAIN_BLOCKMESSAGE"">
+                                            {message.Content}
+                                        </div>						            	
 						            <br>
 					            </div>
 				            </div>
 			            </center>
 		            </div>
 	            </div>
-            </center>", image.ContentId, message.Content);
+            </center>",
+            image.ContentId);
 
 
             emailMessage.Body = bodyBuilder.ToMessageBody();
