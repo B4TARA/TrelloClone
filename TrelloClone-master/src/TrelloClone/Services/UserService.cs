@@ -123,7 +123,7 @@ namespace TrelloClone.Services
                         user.IsActiveLikeEmployee = true;
                         user.IsActiveLikeSupervisor = false;
 
-                        await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24");
+                        await SendNotification(user.Id, "Напоминание", "Внесите задачи на каждый месяц будущего квартала до 24 числа");
                     }
 
                     else if (FakeToday.Day == 24 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
@@ -228,7 +228,7 @@ namespace TrelloClone.Services
                 foreach (var user in users)
                 {
                     //set image, login, birthday and etc.//
-                    ExtendedUser? extendedUserInfoRecord = extendedUserInfoRecords.FirstOrDefault(x => x.lastname == user.Name.Split(" ").FirstOrDefault());
+                    ExtendedUser? extendedUserInfoRecord = extendedUserInfoRecords.FirstOrDefault(x => x.lastname == user.Name.Split(" ")[0] &&  x.firstname == user.Name.Split(' ')[1]);
 
                     if (extendedUserInfoRecord != null
                         && extendedUserInfoRecord.pict_url != null
@@ -429,8 +429,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();
@@ -470,7 +470,7 @@ namespace TrelloClone.Services
             {
                 var user = await _repository.UserRepository.GetUserById(false, userId);
 
-                var message = new Message(new string[] { "yan.tomchik@mail.ru" }, subject, content, null);
+                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, subject, content, null);
                 await _emailSender.SendEmailAsync(message);
 
                 return new BaseResponse<object>()

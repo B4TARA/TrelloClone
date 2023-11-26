@@ -120,126 +120,153 @@
 
                 <tbody>
 
-
-                    @foreach (var card in column.Cards)
-                    {
+                        @if (column.Cards.Count() != 0)
+                        {
+                            @foreach (var card in column.Cards)
+                            {
 
                                 <tr class="open-popup" idcard="@card.Id">
 
 
+                                    <td class="table_title_wrapper">
+
+
+                                        <div class="stage_indicator_circle blue_bcolor"></div>
+
+
+                                        <div class="info_table_title_wrapper">
+
+
+                                            <div class="description">
+                                                @card.Name
+                                            </div>
+
+
+                                            <div class="mid_description">
+                                                @card.Requirement
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+                                        <div class="card_details_info_wrapper">
+
+
+                                            <div class="card_detail_item">
+
+
+                                                <div class="item_icon">
+                                                    <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                                </div>
+
+
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfComments
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="card_detail_item">
+
+
+                                                <div class="item_icon">
+                                                    <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                                </div>
+
+
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfFiles
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+
+
+                                        @if (User.FindFirst("ImagePath") != null)
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
+
+
+                                                    <img src="@User.FindFirst("ImagePath").Value" alt="profileImg">
+
+
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                        else
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
+
+
+                                                    <img src="/image/default_profile_icon.svg" alt="profileImg">
+
+
+                                                </div>
+                                            </div>
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        <div class="card_name_wrapper">
+
+
+                                            <div class="mid_description">
+                                                @card.Term.ToString("MMMM yyyy")
+                                            </div>
+
+
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+                                        <button class="action_btn close_action_btn white_btn" type="submit">
+                                            <i class="fa-solid fa-trash" style="color:#787486;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+
                                 <td class="table_title_wrapper">
-
-
-                                    <div class="stage_indicator_circle blue_bcolor"></div>
-
-
-                                    <div class="info_table_title_wrapper">
-
-
-                                        <div class="description">
-                                            @card.Name
-                                        </div>
-
-
-                                        <div class="mid_description">
-                                            @card.Requirement
-                                        </div>
-                                    </div>
                                 </td>
 
 
                                 <td>
-                                    <div class="card_details_info_wrapper">
-
-
-                                        <div class="card_detail_item">
-
-
-                                            <div class="item_icon">
-                                                <i class="fa-regular fa-message" style="color: #787486;"></i>
-                                            </div>
-
-
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                    @card.CountOfComments
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="card_detail_item">
-
-
-                                            <div class="item_icon">
-                                                <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
-                                            </div>
-
-
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                    @card.CountOfFiles
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
 
 
                                 <td>
-
-
-                                    @if (User.FindFirst("ImagePath") != null)
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-
-
-                                                <img src="@User.FindFirst("ImagePath").Value" alt="profileImg">
-
-
-                                            </div>
-                                        </div>
-                                    }
-
-
-                                    else
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-
-
-                                                <img src="/image/default_profile_icon.svg" alt="profileImg">
-
-
-                                            </div>
-                                        </div>
-                                    }
                                 </td>
 
 
                                 <td>
-                                    <div class="card_name_wrapper">
-
-
-                                        <div class="mid_description">
-                                            @card.Term.ToString("MMMM yyyy")
-                                        </div>
-
-
-                                    </div>
                                 </td>
 
 
                                 <td>
-                                    <button class="action_btn close_action_btn white_btn" type="submit">
-                                        <i class="fa-solid fa-trash" style="color:#787486;"></i>
-                                    </button>
                                 </td>
                             </tr>
-                        
-                    }
-                </tbody>
+                        }
+                    </tbody>
             </table>
         </div>
     }

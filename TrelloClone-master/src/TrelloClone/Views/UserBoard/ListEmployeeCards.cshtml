@@ -170,124 +170,126 @@
 
                 <div class="cards_main_wrapper margin_container_bottom_middle">
 
-
-                    @foreach (var card in column.Cards)
-                    {
-                        
-
-                        <div class="card_wrapper @(card.SupervisorAssessment == 7 ? "expired" : "primary")">
-                            <div class="card_wrapper_content open-popup" idcard="@card.Id">
+                    
+                        @foreach (var card in column.Cards)
+                        {
 
 
-                                <div class="card_header_wrapper margin_container_bottom_small">
-                                    <div class="card_name_wrapper">
+                            <div class="card_wrapper @(card.SupervisorAssessment == 7 ? "expired" : "primary")">
+                                <div class="card_wrapper_content open-popup" idcard="@card.Id">
 
 
-                                        <div class="mid_description">
-                                            @card.Term.ToString("MMMM yyyy")
+                                    <div class="card_header_wrapper margin_container_bottom_small">
+                                        <div class="card_name_wrapper">
+
+
+                                            <div class="mid_description">
+                                                @card.Term.ToString("MMMM yyyy")
+                                            </div>
+
+
                                         </div>
-
-
                                     </div>
-                                </div>
 
 
-                                <div class="mid_title margin_container_bottom_extrasmall">
-                                    @card.Name
-                                </div>
+                                    <div class="mid_title margin_container_bottom_extrasmall">
+                                        @card.Name
+                                    </div>
 
 
-                                <div class="mid_description margin_container_bottom_small">
+                                    <div class="mid_description margin_container_bottom_small">
 
 
-                                    @if (column.Number == 6)
-                                    {
-                                        @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text
-                                    }
+                                        @if (column.Number == 6)
+                                        {
+                                            @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text
+                                        }
 
 
-                                    else
-                                    {
-                                        @card.Requirement
-                                    }
-                                </div>
+                                        else
+                                        {
+                                            @card.Requirement
+                                        }
+                                    </div>
 
 
-                                <div class="card_footer_wrapper">
+                                    <div class="card_footer_wrapper">
 
 
-                                    @if (Model.ImgPath != null)
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
+                                        @if (Model.ImgPath != null)
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
 
 
-                                                <img src="@Model.ImgPath" alt="profileImg">
+                                                    <img src="@Model.ImgPath" alt="profileImg">
 
 
-                                            </div>
-                                        </div>
-                                    }
-
-
-                                    else
-                                    {
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-
-
-                                                <img src="/image/default_profile_icon.svg" alt="profileImg">
-
-
-                                            </div>
-                                        </div>
-                                    }
-
-
-                                    <div class="card_details_info_wrapper">
-
-
-                                        <div class="card_detail_item">
-
-
-                                            <div class="item_icon">
-                                                <i class="fa-regular fa-message" style="color: #787486;"></i>
-                                            </div>
-
-
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                    @card.CountOfComments
                                                 </div>
                                             </div>
+                                        }
 
 
-                                        </div>
+                                        else
+                                        {
+                                            <div class="card_holders_wrapper">
+                                                <div class="holder_image_wrapper">
 
 
-                                        <div class="card_detail_item">
+                                                    <img src="/image/default_profile_icon.svg" alt="profileImg">
 
 
-                                            <div class="item_icon">
-                                                <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
-                                            </div>
-
-
-                                            <div class="item_count">
-                                                <div class="mid_description">
-                                                    @card.CountOfFiles
                                                 </div>
                                             </div>
+                                        }
+
+
+                                        <div class="card_details_info_wrapper">
+
+
+                                            <div class="card_detail_item">
+
+
+                                                <div class="item_icon">
+                                                    <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                                </div>
+
+
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfComments
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <div class="card_detail_item">
+
+
+                                                <div class="item_icon">
+                                                    <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                                </div>
+
+
+                                                <div class="item_count">
+                                                    <div class="mid_description">
+                                                        @card.CountOfFiles
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
 
 
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        }
+                    
+                    
                 </div>
             </div>
         }

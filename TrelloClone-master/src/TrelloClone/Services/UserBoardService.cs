@@ -195,7 +195,7 @@ namespace TrelloClone.Services
                 var cardColumn = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
 
                 //25 числа все карточки с 1 колонки автоматически на 2 колонку, если они в нужном квартале
-                if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday))
+                if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday) || Term.GetPreviousQuarter(card.Term) == Term.GetQuarter(FakeToday))
                 {
                     card.ColumnId = card.ColumnId + 1;
                 }

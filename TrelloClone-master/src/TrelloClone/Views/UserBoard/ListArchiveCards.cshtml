@@ -94,143 +94,174 @@
     {
             @if (column.Number == 6)
             {
-        <div class="list_view_main_wrapper">
-            <table class="table_list_view margin_container_bottom_middle">
+                <div class="list_view_main_wrapper">
+                    <table class="table_list_view margin_container_bottom_middle">
 
 
-                <thead>
-                    <tr>
-                        <th class="blue_bcolor_highcontrast">Архив</th>
-                        <th class="extra_info"></th>
-                        <th>Создал</th>
-                        <th>Дата создания</th>
-                        <th>Дата закрытия</th>
-                        <th>Оценка сотрудника</th>
-                        <th>Оценка руководителя</th>
-                    </tr>
-                </thead>
+                        <thead>
+                            <tr>
+                                <th class="blue_bcolor_highcontrast">Архив</th>
+                                <th class="extra_info"></th>
+                                <th>Создал</th>
+                                <th>Дата создания</th>
+                                <th>Дата закрытия</th>
+                                <th>Оценка сотрудника</th>
+                                <th>Оценка руководителя</th>
+                            </tr>
+                        </thead>
 
 
-                <tbody>
-                    @foreach (var card in column.Cards)
-                    {
+                        <tbody>
+                            @if (column.Cards.Count() != 0)
+                            {
+                                @foreach (var card in column.Cards)
+                                {
 
-                                <tr class="open-popup" idcard="@card.Id">
+                                    <tr class="open-popup" idcard="@card.Id">
 
 
+                                        <td class="table_title_wrapper">
+                                            <div class="stage_indicator_circle blue_bcolor"></div>
+                                            <div class="info_table_title_wrapper">
+                                                <div class="description">
+                                                    @card.Name
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+                                        <td>
+                                            <div class="card_details_info_wrapper">
+
+
+                                                <div class="card_detail_item">
+                                                    <div class="item_icon">
+                                                        <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                                    </div>
+                                                    <div class="item_count">
+                                                        <div class="mid_description">
+                                                            @card.CountOfComments
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="card_detail_item">
+                                                    <div class="item_icon">
+                                                        <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                                    </div>
+                                                    <div class="item_count">
+                                                        <div class="mid_description">
+                                                            @card.CountOfFiles
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </td>
+
+
+                                        <td>
+
+
+                                            @if (User.FindFirst("ImagePath") != null)
+                                            {
+                                                <div class="card_holders_wrapper">
+                                                    <div class="holder_image_wrapper">
+
+
+                                                        <img src="@User.FindFirst("ImagePath").Value" alt="profileImg">
+
+
+                                                    </div>
+                                                </div>
+                                            }
+
+
+                                            else
+                                            {
+                                                <div class="card_holders_wrapper">
+                                                    <div class="holder_image_wrapper">
+
+
+                                                        <img src="/image/default_profile_icon.svg" alt="profileImg">
+
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+
+
+                                        <td>
+                                            <div class="card_name_wrapper">
+
+
+                                                <div class="mid_description">
+                                                    @card.Term.ToString("MMMM yyyy")
+                                                </div>
+
+
+                                            </div>
+                                        </td>
+
+
+                                        <td>
+                                            <div class="card_name_wrapper">
+
+
+                                                <div class="mid_description">
+                                                    @card.Term.ToString("MMMM yyyy")
+                                                </div>
+
+
+                                            </div>
+                                        </td>
+
+
+                                        <td>
+                                            @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment).Value
+                                        </td>
+
+
+                                        <td>
+                                            @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value
+                                        </td>
+
+                                    </tr>
+
+                                }
+                            }
+                            else
+                            {
+                                <tr>
                                     <td class="table_title_wrapper">
-                                        <div class="stage_indicator_circle blue_bcolor"></div>
-                                        <div class="info_table_title_wrapper">
-                                            <div class="description">
-                                                @card.Name
-                                            </div>
-                                        </div>
+                                        
                                     </td>
-
 
                                     <td>
-                                        <div class="card_details_info_wrapper">
-
-
-                                            <div class="card_detail_item">
-                                                <div class="item_icon">
-                                                    <i class="fa-regular fa-message" style="color: #787486;"></i>
-                                                </div>
-                                                <div class="item_count">
-                                                    <div class="mid_description">
-                                                        @card.CountOfComments
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="card_detail_item">
-                                                <div class="item_icon">
-                                                    <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
-                                                </div>
-                                                <div class="item_count">
-                                                    <div class="mid_description">
-                                                        @card.CountOfFiles
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
                                     </td>
-
 
                                     <td>
-
-
-                                        @if (User.FindFirst("ImagePath") != null)
-                                        {
-                                            <div class="card_holders_wrapper">
-                                                <div class="holder_image_wrapper">
-
-
-                                                    <img src="@User.FindFirst("ImagePath").Value" alt="profileImg">
-
-
-                                                </div>
-                                            </div>
-                                        }
-
-
-                                        else
-                                        {
-                                            <div class="card_holders_wrapper">
-                                                <div class="holder_image_wrapper">
-
-
-                                                    <img src="/image/default_profile_icon.svg" alt="profileImg">
-
-
-                                                </div>
-                                            </div>
-                                        }
                                     </td>
-
 
                                     <td>
-                                        <div class="card_name_wrapper">
-
-
-                                            <div class="mid_description">
-                                                @card.Term.ToString("MMMM yyyy")
-                                            </div>
-
-
-                                        </div>
                                     </td>
-
 
                                     <td>
-                                        <div class="card_name_wrapper">
-
-
-                                            <div class="mid_description">
-                                                @card.Term.ToString("MMMM yyyy")
-                                            </div>
-
-
-                                        </div>
                                     </td>
-
 
                                     <td>
-                                        @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment).Value
+                                       
                                     </td>
-
 
                                     <td>
-                                        @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value
+                                        
                                     </td>
-
                                 </tr>
-                            
-                        }
-                </tbody>
+                            }
+                        </tbody>
             </table>
         </div>
             }

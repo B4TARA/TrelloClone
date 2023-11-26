@@ -39,25 +39,44 @@ namespace EmailService
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
 
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var parentDirectory = Directory.GetParent(currentDirectory).FullName;
+            var filesDirectory = Path.Combine(parentDirectory, "Files");
+
             var bodyBuilder = new BodyBuilder();
-            var imageHead = bodyBuilder.LinkedResources.Add("/image/default_profile_icon.svg");
-            imageHead.ContentId = MimeUtils.GenerateMessageId();
-            bodyBuilder.HtmlBody = string.Format(@"<img src='cid:{0}'>< h2 style='color:#1b74fd;'>{1}</h2>", imageHead.ContentId, message.Content); //colorrrrrrrrrrrrr
+            var image = bodyBuilder.LinkedResources.Add(Path.Combine(filesDirectory, "smartproj_icon.png"));
+            image.IsAttachment = false;
+            image.ContentId = MimeUtils.GenerateMessageId();
 
-            if (message.Attachments != null && message.Attachments.Any())
-            {
-                byte[] fileBytes;
-                foreach (var attachment in message.Attachments)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        attachment.CopyTo(ms);
-                        fileBytes = ms.ToArray();
-                    }
+            bodyBuilder.HtmlBody = string.Format(@"
+            <center><div style=""border: 15px solid #EDF4FF; width:700px; border-radius: 16px;"">
+		            <div style=""padding:15px; font-family:Tahoma; border-radius: 16px;"">
+		            
+			            <center>
+				
+				            <div style=""text-align: left; padding: 0px 10px 10px 10px; color: #1B74FD;"">
+					            <h3><b>Уважаемый(ая),</b></h3>
+					            <h2><b>Дмитрий Петрович</b></h2>
+					            <div style=""color:#333;"">
+						            <br>
+                                    <div class=""MAIN_BLOCKMESSAGE"">
+                                        <div>Заполните, пожалуйста, <b>SMART-задачи на следующий квартал.</b> 
+							            Заполнение SMART-задач доступно по <a href= ""https://10.117.11.77:44370/Account/Login"" target = ""blanc"">ссылке<a/> <span style=""width:50px; height:50px;""><img style=""width:50px; height:50px;"" src='cid:{0}'></span>
+						                </div>
+						                <br>
+						                <div>
+							                Просим Вас заполнить список задач <b>с 20 по 24 число текущего месяца</b> и направить их на согласование непосредственному руководителю, нажав на кнопку <b>«На согласование».</b>
+						                </div>
+                                    </div>
+						            	
+						            <br>
+					            </div>
+				            </div>
+			            </center>
+		            </div>
+	            </div>
+            </center>", image.ContentId, message.Content);
 
-                    bodyBuilder.Attachments.Add(attachment.FileName, fileBytes, ContentType.Parse(attachment.ContentType));
-                }
-            }
 
             emailMessage.Body = bodyBuilder.ToMessageBody();
             return emailMessage;
