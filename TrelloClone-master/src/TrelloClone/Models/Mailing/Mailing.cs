@@ -12,11 +12,14 @@ namespace TrelloClone.Models.Mailing
             "<div>" +
                 "Заполните, пожалуйста," +
                 "<b>SMART-задачи на следующий квартал.</b>" +
-                "Заполнение SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
-                        "<span style=\"width:50px; height:50px;\">" +
+
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Заполнение SMART-задач доступно по ссылке<a/>" + 
+                    "<br>" + 
+                    "<div>"+"или через ярлык на рабочем столе"+"<div>" + 
+                    "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
-                        "</span>" +
+                    "</span>" +
+
             "</div>" +
 
             "<br>" +
@@ -35,11 +38,14 @@ namespace TrelloClone.Models.Mailing
             "<div>" +
                 "Заполните, пожалуйста," +
                 "<b>SMART-задачи на следующий квартал.</b>" +
-                "Заполнение SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
-                        "<span style=\"width:50px; height:50px;\">" +
+
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Заполнение SMART-задач доступно по ссылке<a/>" +
+                    "<br>" +
+                    "<div>"+"или через ярлык на рабочем столе"+"<div>" +
+                    "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
-                        "</span>" +
+                    "</span>" +
+               
             "</div>" +
 
             "<br>" +            
@@ -72,11 +78,14 @@ namespace TrelloClone.Models.Mailing
             "<div>" +
                 "Согласуйте, пожалуйста," +
                 "<b>SMART-задачи Ваших работников на следующий квартал.</b>" +
-                "Согласование SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
-                        "<span style=\"width:50px; height:50px;\">" +
+
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Согласование SMART-задач доступно по ссылке<a/>" +
+                    "<br>" +
+                    "<div>"+"или через ярлык на рабочем столе"+"<div>" +
+                    "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
-                        "</span>" +
+                    "</span>" +
+               
             "</div>" +
 
             "<br>" +
@@ -93,11 +102,14 @@ namespace TrelloClone.Models.Mailing
             "<div>" +
                 "Напоминаем о необходимости согласовать" +
                 "<b>SMART-задачи Ваших работников на следующий квартал.</b>" +
-                "Согласование SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
-                        "<span style=\"width:50px; height:50px;\">" +
+
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Согласование SMART-задач доступно по ссылке<a/>" +
+                    "<br>" +
+                    "<div>"+"или через ярлык на рабочем столе"+"<div>" +
+                    "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
-                        "</span>" +
+                    "</span>" +
+
             "</div>" +
 
             "<br>" +
@@ -128,11 +140,14 @@ namespace TrelloClone.Models.Mailing
             "<div>" +
                 "Пришло время подвести" +
                 "<b>итоги реализации SMART-задач за отчетный квартал.</b>" +
-                "Заполнение результатов SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
-                        "<span style=\"width:50px; height:50px;\">" +
+
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Заполнение результатов SMART-задач доступно по ссылке<a/>" +
+                    "<br>" +
+                    "<div>"+"или через ярлык на рабочем столе"+"<div>" +
+                    "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
-                        "</span>" +
+                    "</span>" +
+              
             "</div>" +
 
             "<br>" +
@@ -159,11 +174,14 @@ namespace TrelloClone.Models.Mailing
             "<div>" +
                 "Пришло время подвести " +
                 "<b>итоги реализации SMART-задач Ваших работников за отчетный квартал.</b>" +
-                "Согласование результатов SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
-                        "<span style=\"width:50px; height:50px;\">" +
+
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Согласование результатов SMART-задач доступно по ссылке<a/>" +
+                    "<br>" +
+                    "<div>"+"или через ярлык на рабочем столе"+"<div>" +
+                    "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
-                        "</span>" +
+                    "</span>" +
+              
             "</div>" +
 
             "<br>" +
@@ -180,11 +198,14 @@ namespace TrelloClone.Models.Mailing
             "<div>" +
                 "Напоминаем о необходимости подвести " +
                 "<b>итоги реализации SMART-задач Ваших работников за отчетный квартал.</b>" +
-                "Согласование результатов SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
-                        "<span style=\"width:50px; height:50px;\">" +
+
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Согласование результатов SMART-задач доступно по ссылке<a/>" +
+                    "<br>" +
+                    "<div>"+"или через ярлык на рабочем столе"+"<div>" +
+                    "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
-                        "</span>" +
+                    "</span>" +
+              
             "</div>" +
 
             "<br>" +
@@ -213,7 +234,7 @@ namespace TrelloClone.Models.Mailing
                 "Заполните, пожалуйста," +
                 "<b>SMART-задачи на следующий квартал.</b>" +
                 "Заполнение SMART-задач доступно по ссылке:" +
-                    "<a href= \"https://10.117.11.77:44370/Account/Login\" target = \"blanc\"><a/>" +
+                    "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\"><a/>" +
                         "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
                         "</span>" +

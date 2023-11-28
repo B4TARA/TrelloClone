@@ -28,7 +28,7 @@ namespace TrelloClone.Services
             _hostingEnvironment = hostingEnvironment;
         }
 
-        DateTime FakeToday = new DateTime(2023, 10, 1, 12, 10, 25);
+        DateTime FakeToday = new DateTime(2023, 1, 8, 12, 10, 25);
 
         public void Create(AddCard viewModel)
         {
@@ -158,6 +158,12 @@ namespace TrelloClone.Services
                     card.Name = Name;
                 }
 
+                //Фактическая дата исполнения
+                card.FactTerm = FactTerm;
+
+                card.SupervisorAssessment = SupervisorAssessment;
+                card.SupervisorComment = SupervisorComment;
+
                 //перенос
                 if (card.Term != Term)
                 {
@@ -174,6 +180,7 @@ namespace TrelloClone.Services
                     if (Models.Term.Term.GetQuarter(card.Term) != Models.Term.Term.GetQuarter(Term))
                     {
                         card.ColumnId = columns.First(x => x.Number == 3).Id;
+                        card.SupervisorAssessment = 8;
                     }
 
                     card.Term = Term;
@@ -200,13 +207,7 @@ namespace TrelloClone.Services
                     UserImg = userImg,
                     Date = FakeToday,
                     Content = "Выставил(а) оценочное суждение непосредственного руководителя",
-                });
-
-                //Фактическая дата исполнения
-                card.FactTerm = FactTerm;
-
-                card.SupervisorAssessment = SupervisorAssessment;
-                card.SupervisorComment = SupervisorComment;
+                });               
 
                 //просрочка
                 if (card.SupervisorAssessment == 7)
@@ -215,7 +216,7 @@ namespace TrelloClone.Services
                     card.Term = FakeToday;
                 }
 
-                else
+                else if(card.SupervisorAssessment != 8)
                 {
                     card.ColumnId = card.ColumnId + 1;
                 }                
@@ -268,6 +269,9 @@ namespace TrelloClone.Services
                     card.Name = Name;
                 }
 
+                card.EmployeeAssessment = EmployeeAssessment;
+                card.EmployeeComment = EmployeeComment;
+
                 //перенос
                 if (card.Term != Term)
                 {
@@ -284,6 +288,7 @@ namespace TrelloClone.Services
                     if (Models.Term.Term.GetQuarter(card.Term) != Models.Term.Term.GetQuarter(Term))
                     {
                         card.ColumnId = columns.First(x => x.Number == 3).Id;
+                        card.EmployeeAssessment = 8;
                     }
 
                     card.Term = Term;
@@ -312,9 +317,11 @@ namespace TrelloClone.Services
                     Content = "Выставил(а) оценочное суждение работника",
                 });
 
-                card.EmployeeAssessment = EmployeeAssessment;
-                card.EmployeeComment = EmployeeComment;
-                card.ColumnId = card.ColumnId + 1;
+                //если не перенос
+                if(card.EmployeeAssessment != 8)
+                {
+                    card.ColumnId = card.ColumnId + 1;
+                }             
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();

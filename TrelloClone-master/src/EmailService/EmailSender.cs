@@ -50,7 +50,10 @@ namespace EmailService
 
             bodyBuilder.HtmlBody = string.Format(@$"
             <center><div style=""border: 15px solid #EDF4FF; width:700px; border-radius: 16px;"">
-		            <div style=""padding:15px; font-family:Tahoma; border-radius: 16px;"">		            
+		            <div style=""padding:15px; font-family:Tahoma; border-radius: 16px;"">	
+                        <span style=\""width:50px; height:50px;\"">
+                            <img style=\""width:50px; height:50px;\"" src='cid:{{0}}'>
+                        </span>
 			            <center>			
 				            <div style=""text-align: left; padding: 0px 10px 10px 10px; color: #1B74FD;"">
 

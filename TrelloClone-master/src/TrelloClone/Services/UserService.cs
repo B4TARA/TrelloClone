@@ -33,7 +33,7 @@ namespace TrelloClone.Services
             {
                 var cards = await _repository.CardRepository.GetUserCards(false, user.Id);
 
-                DateTime FakeToday = new DateTime(2023, 3, 20);
+                DateTime FakeToday = new DateTime(2023, 1, 8);
 
                 foreach (var card in cards)
                 {
@@ -123,12 +123,12 @@ namespace TrelloClone.Services
                         user.IsActiveLikeEmployee = true;
                         user.IsActiveLikeSupervisor = false;
 
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
                     }
 
                     else if (FakeToday.Day == 23 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
                     }
 
                     else if (FakeToday.Day == 25)
@@ -139,13 +139,13 @@ namespace TrelloClone.Services
                         {
                             user.IsActiveLikeSupervisor = true;
 
-                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
+                            await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
                         }
                     }
 
                     else if (FakeToday.Day == 28 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[3]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[3]);
                     }           
                 }
 
@@ -161,13 +161,13 @@ namespace TrelloClone.Services
                         {
                             user.IsActiveLikeEmployee = true;
 
-                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
+                            await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
                         }
                     }
 
                     if (FakeToday.Day == 5 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
                     }
 
                     else if (FakeToday.Day == 8)
@@ -178,19 +178,19 @@ namespace TrelloClone.Services
                         {
                             user.IsActiveLikeSupervisor = true;
 
-                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
+                            await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
                         }
                     }
 
                     if (FakeToday.Day == 11 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
 
                     else if (FakeToday.Day == 14)
                     {
                         user.IsActiveLikeSupervisor = false;
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[8]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[8]);
                     }
                 }
 
@@ -471,7 +471,7 @@ namespace TrelloClone.Services
             {
                 var user = await _repository.UserRepository.GetUserById(false, userId);
 
-                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, subject, content, user.Name);
+                var message = new Message(new string[] { user.Login + "@mtb.minsk.by" }, subject, content, user.Name);
                 await _emailSender.SendEmailAsync(message);
 
                 return new BaseResponse<object>()

@@ -24,7 +24,7 @@ openPopupAddButtons.forEach((elem) => {
 
 
 function closeCard(elem) {
-    const elemTodelete = elem.parentElement.parentElement;
+    const elemTodelete = elem.parentElement.parentElement.parentElement;
     elemTodelete.remove()
 }
 
