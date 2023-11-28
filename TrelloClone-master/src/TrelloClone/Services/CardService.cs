@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using EmailService;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,6 @@ using System.Threading.Tasks;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
-using TrelloClone.Models.Assessment;
 using TrelloClone.Models.Term;
 using TrelloClone.ViewModels;
 using StatusCodes = TrelloClone.Models.Enum.StatusCodes;
@@ -20,12 +20,15 @@ namespace TrelloClone.Services
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly TrelloCloneDbContext _dbContext;
         private readonly RepositoryManager _repository;
+        private readonly EmailSender _emailSender;
 
-        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, IHostingEnvironment hostingEnvironment)
+        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, IHostingEnvironment hostingEnvironment
+            , EmailSender emailSender)
         {
             _dbContext = dbContext;
             _repository = repository;
             _hostingEnvironment = hostingEnvironment;
+            _emailSender = emailSender;
         }
 
         DateTime FakeToday = new DateTime(2023, 1, 8, 12, 10, 25);
@@ -46,7 +49,8 @@ namespace TrelloClone.Services
                     Requirement = viewModel.Requirement,
                     Term = viewModel.Term,
                     UserId = viewModel.Id,
-                    IsRelevant = true
+                    IsRelevant = true,
+                    IsDeleted = false,
                 });
             }
 
@@ -207,19 +211,19 @@ namespace TrelloClone.Services
                     UserImg = userImg,
                     Date = FakeToday,
                     Content = "Выставил(а) оценочное суждение непосредственного руководителя",
-                });               
+                });
 
                 //просрочка
                 if (card.SupervisorAssessment == 7)
-                {                
+                {
                     card.ColumnId = card.ColumnId - 2;
                     card.Term = FakeToday;
                 }
 
-                else if(card.SupervisorAssessment != 8)
+                else if (card.SupervisorAssessment != 8)
                 {
                     card.ColumnId = card.ColumnId + 1;
-                }                
+                }
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
@@ -318,10 +322,10 @@ namespace TrelloClone.Services
                 });
 
                 //если не перенос
-                if(card.EmployeeAssessment != 8)
+                if (card.EmployeeAssessment != 8)
                 {
                     card.ColumnId = card.ColumnId + 1;
-                }             
+                }
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
@@ -342,14 +346,32 @@ namespace TrelloClone.Services
             }
         }
 
-        public void Delete(int id)
+        public async Task<IBaseResponse<object>> Delete(int id)
         {
-            var card = _dbContext.Cards.SingleOrDefault(x => x.Id == id);
-            _dbContext.Remove(card ?? throw new Exception($"Could not remove {(Card)null}"));
+            try
+            {
+                var card = await _repository.CardRepository.GetCardById(false, id);
 
-            _dbContext.SaveChanges();
+                card.IsRelevant = false;
+                card.IsDeleted = true;
+
+                _repository.CardRepository.Update(card);
+                await _repository.Save();
+
+                return new BaseResponse<object>()
+                {
+                    StatusCode = StatusCodes.OK,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<object>()
+                {
+                    Description = $"[Delete] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError
+                };
+            }
         }
-
         public async Task<IBaseResponse<object>> UploadFile(IFormFile fileToUpload, int userId, int cardId, string userName, string userImg)
         {
             try
@@ -464,6 +486,23 @@ namespace TrelloClone.Services
                     Date = FakeToday,
                     Content = "Добавил(а) комментарий"
                 });
+
+                //Уведомление//
+                var content = string.Format(@$"
+                <div>" +
+                    "Информируем, что ‘ФИО того, кто внес комментарий’ оставил(а) комментарий в задаче ‘Наименование задачи’." +
+                    "Заполнение SMART-задач доступно по ссылке:" +
+                        "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Посмотреть задачу можно по ссылке<a/>" +
+                        "<br>" +
+                        "<div>" + "или через ярлык на рабочем столе" + "<div>" +
+                        "<span style=\"width:50px; height:50px;\">" +
+                            "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
+                        "</span>" +
+                "</div>");
+
+                var message = new Message(new string[] { "@mtb.minsk.by" }, "Уведомление", content, "Имя");
+                await _emailSender.SendEmailAsync(message);
+                ///////////////
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();

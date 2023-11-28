@@ -18,6 +18,7 @@ namespace TrelloClone.Models
         public Column Column { get; set; }
         public int UserId { get; set; }
         public bool IsRelevant { get; set; }
+        public bool IsDeleted { get; set; }
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<File> Files { get; set; } = new List<File>();
         public List<Update> Updates { get; set; } = new List<Update>();

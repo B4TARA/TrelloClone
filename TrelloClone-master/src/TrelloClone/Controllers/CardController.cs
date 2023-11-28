@@ -12,12 +12,10 @@ namespace TrelloClone.Controllers
     public class CardController : Controller
     {
         private readonly CardService _cardService;
-        private readonly UserService _userService;
 
-        public CardController(CardService cardService, UserService userService)
+        public CardController(CardService cardService)
         {
             _cardService = cardService;
-            _userService = userService;
         }
 
         [HttpPost]
@@ -107,13 +105,18 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete()
         {
             int cardId = Convert.ToInt32(Request.Form["cardId"]);
 
-            _cardService.Delete(cardId);
+            var response = await _cardService.Delete(cardId);
 
-            return Ok();
+            if (response.StatusCode == StatusCodes.OK)
+            {
+                return Ok("Карточка удалена!");
+            }
+
+            return NotFound(response.Description);
         }
 
         [HttpPost]

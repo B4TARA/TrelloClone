@@ -190,7 +190,7 @@ namespace TrelloClone.Services
                     else if (FakeToday.Day == 14)
                     {
                         user.IsActiveLikeSupervisor = false;
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[8]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
                 }
 
