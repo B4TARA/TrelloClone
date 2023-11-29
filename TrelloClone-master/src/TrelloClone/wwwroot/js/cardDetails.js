@@ -42,6 +42,58 @@ async function editCard(idCard) {
     })
         .then((response) => response.text())
         .then((data) => {
+            
+            const cardDetailsWrapper = document.getElementById('cardDetails');
+            if (cardDetailsWrapper != null) {
+                cardDetailsWrapper.remove()
+            }
+            
+            div.innerHTML = data;
+            mainContainers.appendChild(div)
+        })
+}
+
+
+async function editCard2(idCard) {
+
+    let div = document.createElement('div')
+    div.setAttribute("id", "cardDetails")
+
+    await fetch('GetCardAssessmentViewComponent?' + new URLSearchParams({
+        cardId: idCard
+    }),
+        {
+            method: 'GET',
+        })
+        .then((response) => response.text())
+        .then((data) => {
+            const cardDetailsWrapper = document.getElementById('cardDetails');
+            if (cardDetailsWrapper != null) {
+                cardDetailsWrapper.remove()
+            }
+            div.innerHTML = data;
+            mainContainers.appendChild(div)
+        })
+}
+
+
+async function editCard3(idCard) {
+
+    let div = document.createElement('div')
+    div.setAttribute("id", "cardDetails")
+
+    await fetch('GetCardHistoryViewComponent?' + new URLSearchParams({
+        cardId: idCard
+    }),
+        {
+            method: 'GET',
+        })
+        .then((response) => response.text())
+        .then((data) => {
+            const cardDetailsWrapper = document.getElementById('cardDetails');
+            if (cardDetailsWrapper != null) {
+                cardDetailsWrapper.remove()
+            }
             div.innerHTML = data;
             mainContainers.appendChild(div)
         })

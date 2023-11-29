@@ -488,8 +488,7 @@ namespace TrelloClone.Services
                 });
 
                 //Уведомление//
-                var content = string.Format(@$"
-                <div>" +
+                var content = "<div>" +
                     "Информируем, что ‘ФИО того, кто внес комментарий’ оставил(а) комментарий в задаче ‘Наименование задачи’." +
                     "Заполнение SMART-задач доступно по ссылке:" +
                         "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Посмотреть задачу можно по ссылке<a/>" +
@@ -498,10 +497,10 @@ namespace TrelloClone.Services
                         "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
                         "</span>" +
-                "</div>");
+                "</div>";
 
-                var message = new Message(new string[] { "@mtb.minsk.by" }, "Уведомление", content, "Имя");
-                await _emailSender.SendEmailAsync(message);
+                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Уведомление", content, "yatomchik@mtb.minsk.by");
+                //await _emailSender.SendEmailAsync(message);
                 ///////////////
 
                 _repository.CardRepository.Update(card);
