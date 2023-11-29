@@ -40,84 +40,12 @@
 
                     <input type="hidden" asp-for="Column" value="@Model.Column" />
 
-                    <div class="title_popup_wrapper grid_description_2fr" id="title_popup_wrapper">
-                        <div class="container_description first_row_grid_description">
+                    <input type="hidden" class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание" required />
 
+                    <input type="hidden" asp-for="Name" placeholder="Введите название" required />
 
-                            <div class="icon_description">
-                                <i class="fa-regular fa-credit-card"></i>
-                            </div>
-
-
-                            <div class="card_name_input_wrapper card_detail_active">
-                                <input type="text" asp-for="Name" placeholder="Введите название" required />
-                            </div>
-
-
-                        </div>
-                    </div>
-
-
-                    <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
-
-
-                        <div class="container_description first_row_grid_description">
-
-
-                            <div class="icon_description">
-                                <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
-                            </div>
-
-
-                            <div class="mid_title">
-                                Требование к SMART-задаче
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="second_row_grid_description" id="description">
-                            <div></div>
-
-
-                            <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание" required></textarea>
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
-
-
-                        <div class="container_description first_row_grid_description">
-
-
-                            <div class="icon_description">
-                                <i class="fa-regular fa-calendar"></i>
-                            </div>
-
-
-                            <div class="mid_title">
-                                Плановый срок реализации
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
-                            <div></div>
-
-
-                            <div class="choose_date_wrapper" id="choose_date">
-                                <input type="date" asp-for="Term" placeholder="Выберите период" required>
-                            </div>
-
-
-                        </div>
-                    </div>
+                    <input type="hidden" asp-for="Term" placeholder="Выберите период" required>
+                  
                     @if (Model.SupervisorAssessment == 2 || Model.SupervisorAssessment == 3 || Model.SupervisorAssessment == 4)
                     {
                         <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
@@ -150,98 +78,7 @@
 
                             </div>
                         </div>
-                    }
-
-
-
-
-                    <div class="upload_files_main_wrapper grid_description_2fr margin_container_bottom">
-
-
-                        <div class="container_description first_row_grid_description">
-
-
-                            <div class="icon_description">
-                                <i class="fa-solid fa-paperclip" style="color: #191919;"></i>
-                            </div>
-
-
-                            <div class="mid_title_wrapper">
-
-
-                                <div class="mid_title">
-                                    Вложения
-                                </div>
-
-
-                                <div class="upload_file_btn_wrapper">
-                                    <div class="input__wrapper">
-
-
-                                        <input type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
-
-
-                                        <label for="input__file" class="input__file-button">
-                                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
-                                            <span class="input__file-button-text">Добавить</span>
-                                        </label>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="upload_files_wrapper second_row_grid_description">
-                            <div></div>
-
-
-                            <div class="upload_files_list_wrapper" id="upload_files_list_wrapper">
-
-
-                                <section class="progress-area"></section>
-
-
-                                <section class="uploaded-area">
-
-
-                                    @foreach (var file in Model.Files)
-                                    {
-
-                                        <li class="row">
-
-
-                                            <div class="content upload">
-
-
-                                                <div class="content_upload_type_icon">
-                                                    <i class="fa-solid fa-file-lines"></i>
-                                                </div>
-
-
-                                                <div class="details">
-                                                    <span class="name">@file.Name • Добавлено</span>
-                                                    @*<span class="size">@file.Size</span>*@
-                                                    <a href="@file.Path"><span class="description download">Скачать</span></a>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="content_upload_delete_icon" onclick="deleteFile(@file.Id, @Model.Id)">
-                                                <i class="fa-solid fa-xmark delete_upload_file"></i>
-                                            </div>
-
-
-                                        </li>
-                                    }
-                                </section>
-                            </div>
-                        </div>
-                    </div>
-
-
-
+                    }                 
 
 
                     @if (Model.Column > 3)
@@ -455,91 +292,7 @@
 
                             </div>
                         }
-                    }
-
-                    <div class="history_main_wrapper grid_description_2fr margin_container_bottom">
-
-
-                        <div class="container_description first_row_grid_description">
-
-
-                            <div class="icon_description">
-                                <i class="fa-solid fa-clock-rotate-left" style="color: #191919;"></i>
-                            </div>
-
-
-                            <div class="mid_title_wrapper">
-
-
-                                <div class="mid_title">
-                                    История изменений
-                                </div>
-                                <div class="icon_dropdown" onclick="openDropdownList(this)">
-                                    <i class="fa-solid fa-caret-down"></i>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="history_list_wrapper" id="history_list_wrapper">
-
-
-                            @foreach (var update in Model.Updates)
-                            {
-                                <div class="history_item_wrapper">
-
-
-                                    <div class="first_row_grid_description">
-
-
-                                        <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-
-
-                                                @if (update.UserImg != null)
-                                                {
-                                                    <div class="profile-content">
-                                                        <img src="@update.UserImg" alt="holder_image">
-                                                    </div>
-                                                }
-
-
-                                                else
-                                                {
-                                                    <img src="/image/default_profile_icon.svg" alt="holder_image">
-                                                }
-
-
-                                            </div>
-                                        </div>
-
-
-                                        <div class="mid_title">
-                                            @update.UserName
-                                        </div>
-                                    </div>
-
-
-                                    <div class="second_row_grid_description" id="description">
-                                        <div></div>
-
-
-                                        <div class="history_info_wrapper">
-
-
-                                            <div class="history_description_wrapper mid_description">
-                                                <span class="main_description_history">@update.Content</span>
-                                            </div>
-
-
-                                            <div class="date_description">@update.Date.ToString("dd MMMM yyyy HH:mm")</div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
+                    }                 
 
 
                     <div class="action_buttons_wrapper">
