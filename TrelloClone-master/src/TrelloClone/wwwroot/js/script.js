@@ -55,7 +55,6 @@ function optionClick(elem) {
     resultAssessmentWrapper.value = resultAssessmentVal;
 }
 
-
 function openDropdownList(elem) {
     const historyListWrapper = document.getElementById('history_list_wrapper')
     historyListWrapper.classList.toggle('active')
@@ -83,12 +82,10 @@ function openVerifyPopup(elem) {
     mainContainerContentElement.append(div)
 }
 
-
 function closeVerifyPopup(elem) {
     const popupElem = document.querySelector('.popup_verify_bg_wrapper')
     popupElem.remove()
 }
-
 
 function sendInfoDeleteCard(cardId) {
     

@@ -190,7 +190,7 @@ namespace TrelloClone.Services
         {
             try
             {
-                DateTime FakeToday = new DateTime(2023, 1, 8);
+                DateTime FakeToday = new DateTime(2023, 3, 20);
 
                 var card = await _repository.CardRepository.GetCardById(false, command.CardId);
                 var columns = await _repository.ColumnRepository.GetColumnsByUser(false, card.UserId);

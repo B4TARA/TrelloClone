@@ -6,11 +6,13 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
 using TrelloClone.Models.Term;
 using TrelloClone.ViewModels;
+using TrelloClone.ViewModels.CardDetails;
 using StatusCodes = TrelloClone.Models.Enum.StatusCodes;
 
 namespace TrelloClone.Services
@@ -31,7 +33,7 @@ namespace TrelloClone.Services
             _emailSender = emailSender;
         }
 
-        DateTime FakeToday = new DateTime(2023, 1, 8, 12, 10, 25);
+        DateTime FakeToday = new DateTime(2023, 3, 20, 12, 10, 25);
 
         public void Create(AddCard viewModel)
         {
@@ -57,7 +59,7 @@ namespace TrelloClone.Services
             _dbContext.SaveChanges();
         }
 
-        public async Task<IBaseResponse<object>> Update(CardDetails cardDetails, string userName, string userImg)
+        public async Task<IBaseResponse<object>> Update(CardLayout cardDetails, string userName, string userImg)
         {
             try
             {
@@ -488,8 +490,8 @@ namespace TrelloClone.Services
                 });
 
                 //Уведомление//
-                var content = string.Format(@$"
-                <div>" +
+                var content =
+                "<div>" +
                     "Информируем, что ‘ФИО того, кто внес комментарий’ оставил(а) комментарий в задаче ‘Наименование задачи’." +
                     "Заполнение SMART-задач доступно по ссылке:" +
                         "<a href= \"https://10.117.11.77:44370/Account/LogOut\" target = \"blanc\">Посмотреть задачу можно по ссылке<a/>" +
@@ -498,9 +500,9 @@ namespace TrelloClone.Services
                         "<span style=\"width:50px; height:50px;\">" +
                             "<img style=\"width:50px; height:50px;\" src='cid:{0}'>" +
                         "</span>" +
-                "</div>");
+                "</div>";
 
-                var message = new Message(new string[] { "@mtb.minsk.by" }, "Уведомление", content, "Имя");
+                var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Уведомление", content, "yatomchik@mtb.minsk.by");
                 await _emailSender.SendEmailAsync(message);
                 ///////////////
 

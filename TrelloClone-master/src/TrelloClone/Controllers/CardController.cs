@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
+using TrelloClone.ViewModels.CardDetails;
 using StatusCodes = TrelloClone.Models.Enum.StatusCodes;
 
 namespace TrelloClone.Controllers
@@ -19,7 +20,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(CardDetails card)
+        public async Task<IActionResult> Update(CardLayout card)
         {
             var userName = User.FindFirst("Name").Value;
 
@@ -171,6 +172,7 @@ namespace TrelloClone.Controllers
             var userImage = User.FindFirst("ImagePath").Value;
 
             string comment = Request.Form["comment"];
+
             int cardId = Convert.ToInt32(Request.Form["cardId"]);
 
             var response = await _cardService.AddComment(comment, userId, userName, userImage, cardId);

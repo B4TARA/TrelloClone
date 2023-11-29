@@ -42,6 +42,7 @@ function deleteFile(fileId, cardId) {
     formData = new FormData();
     formData.append("fileId", fileId);
     formData.append("cardId", cardId);
+    const cardDetails = document.getElementById("cardDetails");
 
     $.ajax({
         url: url,
@@ -52,7 +53,7 @@ function deleteFile(fileId, cardId) {
         processData: false,
         success: async function () {
 
-            await fetch('GetCardDetailsViewComponent?' + new URLSearchParams({
+            await fetch('GetCardLayoutViewComponent?' + new URLSearchParams({
                 cardId: cardId
             }),
                 {
@@ -89,7 +90,7 @@ function uploadFile(files) {
         processData: false,
         success: async function () {
 
-            await fetch('GetCardDetailsViewComponent?' + new URLSearchParams({
+            await fetch('GetCardLayoutViewComponent?' + new URLSearchParams({
                 cardId: cardId
             }),
                 {

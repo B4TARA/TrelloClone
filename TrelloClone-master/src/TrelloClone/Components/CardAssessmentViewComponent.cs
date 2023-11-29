@@ -3,13 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Data.Repositories;
 using TrelloClone.ViewModels;
+using TrelloClone.ViewModels.CardDetails;
 
 namespace TrelloClone.Components
 {
-    public class CardDetailsViewComponent : ViewComponent
+    public class CardAssessmentViewComponent : ViewComponent
     {
         private readonly RepositoryManager _repository;
-        public CardDetailsViewComponent(RepositoryManager repository)
+        public CardAssessmentViewComponent(RepositoryManager repository)
         {
             _repository = repository;
         }
@@ -24,12 +25,9 @@ namespace TrelloClone.Components
             
             var column = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
 
-            var model = new CardDetails
+            var model = new CardAssessment
             {
                 Id = card.Id,
-                Name = card.Name,
-                Requirement = card.Requirement,
-                Term = card.Term,
                 FactTerm = card.FactTerm,
                 EmployeeAssessment = card.EmployeeAssessment,
                 SupervisorAssessment = card.SupervisorAssessment,
@@ -40,12 +38,9 @@ namespace TrelloClone.Components
                 IsActiveLikeEmployee = user.IsActiveLikeEmployee,
                 IsActiveLikeSupervisor = user.IsActiveLikeSupervisor,
                 UserId = card.UserId,
-                Comments = card.Comments,
-                Files = card.Files,
-                Updates = card.Updates,
             };
 
-            return View("CardDetails", model);
+            return View("CardAssessment", model);
         }
     }
 }

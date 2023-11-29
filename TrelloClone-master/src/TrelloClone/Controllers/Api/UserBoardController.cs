@@ -23,7 +23,7 @@ namespace TrelloClone.Controllers.Api
         }
 
         [HttpPost("movecard")]
-        public async Task<IActionResult> MoveCard(int ColumnId, int CardId, string Name, DateTime Term, string Requirement)
+        public async Task<IActionResult> MoveCard(int ColumnId, int CardId, string Name, DateOnly Term, string Requirement)
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
@@ -35,7 +35,7 @@ namespace TrelloClone.Controllers.Api
             command.ColumnId = ColumnId;
             command.CardId = CardId;
             command.Name = Name;
-            command.Term = Term;
+            //command.Term = Term;
             command.Requirement = Requirement;
             command.UserName = userName;
             command.UserImg = userImg;

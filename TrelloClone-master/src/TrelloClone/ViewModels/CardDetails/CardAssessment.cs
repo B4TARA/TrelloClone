@@ -3,20 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TrelloClone.Models;
 
-namespace TrelloClone.ViewModels
+namespace TrelloClone.ViewModels.CardDetails
 {
-    public class CardDetails
+    public class CardAssessment
     {
-        public int Id { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string Requirement { get; set; }
-
-        [Required]
-        public DateTime Term { get; set; }
+        public int Id { get; set; }     
         public DateTime? FactTerm { get; set; }
         public int? EmployeeAssessment { get; set; }
         public string? EmployeeComment { get; set; }
@@ -27,11 +18,5 @@ namespace TrelloClone.ViewModels
         public bool IsActiveLikeSupervisor { get; set; }
         public int UserId { get; set; }
         public int ColumnId { get; set; }
-
-        public List<Comment> Comments = new List<Comment>();
-
-        public List<File> Files = new List<File>();
-
-        public List<Update> Updates = new List<Update>();
     }
 }

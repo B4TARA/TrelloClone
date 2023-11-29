@@ -1,0 +1,268 @@
+﻿@model TrelloClone.ViewModels.CardDetails.CardInfo
+
+
+<div class="title margin_container_bottom_middle">Информация</div>
+
+
+<form asp-controller="Card" asp-action="Update" enctype="multipart/form-data">
+
+
+    <input type="hidden" asp-for="Id" id="cardId" value="@Model.Id" />
+
+
+    <input type="hidden" asp-for="Column" id="columnId" value="@Model.Column" />
+
+
+    <div class="title_popup_wrapper grid_description_2fr" id="title_popup_wrapper">
+        <div class="container_description first_row_grid_description">
+
+
+            <div class="icon_description">
+                <i class="fa-regular fa-credit-card"></i>
+            </div>
+
+
+            <div class="card_name_input_wrapper card_detail_active" >
+                <input type="text" asp-for="Name" placeholder="Введите название" id="card_name_input" required />
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
+
+
+        <div class="container_description first_row_grid_description">
+
+
+            <div class="icon_description">
+                <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
+            </div>
+
+
+            <div class="mid_title">
+                Требование к SMART-задаче
+            </div>
+
+
+        </div>
+
+
+        <div class="second_row_grid_description" id="description">
+            <div></div>
+
+
+            <textarea class="mid_description" id="cardDescription" asp-for="Requirement" placeholder="Введите описание" required></textarea>
+        </div>
+
+
+    </div>
+
+
+    <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
+
+
+        <div class="container_description first_row_grid_description">
+
+
+            <div class="icon_description">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+
+            <div class="mid_title">
+                Плановый срок реализации
+            </div>
+
+
+        </div>
+
+
+        <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
+            <div></div>
+
+
+            <div class="choose_date_wrapper">
+                <input type="date" asp-for="Term" id="cardDatePlan" placeholder="Выберите период" required>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="upload_files_main_wrapper grid_description_2fr margin_container_bottom">
+
+
+        <div class="container_description first_row_grid_description">
+
+
+            <div class="icon_description">
+                <i class="fa-solid fa-paperclip" style="color: #191919;"></i>
+            </div>
+
+
+            <div class="mid_title_wrapper">
+
+
+                <div class="mid_title">
+                    Вложения
+                </div>
+
+
+                <div class="upload_file_btn_wrapper">
+                    <div class="input__wrapper">
+
+
+                        <input type="file" id="input__file" class="input input__file" multiple onchange="setFileData(this)">
+
+
+                        <label for="input__file" class="input__file-button">
+                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
+                            <span class="input__file-button-text">Добавить</span>
+                        </label>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="upload_files_wrapper second_row_grid_description">
+            <div></div>
+
+
+            <div class="upload_files_list_wrapper" id="upload_files_list_wrapper">
+
+
+                <section class="progress-area"></section>
+
+
+                <section class="uploaded-area">
+
+
+                    @foreach (var file in Model.Files)
+                    {
+
+                        <li class="row">
+
+
+                            <div class="content upload">
+
+
+                                <div class="content_upload_type_icon">
+                                    <i class="fa-solid fa-file-lines"></i>
+                                </div>
+
+
+                                <div class="details">
+                                    <span class="name">@file.Name • Добавлено</span>
+                                    <a href="@file.Path"><span class="description download">Скачать</span></a>
+                                </div>
+                            </div>
+
+
+                            <div class="content_upload_delete_icon" onclick="deleteFile(@file.Id, @Model.Id)">
+                                <i class="fa-solid fa-xmark delete_upload_file"></i>
+                            </div>
+
+
+                        </li>
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="action_buttons_wrapper">
+
+
+        @if ((Model.IsActiveLikeEmployee
+        && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId))
+        {
+
+
+            @if (Model.Column == 1)
+            {
+                <button asp-controller="UserBoard" asp-action="MoveCard"
+                        asp-route-ColumnId="@Model.ColumnId"
+                        asp-route-CardId="@Model.Id" class="action_btn green_btn"
+                        asp-route-Name="@Model.Name"
+                        asp-route-Term="@Model.Term"
+                        asp-route-Requirement="@Model.Requirement">
+                    <div class="description">На согласование</div>
+                </button>
+            }
+        }
+
+
+        else if (Model.IsActiveLikeSupervisor
+        && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId)
+        {
+
+
+            if (Model.Column == 2)
+            {
+                <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
+                    <div class="description">Согласовано</div>
+                </button>
+
+
+                <button asp-controller="UserBoard" asp-action="RejectCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn orange_btn">
+                    <div class="description">На доработку</div>
+                </button>
+            }
+        }
+
+        else if (Model.Column != 6)
+        {
+            <button type="submit" class="action_btn primary_btn">
+                <div class="description">Сохранить изменения</div>
+            </button>
+        }
+
+
+    </div>
+</form>
+
+
+<script>
+
+    const cardNameValue = document.getElementById('card_name_input').value;
+    const cardDescriptionValue = document.getElementById('cardDescription').value;
+    const cardDatePlan = document.getElementById('cardDatePlan').value;
+    const cardId = document.getElementById('cardId').value;
+    const columnId = document.getElementById('columnId').value
+
+    function MoveCard(elem) {
+
+        const url = "/UserBoard/MoveCard";
+            formData = new FormData();
+            formData.append("cardNameValue", cardNameValue);
+            formData.append("cardDescriptionValue", cardDescriptionValue);
+            formData.append("cardDatePlan", cardDatePlan);
+            formData.append("cardId", cardId);
+            formData.append("columnId", columnId);
+            console.log(FormData)
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: async function () {
+                    location.reload();
+                }
+            });
+        }
+       
+    }
+
+
+</script>

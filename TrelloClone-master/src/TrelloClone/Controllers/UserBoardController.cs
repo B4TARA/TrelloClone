@@ -74,11 +74,35 @@ namespace TrelloClone.Controllers
         }      
 
         [HttpGet]
-        public IActionResult GetCardDetailsViewComponent(int cardId, string view)
+        public IActionResult GetCardLayoutViewComponent(int cardId)
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
 
-            return ViewComponent("CardDetails", new { cardId = cardId, userId = userId});
+            return ViewComponent("CardLayout", new { cardId = cardId, userId = userId});
+        }
+
+        [HttpGet]
+        public IActionResult GetCardInfoViewComponent(int cardId)
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            return ViewComponent("CardInfo", new { cardId = cardId, userId = userId });
+        }
+
+        [HttpGet]
+        public IActionResult GetCardAssessmentViewComponent(int cardId)
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            return ViewComponent("CardAssessment", new { cardId = cardId, userId = userId });
+        }
+
+        [HttpGet]
+        public IActionResult GetCardHistoryViewComponent(int cardId)
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+
+            return ViewComponent("CardHistory", new { cardId = cardId, userId = userId });
         }
     }
 }

@@ -60,8 +60,7 @@ function createElementComment(elem) {
     const imgUserPath = document.querySelector('.profile-content-image');
     const userName = document.querySelector('.profile_name')
     let div = document.createElement('div')
-    div.classList.add('comment_user_wrapper')
-
+    div.classList.add('comment_user_wrapper')    
     div.innerHTML = `
                             <div class="first_row_grid_description margin_container_top_middle">
 

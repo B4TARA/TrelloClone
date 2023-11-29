@@ -1,0 +1,87 @@
+﻿@model TrelloClone.ViewModels.CardDetails.CardHistory
+
+<div class="title margin_container_bottom_middle">История</div>
+
+<div class="history_main_wrapper active grid_description_2fr margin_container_bottom">
+
+@*
+    <div class="container_description first_row_grid_description">
+
+
+        <div class="icon_description">
+            <i class="fa-solid fa-clock-rotate-left" style="color: #191919;"></i>
+        </div>
+
+
+        <div class="mid_title_wrapper">
+
+
+            <div class="mid_title">
+                История изменений
+            </div>
+            <div class="icon_dropdown" onclick="openDropdownList(this)">
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+
+        </div>
+    </div>*@
+
+    <div class="history_list_wrapper" id="history_list_wrapper">
+
+
+        @foreach (var update in Model.Updates)
+        {
+            <div class="history_item_wrapper">
+
+
+                <div class="first_row_grid_description">
+
+
+                    <div class="card_holders_wrapper">
+                        <div class="holder_image_wrapper">
+
+
+                            @if (update.UserImg != null)
+                            {
+                                <div class="profile-content">
+                                    <img src="@update.UserImg" alt="holder_image">
+                                </div>
+                            }
+
+
+                            else
+                            {
+                                <img src="/image/default_profile_icon.svg" alt="holder_image">
+                            }
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="mid_title">
+                        @update.UserName
+                    </div>
+                </div>
+
+
+                <div class="second_row_grid_description" id="description">
+                    <div></div>
+
+
+                    <div class="history_info_wrapper">
+
+
+                        <div class="history_description_wrapper mid_description">
+                            <span class="main_description_history">@update.Content</span>
+                        </div>
+
+
+                        <div class="date_description">@update.Date.ToString("dd MMMM yyyy HH:mm")</div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>

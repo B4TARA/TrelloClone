@@ -1,0 +1,138 @@
+﻿@model TrelloClone.ViewModels.CardDetails.CardLayout
+
+
+<div class="popup__bg">
+    <div class="popup_wrapper">
+
+
+        <div class="leftside_popup_buttons_wrapper">
+
+
+            <div class="leftside_button_wrapper" onclick="infoCard(@Model.Id)">
+                <div class="leftside_button_icon">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+                @*<div class="mid_title">Информация</div>*@
+            </div>
+
+
+            @if (Model.Column >= 4)
+            {
+                <div class="leftside_button_wrapper" onclick="assessmentCard(@Model.Id)">
+                    <div class="leftside_button_icon">
+                        <i class="fa-solid fa-check-to-slot"></i>
+                    </div>
+                    @*<div class="mid_title">Оценка</div>*@
+                </div>
+            }
+          
+
+            <div class="leftside_button_wrapper" onclick="historyCard(@Model.Id)">
+                <div class="leftside_button_icon">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                @*<div class="mid_title">История</div>*@
+            </div>
+
+
+        </div>
+
+
+        <div class="popup" cardId="@Model.Id" id="popupMainInfo">
+
+
+            <div class="close-popup" onclick="closeCard(this)"><i class="fa-solid fa-xmark"></i></div>
+
+
+            <div class="info_popup_card_wrapper" id="info_popup_card_wrapper"></div>
+
+
+        </div>
+
+
+        <div class="comment_area_sidebar_wrapper">
+
+
+            <div class="title margin_container_bottom_middle">Комментарии</div>
+
+
+            <div class="comment_popup_card_wrapper grid_description_2fr margin_container_bottom" id="comment_popup_card_wrapper">
+
+
+                <textarea class="mid_description" id="commentAreaElem" placeholder="Введите комментарий" onclick="addCommentArea(this)"></textarea>
+
+
+                <div class="add_texteditor_buttons_wrapper add_comment_btns margin_container_top_small" id="addCommentBtns">
+                    <div class="action_buttons_wrapper ">
+
+
+                        <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
+                            <div class="description">Добавить</div>
+                        </div>
+
+
+                        <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
+                            <div>
+                                <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                               
+
+                @foreach (var comment in Model.Comments)
+                {
+
+
+                    <div class="comment_user_wrapper">
+                        <div class="first_row_grid_description margin_container_top_middle">
+
+
+                            <div class="card_holders_wrapper">
+                                <div class="holder_image_wrapper" style="background-image:url('@comment.UserImg');">
+
+
+                                    @*<img src="@comment.UserImg" alt="holder_image">*@
+
+
+                                </div>
+                            </div>
+
+
+                            <div class="mid_title">
+                                @comment.UserName
+                            </div>
+                        </div>
+
+
+                        <div class="second_row_grid_description" id="description">
+                            <div></div>
+
+
+                            <div class="commentarea_wrapper" id="commentarea_wrapper">
+                                <div class="comment_area">
+
+
+                                    <div class="mid_description">@comment.Content</div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+}
