@@ -1748,25 +1748,6 @@ section .details span {
     transition: all 0.5s ease;
 }
 
-.history_list_wrapper{
-    display:none;
-}
-
-    .history_list_wrapper.active {
-        display: grid;
-        animation: 0.7s show ease;
-    }
-
-@keyframes show {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
 
 .history_list_wrapper .holder_image_wrapper{
     width:35px;

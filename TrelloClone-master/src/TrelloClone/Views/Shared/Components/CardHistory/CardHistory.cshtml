@@ -8,19 +8,22 @@
                 <div class="leftside_button_icon">
                     <i class="fa-solid fa-house"></i>
                 </div>
-                <div class="mid_title">Инфо</div>
+                @*<div class="mid_title">Инфо</div>*@
             </div>
-            <div class="leftside_button_wrapper" onclick="editCard2(@Model.Id)">
-                <div class="leftside_button_icon">
-                    <i class="fa-solid fa-check-to-slot"></i>
+            @if (Model.Column > 3)
+            {
+                <div class="leftside_button_wrapper" onclick="editCard2(@Model.Id)">
+                    <div class="leftside_button_icon">
+                        <i class="fa-solid fa-check-to-slot"></i>
+                    </div>
+                    @*<div class="mid_title">Оценка</div>*@
                 </div>
-                <div class="mid_title">Оценка</div>
-            </div>
+            }
             <div class="leftside_button_wrapper" onclick="editCard3(@Model.Id)">
                 <div class="leftside_button_icon">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                 </div>
-                <div class="mid_title">История</div>
+                @*<div class="mid_title">История</div>*@
             </div>
         </div>
         <div class="popup" cardId="@Model.Id">
@@ -30,38 +33,10 @@
 
 
             <div class="info_popup_card_wrapper">
-                <div class="title margin_container_bottom_middle">История</div>
-
-
-
-
-                  
-
-
+                <div class="title margin_container_bottom_middle">История изменений</div>
 
                     <div class="history_main_wrapper grid_description_2fr margin_container_bottom">
 
-
-                        <div class="container_description first_row_grid_description">
-
-
-                            <div class="icon_description">
-                                <i class="fa-solid fa-clock-rotate-left" style="color: #191919;"></i>
-                            </div>
-
-
-                            <div class="mid_title_wrapper">
-
-
-                                <div class="mid_title">
-                                    История изменений
-                                </div>
-                                <div class="icon_dropdown" onclick="openDropdownList(this)">
-                                    <i class="fa-solid fa-caret-down"></i>
-                                </div>
-
-                            </div>
-                        </div>
 
                         <div class="history_list_wrapper" id="history_list_wrapper">
 

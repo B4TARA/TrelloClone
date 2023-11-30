@@ -8,19 +8,22 @@
                 <div class="leftside_button_icon">
                     <i class="fa-solid fa-house"></i>
                 </div>
-                <div class="mid_title">Инфо</div>
+                @*<div class="mid_title">Инфо</div>*@
             </div>
-            <div class="leftside_button_wrapper" onclick="editCard2(@Model.Id)">
-                <div class="leftside_button_icon">
-                    <i class="fa-solid fa-check-to-slot"></i>
+            @if (Model.Column > 3)
+            {
+                <div class="leftside_button_wrapper" onclick="editCard2(@Model.Id)">
+                    <div class="leftside_button_icon">
+                        <i class="fa-solid fa-check-to-slot"></i>
+                    </div>
+                    @*<div class="mid_title">Оценка</div>*@
                 </div>
-                <div class="mid_title">Оценка</div>
-            </div>
+            }
             <div class="leftside_button_wrapper" onclick="editCard3(@Model.Id)">
                 <div class="leftside_button_icon">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                 </div>
-                <div class="mid_title">История</div>
+                @*<div class="mid_title">История</div>*@
             </div>
         </div>
         <div class="popup" cardId="@Model.Id">
@@ -108,7 +111,7 @@
 
                                     @if (Model.Column != 5)
                                     {
-                                        <div class="options-container" id="options-container">
+                                        <div class="options-container active" id="options-container">
 
 
                                             @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())

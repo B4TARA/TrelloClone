@@ -194,6 +194,8 @@ namespace TrelloClone.Services
                     }
                 }
 
+                _repository.UserRepository.Update(user);
+                await _repository.Save();
 
                 return new BaseResponse<object>()
                 {
