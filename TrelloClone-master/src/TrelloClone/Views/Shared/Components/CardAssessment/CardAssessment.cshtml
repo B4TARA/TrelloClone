@@ -81,7 +81,7 @@
 
                             </div>
                         </div>
-                    }                 
+                    }
 
 
                     @if (Model.Column > 3)
@@ -139,14 +139,20 @@
 
 
                                         <div class="description value_asessessment" id="descriptionAssessmentVal">
+
+
                                             @if (Model.EmployeeAssessment != null)
                                             {
                                                 @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text
                                             }
+
+
                                             else
                                             {
                                                 <span class="placeholder_input">Введите оценочное суждение</span>
                                             }
+
+
                                         </div>
 
 
@@ -158,13 +164,14 @@
 
                                         else
                                         {
-                                            <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden required>
+                                            <input class="description input_assessment_value" id="valueAsessessment" asp-for="EmployeeAssessment" type="text" hidden>
                                         }
+
+
                                     </div>
-
-
                                 </div>
                             </div>
+
 
                             @if (Model.EmployeeComment == null)
                             {
@@ -187,18 +194,26 @@
                                 </div>
 
                             }
+
+
                             else
                             {
+                                <div class="result_comment_assessment_container">
 
-                                <div class="first_row_grid_description">
-                                    <div></div>
-                                    <div class="description">@Model.EmployeeComment</div>
+
+                                    <div class="first_row_grid_description margin_container_bottom_middle">
+                                        <div><i class="fa-regular fa-comment"></i></div>
+                                        <div class="description">Отчет об исполнении задачи</div>
+                                    </div>
+
+
+                                    <div class="second_row_grid_description">
+                                        <div></div>
+                                        <div class="description result_comment_description">@Model.EmployeeComment</div>
+                                    </div>
                                 </div>
                             }
                         </div>
-
-
-
 
 
                         @if (Model.Column > 4)
@@ -240,7 +255,10 @@
                                                     <div class="mid_description">@item.Description</div>
                                                 </div>
                                             }
+
+
                                         </div>
+
 
                                         <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
 
@@ -267,35 +285,40 @@
                                             </div>
 
 
-                                            <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden required>
+                                            <input class="description input_assessment_value" id="valueAsessessment" asp-for="SupervisorAssessment" type="text" hidden>
                                         </div>
 
 
                                     </div>
                                 </div>
 
+
                                 @if (Model.SupervisorComment == null)
                                 {
                                     <div class="first_row_grid_description select_description_assessment margin_container_bottom_middle">
                                         <div></div>
-
-
-
                                         <textarea class="mid_description comment_assessment" id="commentBossAssessment" asp-for="SupervisorComment" placeholder="Введите комментарий к оценке"></textarea>
                                     </div>
                                 }
+
+
                                 else
                                 {
 
+                                    <div class="first_row_grid_description">
+                                        <div><i class="fa-regular fa-comment"></i></div>
+                                        <div class="description">Отчет об исполнении задачи</div>
+                                    </div>
                                     <div class="first_row_grid_description">
                                         <div></div>
                                         <div class="description">@Model.SupervisorComment</div>
                                     </div>
                                 }
 
+
                             </div>
                         }
-                    }                 
+                    }
 
 
                     <div class="action_buttons_wrapper">
