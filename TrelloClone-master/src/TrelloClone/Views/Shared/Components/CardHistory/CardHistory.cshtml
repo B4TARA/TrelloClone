@@ -16,10 +16,13 @@
                     <div class="leftside_button_icon">
                         <i class="fa-solid fa-check-to-slot"></i>
                     </div>
-                    @*<div class="mid_title">Оценка</div>*@
+                    @if (Model.SupervisorAssessment == null || Model.EmployeeAssessment == null)
+                    {
+                        <div class="stage_indicator_circle red_bcolor"></div>
+                    }
                 </div>
             }
-            <div class="leftside_button_wrapper" onclick="editCard3(@Model.Id)">
+            <div class="leftside_button_wrapper active" onclick="editCard3(@Model.Id)">
                 <div class="leftside_button_icon">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                 </div>
@@ -37,10 +40,9 @@
 
                     <div class="history_main_wrapper grid_description_2fr margin_container_bottom">
 
-
+                    @if (Model.Updates.Count() != 0)
+                    {
                         <div class="history_list_wrapper" id="history_list_wrapper">
-
-
                             @foreach (var update in Model.Updates)
                             {
                                 <div class="history_item_wrapper">
@@ -50,24 +52,16 @@
 
 
                                         <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-
-
-                                                @if (update.UserImg != null)
-                                                {
-                                                    <div class="profile-content">
-                                                        <img src="@update.UserImg" alt="holder_image">
-                                                    </div>
-                                                }
-
-
-                                                else
-                                                {
-                                                    <img src="/image/default_profile_icon.svg" alt="holder_image">
-                                                }
-
-
-                                            </div>
+                                            @if (update.UserImg != null)
+                                            {
+                                                <div class="holder_image_wrapper" style="background-image:url('@update.UserImg')">
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="holder_image_wrapper" style="background-image:url('/image/default_profile_icon.svg');">
+                                                </div>
+                                            }
                                         </div>
 
 
@@ -96,6 +90,15 @@
                                 </div>
                             }
                         </div>
+                    }else{
+                        <div class="empty_image_wrapper">
+                            <img src="~/image/EmptyState.png">
+                            <div class="title">Еще пусто</div>
+                        </div>
+                    }
+
+                        
+                        
                     </div>
 
             
@@ -150,10 +153,10 @@
 
 
                             <div class="card_holders_wrapper">
-                                <div class="holder_image_wrapper">
+                                <div class="holder_image_wrapper" style="background-image:url('@comment.UserImg');">
 
 
-                                    <img src="@comment.UserImg" alt="holder_image">
+                                    @*<img src="@comment.UserImg" alt="holder_image">*@
 
 
                                 </div>

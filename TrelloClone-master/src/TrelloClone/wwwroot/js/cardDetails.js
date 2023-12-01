@@ -28,6 +28,9 @@ function closeCard(elem) {
     elemTodelete.remove()
 }
 
+function closePopupBg(elem) {
+    elem.remove()
+}
 
 async function editCard(idCard) {
 

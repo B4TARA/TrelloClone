@@ -89,7 +89,9 @@
     </a>
 </div>
 <section class="main_container_content" id="main_container_content">
+
 <div class="list_view_container">
+
     @foreach (var column in Model.Columns)
     {
             @if (column.Number == 6)
@@ -103,8 +105,8 @@
                                 <th class="blue_bcolor_highcontrast">Архив</th>
                                 <th class="extra_info"></th>
                                 <th>Создал</th>
-                                <th>Дата создания</th>
-                                <th>Дата закрытия</th>
+                                <th>Плановая дата</th>
+                                <th>Фактическая дата</th>
                                 <th>Оценка сотрудника</th>
                                 <th>Оценка руководителя</th>
                             </tr>
@@ -168,10 +170,10 @@
                                             @if (User.FindFirst("ImagePath") != null)
                                             {
                                                 <div class="card_holders_wrapper">
-                                                    <div class="holder_image_wrapper">
+                                                    <div class="holder_image_wrapper" style="background-image:url('@User.FindFirst("ImagePath").Value');">
 
 
-                                                        <img src="@User.FindFirst("ImagePath").Value" alt="profileImg">
+                                                        @*<img src="@User.FindFirst("ImagePath").Value" alt="profileImg">*@
 
 
                                                     </div>
@@ -182,10 +184,10 @@
                                             else
                                             {
                                                 <div class="card_holders_wrapper">
-                                                    <div class="holder_image_wrapper">
+                                                    <div class="holder_image_wrapper" style="background-image:url('/image/default_profile_icon.svg');">
 
 
-                                                        <img src="/image/default_profile_icon.svg" alt="profileImg">
+                                                        @*<img src="/image/default_profile_icon.svg" alt="profileImg">*@
 
 
                                                     </div>

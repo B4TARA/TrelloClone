@@ -9,7 +9,7 @@ namespace TrelloClone.Components
     {
         public IViewComponentResult Invoke()
         {
-            DateTime FakeToday = new DateTime(2023, 1, 8);
+            DateTime FakeToday = new DateTime(2025, 1, 1);
 
             var quarter = Term.GetQuarter(FakeToday);
             var min = Term.GetMin(quarter, FakeToday);

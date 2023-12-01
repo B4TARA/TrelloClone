@@ -31,7 +31,7 @@ namespace TrelloClone.Services
             _emailSender = emailSender;
         }
 
-        DateTime FakeToday = new DateTime(2023, 1, 8, 12, 10, 25);
+        DateTime FakeToday = new DateTime(2025, 1, 1, 12, 10, 25);
 
         public void Create(AddCard viewModel)
         {
@@ -292,7 +292,6 @@ namespace TrelloClone.Services
                     if (Models.Term.Term.GetQuarter(card.Term) != Models.Term.Term.GetQuarter(Term))
                     {
                         card.ColumnId = columns.First(x => x.Number == 3).Id;
-                        card.EmployeeAssessment = 8;
                     }
 
                     card.Term = Term;
@@ -321,12 +320,8 @@ namespace TrelloClone.Services
                     Content = "Выставил(а) оценочное суждение работника",
                 });
 
-                //если не перенос
-                if (card.EmployeeAssessment != 8)
-                {
-                    card.ColumnId = card.ColumnId + 1;
-                }
 
+                card.ColumnId = card.ColumnId + 1;
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
 

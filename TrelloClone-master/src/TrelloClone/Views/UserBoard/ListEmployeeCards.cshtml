@@ -219,10 +219,10 @@
                                         @if (Model.ImgPath != null)
                                         {
                                             <div class="card_holders_wrapper">
-                                                <div class="holder_image_wrapper">
+                                            <div class="holder_image_wrapper" style="background-image:url('@Model.ImgPath')">
 
 
-                                                    <img src="@Model.ImgPath" alt="profileImg">
+                                                    @*<img src="@Model.ImgPath" alt="profileImg">*@
 
 
                                                 </div>
@@ -233,10 +233,10 @@
                                         else
                                         {
                                             <div class="card_holders_wrapper">
-                                                <div class="holder_image_wrapper">
+                                            <div class="holder_image_wrapper" style="background-image:url('/image/default_profile_icon.svg')">
 
 
-                                                    <img src="/image/default_profile_icon.svg" alt="profileImg">
+                                                    @*<img src="/image/default_profile_icon.svg" alt="profileImg">*@
 
 
                                                 </div>

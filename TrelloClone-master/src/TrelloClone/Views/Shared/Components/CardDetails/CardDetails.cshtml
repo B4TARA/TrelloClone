@@ -4,7 +4,7 @@
 <div class="popup__bg">
     <div class="popup_wrapper">
         <div class="leftside_popup_buttons_wrapper">
-            <div class="leftside_button_wrapper" onclick="editCard(@Model.Id)">
+            <div class="leftside_button_wrapper active" onclick="editCard(@Model.Id)">
                 <div class="leftside_button_icon">
                     <i class="fa-solid fa-house"></i>
                 </div>
@@ -16,7 +16,10 @@
                     <div class="leftside_button_icon">
                         <i class="fa-solid fa-check-to-slot"></i>
                     </div>
-                    @*<div class="mid_title">Оценка</div>*@
+                    @if (Model.SupervisorAssessment == null || Model.EmployeeAssessment == null)
+                    {
+                        <div class="stage_indicator_circle red_bcolor"></div>
+                    }
                 </div>
             }
             <div class="leftside_button_wrapper" onclick="editCard3(@Model.Id)">
@@ -276,6 +279,18 @@
                                 </button>                      
                         }
 
+
+                        else if (Model.IsActiveLikeSupervisor
+                        && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
+                        && Model.Column == 3
+                        && TrelloClone.Models.Term.Term.GetQuarter(Model.Term) == TrelloClone.Models.Term.Term.GetPreviousQuarter(new DateTime(2025, 1, 1)))
+                        {
+                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
+                                <div class="description">Перевести на след этап</div>
+                            </button>
+                        }
+
+
                         else if (Model.Column != 6)
                         {
                             <button type="submit" class="action_btn primary_btn">
@@ -335,10 +350,10 @@
 
 
                             <div class="card_holders_wrapper">
-                                <div class="holder_image_wrapper">
+                                <div class="holder_image_wrapper" style="background-image:url('@comment.UserImg');">
 
 
-                                    <img src="@comment.UserImg" alt="holder_image">
+                                    @*<img src="@comment.UserImg" alt="holder_image">*@
 
 
                                 </div>

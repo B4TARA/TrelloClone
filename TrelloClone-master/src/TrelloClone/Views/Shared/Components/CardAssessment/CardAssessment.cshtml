@@ -12,11 +12,16 @@
             </div>
             @if (Model.Column > 3)
             {
-                <div class="leftside_button_wrapper" onclick="editCard2(@Model.Id)">
+
+                <div class="leftside_button_wrapper active" onclick="editCard2(@Model.Id)">
                     <div class="leftside_button_icon">
                         <i class="fa-solid fa-check-to-slot"></i>
                     </div>
-                    @*<div class="mid_title">Оценка</div>*@
+                    @if (Model.SupervisorAssessment == null || Model.EmployeeAssessment == null)
+                    {
+                        <div class="stage_indicator_circle red_bcolor"></div>
+                    }
+                    
                 </div>
             }
             <div class="leftside_button_wrapper" onclick="editCard3(@Model.Id)">
@@ -49,39 +54,9 @@
 
                     <input type="hidden" asp-for="Term" placeholder="Выберите период" required>
                   
-                    @if (Model.SupervisorAssessment == 2 || Model.SupervisorAssessment == 3 || Model.SupervisorAssessment == 4)
-                    {
-                        <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
-
-
-                            <div class="container_description first_row_grid_description">
-
-
-                                <div class="icon_description">
-                                    <i class="fa-regular fa-calendar"></i>
-                                </div>
-
-
-                                <div class="mid_title">
-                                    Фактический срок реализации
-                                </div>
-
-
-                            </div>
-
-
-                            <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
-                                <div></div>
-
-
-                                <div class="choose_date_wrapper" id="choose_date">
-                                    <input type="date" asp-for="FactTerm" placeholder="Выберите период">
-                                </div>
-
-
-                            </div>
-                        </div>
-                    }
+                    
+                        
+                    
 
 
                     @if (Model.Column > 3)
@@ -109,7 +84,7 @@
 
                                 <div class="select-box" id="selectBox">
 
-                                    @if (Model.Column != 5)
+                                    @if (Model.Column == 4)
                                     {
                                         <div class="options-container active" id="options-container">
 
@@ -181,7 +156,10 @@
 
                                     @if (Model.Column == 5)
                                     {
-                                        <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="EmployeeComment" placeholder="Комментарий не был введен"></textarea>
+                                        @*<textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="EmployeeComment" placeholder="Отчет об исполнении задачи не был введен"></textarea>*@
+                                        <div class="description comment_assessment">
+                                            Отчет об исполнении задачи не был введен
+                                        </div>
                                     }
 
 
@@ -203,7 +181,7 @@
 
                                     <div class="first_row_grid_description margin_container_bottom_middle">
                                         <div><i class="fa-regular fa-comment"></i></div>
-                                        <div class="description">Отчет об исполнении задачи</div>
+                                        <div class="description">Отчет об исполнении задачи работника</div>
                                     </div>
 
 
@@ -213,6 +191,39 @@
                                     </div>
                                 </div>
                             }
+
+                            <div class="choose_fact_date_container" id="choose_fact_date_container">
+                                @*<div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
+
+
+                                    <div class="container_description first_row_grid_description">
+
+
+                                        <div class="icon_description">
+                                            <i class="fa-regular fa-calendar"></i>
+                                        </div>
+
+
+                                        <div class="mid_title">
+                                            Фактический срок реализации
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
+                                        <div></div>
+
+
+                                        <div class="choose_date_wrapper" id="choose_date">
+                                            <input type="date" asp-for="FactTerm" id="factTerm" placeholder="Выберите период">
+                                        </div>
+
+
+                                    </div>
+                                </div>*@
+                            </div>
                         </div>
 
 
@@ -240,24 +251,27 @@
 
 
                                     <div class="select-box" id="selectBox">
-
-                                        <div class="options-container" id="options-container">
-
-
-                                            @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
-                                            {
+                                        @if(Model.Column == 5)
+                                        {
+                                            <div class="options-container active" id="options-container">
 
 
-                                                <div class="option" onclick="optionClick(this)">
-
-                                                    <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
-
-                                                    <div class="mid_description">@item.Description</div>
-                                                </div>
-                                            }
+                                                @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
+                                                {
 
 
-                                        </div>
+                                                    <div class="option" onclick="optionClick(this)">
+
+                                                        <div class="select_user_assessment description" itemid="@item.Id">@item.Text</div>
+
+                                                        <div class="mid_description">@item.Description</div>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+                                        }
+                                        
 
 
                                         <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
@@ -278,7 +292,9 @@
 
                                                 else
                                                 {
-                                                    <span class="placeholder_input">Введите оценочное суждение</span>
+                                                    <div class="description comment_assessment">
+                                                        Отчет об исполнении задачи не был введен
+                                                    </div>
                                                 }
 
 
@@ -297,7 +313,7 @@
                                 {
                                     <div class="first_row_grid_description select_description_assessment margin_container_bottom_middle">
                                         <div></div>
-                                        <textarea class="mid_description comment_assessment" id="commentBossAssessment" asp-for="SupervisorComment" placeholder="Введите комментарий к оценке"></textarea>
+                                        <textarea class="mid_description comment_assessment" id="commentBossAssessment" asp-for="SupervisorComment" placeholder="Введите отчет об исполнении задачи"></textarea>
                                     </div>
                                 }
 
@@ -305,16 +321,53 @@
                                 else
                                 {
 
-                                    <div class="first_row_grid_description">
-                                        <div><i class="fa-regular fa-comment"></i></div>
-                                        <div class="description">Отчет об исполнении задачи</div>
-                                    </div>
-                                    <div class="first_row_grid_description">
-                                        <div></div>
-                                        <div class="description">@Model.SupervisorComment</div>
+                                    <div class="result_comment_assessment_container">
+
+
+                                        <div class="first_row_grid_description margin_container_bottom_middle">
+                                            <div><i class="fa-regular fa-comment"></i></div>
+                                            <div class="description">Отчет об исполнении задачи руководителя</div>
+                                        </div>
+
+
+                                        <div class="second_row_grid_description">
+                                            <div></div>
+                                            <div class="description result_comment_description">@Model.SupervisorAssessment</div>
+                                        </div>
                                     </div>
                                 }
+                                <div class="choose_fact_date_container" id="choose_fact_date_container">
+                                    <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
 
+
+                                        <div class="container_description first_row_grid_description">
+
+
+                                            <div class="icon_description">
+                                                <i class="fa-regular fa-calendar"></i>
+                                            </div>
+
+
+                                            <div class="mid_title">
+                                                Фактический срок реализации
+                                            </div>
+
+
+                                        </div>
+
+
+                                        <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
+                                            <div></div>
+
+
+                                            <div class="choose_date_wrapper" id="choose_date">
+                                                <input type="date" asp-for="FactTerm" placeholder="Выберите период" id="factTerm">
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         }
@@ -451,10 +504,10 @@
 
 
                             <div class="card_holders_wrapper">
-                                <div class="holder_image_wrapper">
+                                <div class="holder_image_wrapper" style="background-image:url('@comment.UserImg');">
 
 
-                                    <img src="@comment.UserImg" alt="holder_image">
+                                    @*<img src="@comment.UserImg" alt="holder_image">*@
 
 
                                 </div>

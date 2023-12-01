@@ -100,6 +100,10 @@
     background-color: #ffc107;
 }
 
+.red_bcolor {
+    background-color: #FF280C;
+}
+
 .default_bcolor_highcontrast {
     background-color: #78748630;
     color: #787486;
@@ -276,6 +280,13 @@
     color: #757575;
     font-size: 15px;
     font-weight: 400;
+}
+
+.empty_image_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 /*SIDEBAR*/
 .sidebar {
@@ -1027,7 +1038,7 @@ li .sub-menu a {
     /*margin: 0px 0 80px;*/
     padding: 20px;
     border-radius: 0px 0px 0px 16px;
-    min-height: 600px;
+    min-height: fit-content;
     max-height: 96vh;
     transition: 0.3s all;
     overflow-y: scroll;
@@ -1035,10 +1046,14 @@ li .sub-menu a {
     scrollbar-width: thin;
 }
 
-    /* хром, сафари */
-    .popup::-webkit-scrollbar {
-        width: 0;
+    .popup.add_card {
+        border-radius: 16px;
     }
+
+/* хром, сафари */
+.popup::-webkit-scrollbar {
+    width: 0;
+}
 
 /* ie 10+ */
 .popup {
@@ -1068,9 +1083,11 @@ li .sub-menu a {
 .leftside_popup_buttons_wrapper {
     display: flex;
     flex-direction: column;
+    align-items:flex-end;
 }
 
 .leftside_button_wrapper {
+    position:relative;
     background-color: #fff;
     padding: 5px 30px;
     border-radius: 10px 0px 0px 10px;
@@ -1078,16 +1095,32 @@ li .sub-menu a {
     display: flex;
     align-items: center;
     height: 45px;
+    width:75px;
     cursor: pointer;
 }
+
+    .leftside_button_wrapper.active {
+        width: 100px;
+        background-color: #d4e5ff;
+    }
+
+        .leftside_button_wrapper.active .stage_indicator_circle {
+            right:28px;
+        }
 
     .leftside_button_wrapper .mid_title {
         margin-left: 5px;
     }
 
-.leftside_button_icon {
-    color: #1b74fd;
-}
+    .leftside_button_wrapper .stage_indicator_circle {
+        position: absolute;
+        right: 5px;
+        top: 10px;
+    }
+
+    .leftside_button_icon {
+        color: #1b74fd;
+    }
 
 .close-popup:hover {
     transform: scale(1.1);
@@ -1286,12 +1319,13 @@ li .sub-menu a {
     border-radius: 10px;
     outline: none;
     cursor: pointer;
-    width: 80%;
+    width: 100%;
 }
 
-.card_name_input_wrapper.card_detail_active input {
-    background-color: transparent;
-    padding-left: 0px;
+.card_name_input_wrapper.card_detail_active{
+    background-color: #f5f5f5;
+    /*padding-left: 0px;*/
+    border-radius:10px;
 }
 
     .card_name_input_wrapper.card_detail_active input:focus {
@@ -1326,6 +1360,14 @@ li .sub-menu a {
         outline: none;
         cursor: pointer;
     }
+
+.choose_fact_date_container{
+    display:none;
+}
+
+.choose_fact_date_container.active {
+    display: grid;
+}
 
 /*POPUP DESCRIPTION*/
 .description_popup_card_wrapper textarea {

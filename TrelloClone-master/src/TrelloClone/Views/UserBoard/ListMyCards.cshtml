@@ -131,10 +131,12 @@
                     {
                         <div class="card_wrapper @(card.SupervisorAssessment == 7 ? "expired" : "primary")">
 
-
-                            <div class="action_btn close_action_btn white_btn" cardId="@card.Id" onclick="openVerifyPopup(this)">
-                                <i class="fa-solid fa-trash" style="color:#787486;"></i>
-                            </div>
+                            @if(column.Number != 6)
+                            {
+                                <div class="action_btn close_action_btn white_btn" cardId="@card.Id" onclick="openVerifyPopup(this)">
+                                    <i class="fa-solid fa-trash" style="color:#787486;"></i>
+                                </div>
+                            }
 
                             <div class="card_wrapper_content open-popup" idcard="@card.Id">
                                 <div class="card_header_wrapper margin_container_bottom_small">
@@ -163,16 +165,16 @@
                                     @if (User.FindFirst("ImagePath") != null)
                                     {
                                         <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-                                                <img src="@User.FindFirst("ImagePath").Value" alt="profileImg">
+                                            <div class="holder_image_wrapper" style="background-image:url('@User.FindFirst("ImagePath").Value')">
+                                                @*<img src="@User.FindFirst("ImagePath").Value" alt="profileImg">*@
                                             </div>
                                         </div>
                                     }
                                     else
                                     {
                                         <div class="card_holders_wrapper">
-                                            <div class="holder_image_wrapper">
-                                                <img src="/image/default_profile_icon.svg" alt="profileImg">
+                                            <div class="holder_image_wrapper" style="background-image:url('/image/default_profile_icon.svg')">
+                                                @*<img src="/image/default_profile_icon.svg" alt="profileImg">*@
                                             </div>
                                         </div>
                                     }

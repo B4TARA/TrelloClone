@@ -190,7 +190,7 @@ namespace TrelloClone.Services
         {
             try
             {
-                DateTime FakeToday = new DateTime(2023, 1, 8);
+                DateTime FakeToday = new DateTime(2025, 1, 1);
 
                 var card = await _repository.CardRepository.GetCardById(false, command.CardId);
                 var columns = await _repository.ColumnRepository.GetColumnsByUser(false, card.UserId);
@@ -227,12 +227,23 @@ namespace TrelloClone.Services
                         card.ColumnId = columns.First(x => x.Number == 3).Id;
                     }
 
+                    //перенос на этот квартал 
+                    else
+                    {
+                        card.ColumnId = card.ColumnId + 1;
+                    }
+
                     card.Term = command.Term;
                 }
 
                 else
                 {
-                    if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday) || Term.GetPreviousQuarter(card.Term) == Term.GetQuarter(FakeToday))
+                    if(card.ColumnId == columns.First(x => x.Number == 3).Id)
+                    {
+                        card.ColumnId = card.ColumnId + 1;
+                    }
+
+                    else if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday) || Term.GetPreviousQuarter(card.Term) == Term.GetQuarter(FakeToday))
                     {
                         card.ColumnId = card.ColumnId + 1;
                     }

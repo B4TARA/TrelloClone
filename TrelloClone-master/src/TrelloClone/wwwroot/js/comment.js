@@ -67,10 +67,8 @@ function createElementComment(elem) {
 
 
                                 <div class="card_holders_wrapper">
-                                    <div class="holder_image_wrapper">
+                                    <div class="holder_image_wrapper" style="background-image:url('${imgUserPath.src}');">
 
-
-                                        <img src="${imgUserPath.src}" alt="holder_image">
 
 
                                     </div>
