@@ -283,7 +283,7 @@
                         else if (Model.IsActiveLikeSupervisor
                         && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
                         && Model.Column == 3
-                        && TrelloClone.Models.Term.Term.GetQuarter(Model.Term) == TrelloClone.Models.Term.Term.GetPreviousQuarter(new DateTime(2025, 1, 1)))
+                        && TrelloClone.Models.Term.Term.GetQuarter(Model.Term) == TrelloClone.Models.Term.Term.GetPreviousQuarter(TrelloClone.Models.Term.Term.GetFakeDate()))
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
                                 <div class="description">Перевести на след этап</div>

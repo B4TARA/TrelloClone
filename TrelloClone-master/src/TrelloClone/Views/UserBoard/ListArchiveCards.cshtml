@@ -90,10 +90,10 @@
 </div>
 <section class="main_container_content" id="main_container_content">
 
-<div class="list_view_container">
+    <div class="list_view_container">
 
-    @foreach (var column in Model.Columns)
-    {
+        @foreach (var column in Model.Columns)
+        {
             @if (column.Number == 6)
             {
                 <div class="list_view_main_wrapper">
@@ -239,7 +239,6 @@
                             {
                                 <tr>
                                     <td class="table_title_wrapper">
-                                        
                                     </td>
 
                                     <td>
@@ -255,18 +254,34 @@
                                     </td>
 
                                     <td>
-                                       
                                     </td>
 
                                     <td>
-                                        
                                     </td>
                                 </tr>
                             }
                         </tbody>
-            </table>
-        </div>
+                    </table>
+                </div>
             }
-    }
-</div>
+        }
+    </div>
 </section>
+<button onclick="getReport()">ОТЧЕТ</button>
+
+<script>
+
+
+    async function getReport() {
+        const response = await fetch('/UserBoard/GetReport', {
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            method: 'GET',
+        })
+        const result = await response.json();
+        window.open(`../${result}`, "_blank");
+    }
+
+
+</script>

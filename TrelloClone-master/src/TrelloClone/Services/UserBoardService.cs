@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ClosedXML.Excel;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -190,7 +192,7 @@ namespace TrelloClone.Services
         {
             try
             {
-                DateTime FakeToday = new DateTime(2025, 1, 1);
+                DateTime FakeToday = Term.GetFakeDate();
 
                 var card = await _repository.CardRepository.GetCardById(false, command.CardId);
                 var columns = await _repository.ColumnRepository.GetColumnsByUser(false, card.UserId);
@@ -310,6 +312,238 @@ namespace TrelloClone.Services
                 {
                     Description = $"[Reject] : {ex.Message}",
                     StatusCode = StatusCodes.InternalServerError
+                };
+            }
+        }
+
+        public async Task<IBaseResponse<string>> GetReport(string supervisorName)
+        {
+            try
+            {
+                DateTime FakeToday = Term.GetFakeDate();
+
+                var quarter = Term.GetQuarter(FakeToday);
+                var months = Term.GetQuarterMonths(quarter);
+
+                var workbook = new XLWorkbook();
+
+                foreach(var month in months)
+                {
+                    workbook.AddWorksheet(Term.GetMonthName(month));
+                    var ws = workbook.Worksheet(Term.GetMonthName(month));
+
+                    int row = 1;
+
+                    ws.Cell("A" + row.ToString()).Value = "Наименование ССП";
+                    ws.Cell("A" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("B" + row.ToString()).Value = "ФИО работника";
+                    ws.Cell("B" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("C" + row.ToString()).Value = "Должность";
+                    ws.Cell("C" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("D" + row.ToString()).Value = "Непосредственный руководитель";
+                    ws.Cell("D" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("E" + row.ToString()).Value = "#";
+                    ws.Cell("E" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("F" + row.ToString()).Value = "Наименование SMART-задачи";
+                    ws.Cell("F" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("G" + row.ToString()).Value = "Требование к задаче (что считается исполнением задачи)";
+                    ws.Cell("G" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("H" + row.ToString()).Value = "Плановый срок реализации задачи";
+                    ws.Cell("H" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("I" + row.ToString()).Value = "Оценочное суждение работника";
+                    ws.Cell("I" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("J" + row.ToString()).Value = "Комментарий работника";
+                    ws.Cell("J" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("K" + row.ToString()).Value = "Оценочное суждение непосредственного руководителя";
+                    ws.Cell("K" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("L" + row.ToString()).Value = "Комментарий непосредственного руководителя";
+                    ws.Cell("L" + row.ToString()).Style.Font.Bold = true;
+
+                    ws.Cell("M" + row.ToString()).Value = "% выполнения задачи в зависимости от присвоенного оценочного суждения непосредственного руководителя";
+                    ws.Cell("M" + row.ToString()).Style.Font.Bold = true;
+
+                    row++;
+
+                    var employees = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisorName, false);
+                    foreach (var employee in employees)
+                    {
+                        var cards = await _repository.CardRepository.GetUserCards(false, employee.Id);
+                        foreach (var card in cards)
+                        {
+                            ws.Cell("A" + row.ToString()).Value = "-";
+                            if (employee.SspName != null)
+                            {
+                                ws.Cell("A" + row.ToString()).Value = employee.SspName.ToString();
+                            }
+
+                            ws.Cell("B" + row.ToString()).Value = "-";
+                            if (employee.Name != null)
+                            {
+                                ws.Cell("B" + row.ToString()).Value = employee.Name.ToString();
+                            }
+
+                            ws.Cell("C" + row.ToString()).Value = "-";
+                            if (employee.Position != null)
+                            {
+                                ws.Cell("C" + row.ToString()).Value = employee.Position.ToString();
+                            }
+
+                            ws.Cell("D" + row.ToString()).Value = "-";
+                            if (employee.SupervisorName != null)
+                            {
+                                ws.Cell("D" + row.ToString()).Value = employee.SupervisorName.ToString();
+                            }
+
+                            ws.Cell("E" + row.ToString()).Value = "-";
+                            if (employee.SupervisorName != null)
+                            {
+                                ws.Cell("E" + row.ToString()).Value = employee.SupervisorName.ToString();
+                            }
+
+                            ws.Cell("F" + row.ToString()).Value = "-";
+                            if (card.Name != null)
+                            {
+                                ws.Cell("F" + row.ToString()).Value = card.Name.ToString();
+                            }
+
+                            ws.Cell("G" + row.ToString()).Value = "-";
+                            if (card.Requirement != null)
+                            {
+                                ws.Cell("G" + row.ToString()).Value = card.Requirement.ToString();
+                            }
+
+                            ws.Cell("H" + row.ToString()).Value = "-";
+                            if (card.Term != null)
+                            {
+                                ws.Cell("H" + row.ToString()).Value = card.Term.ToString();
+                            }
+
+                            ws.Cell("I" + row.ToString()).Value = "-";
+                            if (Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
+                            {
+                                ws.Cell("I" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment).Text;
+                            }
+
+                            ws.Cell("J" + row.ToString()).Value = "-";
+                            if (card.EmployeeComment != null)
+                            {
+                                ws.Cell("J" + row.ToString()).Value = card.EmployeeComment.ToString();
+                            }
+
+                            ws.Cell("K" + row.ToString()).Value = "-";
+                            if (Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
+                            {
+                                ws.Cell("K" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text;
+                            }
+
+                            ws.Cell("L" + row.ToString()).Value = "-";
+                            if (card.SupervisorComment != null)
+                            {
+                                ws.Cell("L" + row.ToString()).Value = card.SupervisorComment.ToString();
+                            }
+
+                            //Выставление баллов
+                            if (card.SupervisorAssessment == 1)
+                            {
+                                if (card.Term.Month > month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                }
+
+                                else if (card.Term.Month == month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                }
+
+                                else
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                }                         
+                            }
+                            
+                            else if(card.SupervisorAssessment == 2 ||
+                                    card.SupervisorAssessment == 3 ||
+                                    card.SupervisorAssessment == 4)
+                            {
+                                if(card.FactTerm.Value.Month > month && card.Term.Month <= month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "0%";
+                                }
+                                
+                                else if(card.FactTerm.Value.Month > month && card.Term.Month > month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                }
+
+                                else if (card.FactTerm.Value.Month == month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                }
+
+                                else
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                }
+                            }
+
+                            else if(card.SupervisorAssessment == 5)
+                            {
+                                if (card.Term.Month > month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                }
+
+                                else if (card.Term.Month == month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                }
+
+                                else
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                }
+                            }
+
+                            else if(card.SupervisorAssessment == 6
+                                || card.SupervisorAssessment == 7
+                                || card.SupervisorAssessment == 8
+                                || card.SupervisorAssessment == 9)
+                            {
+                                ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                            }
+                           
+                            row++;
+                        }
+                    }
+                }               
+
+                string prefixPath = "../TrelloClone/wwwroot/";
+                string savePath = "Отчёт.xlsx";
+                workbook.SaveAs(prefixPath + savePath);
+
+                return new BaseResponse<string>()
+                {
+                    Data = savePath,
+                    StatusCode = StatusCodes.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<string>()
+                {
+                    Description = $"[GetReport] : {ex.Message}",
+                    StatusCode = StatusCodes.InternalServerError,
                 };
             }
         }

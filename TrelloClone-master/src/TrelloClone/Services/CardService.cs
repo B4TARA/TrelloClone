@@ -31,7 +31,7 @@ namespace TrelloClone.Services
             _emailSender = emailSender;
         }
 
-        DateTime FakeToday = new DateTime(2025, 1, 1, 12, 10, 25);
+        DateTime FakeToday = Term.GetFakeDate();
 
         public void Create(AddCard viewModel)
         {
@@ -48,9 +48,9 @@ namespace TrelloClone.Services
                     Name = viewModel.Name,
                     Requirement = viewModel.Requirement,
                     Term = viewModel.Term,
+                    StartTerm = viewModel.Term,
                     UserId = viewModel.Id,
                     IsRelevant = true,
-                    IsDeleted = false,
                 });
             }
 
@@ -188,6 +188,11 @@ namespace TrelloClone.Services
                     }
 
                     card.Term = Term;
+                }
+
+                else
+                {
+                    card.ReadyToReport = true;
                 }
 
                 if (card.Requirement != Requirement)

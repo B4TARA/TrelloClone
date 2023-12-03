@@ -33,7 +33,7 @@ namespace TrelloClone.Services
             {
                 var cards = await _repository.CardRepository.GetUserCards(false, user.Id);
 
-                DateTime FakeToday = new DateTime(2025, 1, 1);
+                DateTime FakeToday = Term.GetFakeDate();
 
                 foreach (var card in cards)
                 {
@@ -70,6 +70,7 @@ namespace TrelloClone.Services
                             if (cardColumn.Number == 6 && card.SupervisorAssessment != 7)
                             {
                                 card.IsRelevant = false;
+                                card.ReadyToReport = false;
                             }
                             
                             //1 числа все карточки предыдущего квартала автоматически переходят с 3 колонки на 4
@@ -123,12 +124,12 @@ namespace TrelloClone.Services
                         user.IsActiveLikeEmployee = true;
                         user.IsActiveLikeSupervisor = false;
 
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
                     }
 
                     else if (FakeToday.Day == 23 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
                     }
 
                     else if (FakeToday.Day == 25)
@@ -139,13 +140,13 @@ namespace TrelloClone.Services
                         {
                             user.IsActiveLikeSupervisor = true;
 
-                            await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
+                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
                         }
                     }
 
                     else if (FakeToday.Day == 28 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[3]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[3]);
                     }           
                 }
 
@@ -161,13 +162,13 @@ namespace TrelloClone.Services
                         {
                             user.IsActiveLikeEmployee = true;
 
-                            await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
+                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
                         }
                     }
 
                     if (FakeToday.Day == 5 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
                     }
 
                     else if (FakeToday.Day == 8)
@@ -178,19 +179,19 @@ namespace TrelloClone.Services
                         {
                             user.IsActiveLikeSupervisor = true;
 
-                            await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
+                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
                         }
                     }
 
                     if (FakeToday.Day == 11 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
 
                     else if (FakeToday.Day == 14)
                     {
                         user.IsActiveLikeSupervisor = false;
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
                 }
 
@@ -432,8 +433,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();
