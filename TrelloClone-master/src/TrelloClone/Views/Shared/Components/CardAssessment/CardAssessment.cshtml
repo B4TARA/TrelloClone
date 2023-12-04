@@ -86,7 +86,7 @@
 
                                     @if (Model.Column == 4)
                                     {
-                                        <div class="options-container active" id="options-container">
+                                        <div class="options-container" id="options-container">
 
 
                                             @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
@@ -253,7 +253,7 @@
                                     <div class="select-box" id="selectBox">
                                         @if(Model.Column == 5)
                                         {
-                                            <div class="options-container active" id="options-container">
+                                            <div class="options-container" id="options-container">
 
 
                                                 @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
@@ -293,7 +293,7 @@
                                                 else
                                                 {
                                                     <div class="description comment_assessment">
-                                                        Отчет об исполнении задачи не был введен
+                                                        Комментарий к оценке
                                                     </div>
                                                 }
 

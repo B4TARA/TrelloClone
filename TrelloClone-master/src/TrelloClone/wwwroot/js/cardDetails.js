@@ -7,7 +7,14 @@ openPopupButtons.forEach((elem) => {
     
     elem.addEventListener('click', () => {
         const idCard = elem.getAttribute('idcard')
-        editCard(idCard)
+        const numCol = elem.getAttribute('numCol')
+        console.log(numCol)
+        if (numCol == "4" || numCol == "5") {
+            editCard2(idCard)
+        } else {
+            editCard(idCard)
+        }
+        
     })
 })
 
