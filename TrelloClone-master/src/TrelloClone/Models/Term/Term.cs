@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using System;
+using System.Collections.Generic;
 
 namespace TrelloClone.Models.Term
 {
@@ -80,6 +83,19 @@ namespace TrelloClone.Models.Term
         }
 
         //год учитывается
+        public static List<int> GetQuarterMonths(int quarter)
+        {          
+
+            switch(quarter)
+            {
+                case 1: return new List<int>() { 1, 2, 3};
+                case 2: return new List<int>() { 4, 5, 6 };
+                case 3: return new List<int>() { 7, 8, 9 };
+                case 4: return new List<int>() { 10, 11, 12 };
+            }
+
+            return new List<int>() { 1, 2, 3 };
+        }
         public static DateTime GetMin(int quarter, DateTime dateTime)
         {
             if (quarter == 1)
@@ -150,6 +166,30 @@ namespace TrelloClone.Models.Term
             }
 
             return new DateTime();
+        }
+        public static string GetMonthName(int month)
+        {
+            switch(month)
+            {
+                case 1: return "Январь";
+                case 2: return "Ферваль";
+                case 3: return "Март";
+                case 4: return "Апрель";
+                case 5: return "Май";
+                case 6: return "Июнь";
+                case 7: return "Июль";
+                case 8: return "Август";
+                case 9: return "Сентябрь";
+                case 10: return "Октябрь";
+                case 11: return "Ноябрь";
+                case 12: return "Декабрь";
+            }
+
+            return "Январь";
+        }
+        public static DateTime GetFakeDate()
+        {
+           return new DateTime(2025, 1, 1);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -153,6 +154,28 @@ namespace TrelloClone.Controllers
             }
 
             return NotFound(response.Description);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetReport()
+        {
+            try
+            {
+                var supervisorName = User.FindFirst("Name").Value;
+
+                var response = await _userBoardService.GetReport(supervisorName);
+                if (response.StatusCode != StatusCodes.OK)
+                {
+                    return Json("Упс... Что-то пошло не так: " + response.Description);
+                }
+
+                return Json(response.Data);
+            }
+
+            catch (Exception ex)
+            {               
+                return Json("Упс... Что-то пошло не так: " + ex.Message);
+            }
         }
     }
 }
