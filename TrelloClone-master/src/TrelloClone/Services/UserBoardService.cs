@@ -1,5 +1,4 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
+using TrelloClone.Models.Assessment;
 using TrelloClone.Models.Enum;
 using TrelloClone.Models.Term;
 using TrelloClone.ViewModels;
@@ -33,7 +33,6 @@ namespace TrelloClone.Services
                 .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Files)
                 .SingleOrDefault(x => x.Id == userId);
 
-            model.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
             model.Id = userId;
             model.Name = user.Name;
 
@@ -80,7 +79,6 @@ namespace TrelloClone.Services
 
             var supervisor = _dbContext.Users.SingleOrDefault(x => x.Id == supervisorId);
 
-            model.IsActiveLikeSupervisor = supervisor.IsActiveLikeSupervisor;
             model.ImgPath = employee.ImagePath;
 
             model.Id = employee.Id;
@@ -118,46 +116,53 @@ namespace TrelloClone.Services
             return model;
         }
 
-        public UserBoardView ListArchiveCards(int userId)
+        public ListArchiveCards ListArchiveCards(int userId)
         {
-            var model = new UserBoardView();
+            var model = new ListArchiveCards();
 
             var user = _dbContext.Users
                 .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Comments)
                 .Include(b => b.Columns).ThenInclude(c => c.Cards).ThenInclude(d => d.Files)
                 .SingleOrDefault(x => x.Id == userId);
 
-            model.IsActiveLikeEmployee = user.IsActiveLikeEmployee;
             model.Id = userId;
-            model.Name = user.Name;
+            model.Name = user!.Name;
 
             foreach (var column in user.Columns)
             {
-                var modelColumn = new UserBoardView.Column
-                {
-                    Id = column.Id,
-                    Number = column.Number,
-                    Title = column.Title
-                };
-
                 foreach (var card in column.Cards.Where(x => !x.IsRelevant))
                 {
-                    var modelCard = new UserBoardView.Card
+                    var modelCard = new ListArchiveCards.Card
                     {
                         Id = card.Id,
                         Name = card.Name,
                         Requirement = card.Requirement,
                         Term = card.Term,
-                        EmployeeAssessment = card.EmployeeAssessment,
-                        SupervisorAssessment = card.SupervisorAssessment,
                         CountOfComments = card.Comments.Count(),
                         CountOfFiles = card.Files.Count(),
                     };
 
-                    modelColumn.Cards.Add(modelCard);
-                }
+                    if (card.FactTerm != null)
+                    {
+                        modelCard.FactTerm = (DateTime)card.FactTerm;
+                    }
+                    else
+                    {
+                        modelCard.FactTerm = card.Term;
+                    }
 
-                model.Columns.Add(modelColumn);
+                    if (AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
+                    {
+                        modelCard.EmployeeAssessment = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Value;
+                    }
+
+                    if (AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
+                    {
+                        modelCard.SupervisorAssessment = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Value;
+                    }
+
+                    model.Cards.Add(modelCard);
+                }
             }
 
             return model;
@@ -422,16 +427,12 @@ namespace TrelloClone.Services
                                 ws.Cell("G" + row.ToString()).Value = card.Requirement.ToString();
                             }
 
-                            ws.Cell("H" + row.ToString()).Value = "-";
-                            if (card.Term != null)
-                            {
-                                ws.Cell("H" + row.ToString()).Value = card.Term.ToString();
-                            }
+                            ws.Cell("H" + row.ToString()).Value = card.Term.ToString();
 
                             ws.Cell("I" + row.ToString()).Value = "-";
-                            if (Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
+                            if (AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
                             {
-                                ws.Cell("I" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment).Text;
+                                ws.Cell("I" + row.ToString()).Value = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Text;
                             }
 
                             ws.Cell("J" + row.ToString()).Value = "-";
@@ -441,9 +442,9 @@ namespace TrelloClone.Services
                             }
 
                             ws.Cell("K" + row.ToString()).Value = "-";
-                            if (Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
+                            if (AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
                             {
-                                ws.Cell("K" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text;
+                                ws.Cell("K" + row.ToString()).Value = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Text;
                             }
 
                             ws.Cell("L" + row.ToString()).Value = "-";
@@ -462,7 +463,7 @@ namespace TrelloClone.Services
 
                                 else if (card.Term.Month == month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                    ws.Cell("M" + row.ToString()).Value = AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                                 }
 
                                 else
@@ -487,7 +488,7 @@ namespace TrelloClone.Services
 
                                 else if (card.FactTerm.Value.Month == month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                    ws.Cell("M" + row.ToString()).Value = AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                                 }
 
                                 else
@@ -505,7 +506,7 @@ namespace TrelloClone.Services
 
                                 else if (card.Term.Month == month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                    ws.Cell("M" + row.ToString()).Value = AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                                 }
 
                                 else
@@ -519,7 +520,7 @@ namespace TrelloClone.Services
                                 || card.SupervisorAssessment == 8
                                 || card.SupervisorAssessment == 9)
                             {
-                                ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                ws.Cell("M" + row.ToString()).Value = AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                             }
                             row++;
                         }

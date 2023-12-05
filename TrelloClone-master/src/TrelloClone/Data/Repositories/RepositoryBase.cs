@@ -22,8 +22,7 @@ namespace TrelloClone.Data.Repositories
                     .AsNoTracking().ToListAsync() :
                 await Db.Set<T>().ToListAsync();
 
-        public async Task<List<T>> GetByCondition(Expression<System.Func<T, bool>> expression,
-            bool trackChanges) =>
+        public async Task<List<T>> GetByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
             !trackChanges ?
                 await Db.Set<T>()
                     .Where(expression)
@@ -32,8 +31,11 @@ namespace TrelloClone.Data.Repositories
                     .Where(expression).ToListAsync();
 
         public void Update(T entity) => Db.Set<T>().Update(entity);
+
         public async Task Create(T entity) => await Db.Set<T>().AddAsync(entity);
+
         public void Delete(T entity) => Db.Set<T>().Remove(entity);
+
         public async Task<List<T>> FindBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
             var query = Db.Set<T>().AsNoTracking().Where(predicate);

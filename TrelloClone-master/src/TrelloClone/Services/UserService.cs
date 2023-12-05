@@ -43,12 +43,12 @@ namespace TrelloClone.Services
                         || FakeToday.Month == 6
                         || FakeToday.Month == 9
                         || FakeToday.Month == 12)
-                    {                       
+                    {
 
                         if (FakeToday.Day == 25)
                         {
                             //25 числа все карточки с 1 колонки автоматически на 2 колонку, если они в нужном квартале
-                            if(cardColumn.Number == 1 && Term.GetQuarter(card.Term) == Term.GetNextQuarter(FakeToday))
+                            if (cardColumn.Number == 1 && Term.GetQuarter(card.Term) == Term.GetNextQuarter(FakeToday))
                             {
                                 card.ColumnId = card.ColumnId + 1;
                             }
@@ -72,14 +72,14 @@ namespace TrelloClone.Services
                                 card.IsRelevant = false;
                                 card.ReadyToReport = false;
                             }
-                            
+
                             //1 числа все карточки предыдущего квартала автоматически переходят с 3 колонки на 4
                             else if (cardColumn.Number == 3 && Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
                             {
                                 card.ColumnId = card.ColumnId + 1;
                             }
 
-                            
+
                             else if (cardColumn.Number == 2)
                             {
                                 //1 числа все карточки все карточки переходят со 2 колонки на 3 если они в текущем квартале
@@ -92,7 +92,7 @@ namespace TrelloClone.Services
                                 else if (Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
                                 {
                                     card.ColumnId = card.ColumnId + 2;
-                                }                            
+                                }
                             }
 
                             _repository.CardRepository.Update(card);
@@ -121,9 +121,6 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        user.IsActiveLikeEmployee = true;
-                        user.IsActiveLikeSupervisor = false;
-
                         //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
                     }
 
@@ -132,22 +129,15 @@ namespace TrelloClone.Services
                         //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
                     }
 
-                    else if (FakeToday.Day == 25)
+                    else if (FakeToday.Day == 25 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        //user.IsActiveLikeEmployee = false;
-
-                        if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
-                        {
-                            user.IsActiveLikeSupervisor = true;
-
-                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
-                        }
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
                     }
 
                     else if (FakeToday.Day == 28 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
                         //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[3]);
-                    }           
+                    }
                 }
 
                 else if (FakeToday.Month == 4
@@ -156,14 +146,9 @@ namespace TrelloClone.Services
                     || FakeToday.Month == 1)
                 {
 
-                    if (FakeToday.Day == 1)
+                    if (FakeToday.Day == 1 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        if (user.Role == Roles.Employee || user.Role == Roles.Combined)
-                        {
-                            user.IsActiveLikeEmployee = true;
-
-                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
-                        }
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
                     }
 
                     if (FakeToday.Day == 5 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
@@ -171,16 +156,9 @@ namespace TrelloClone.Services
                         //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
                     }
 
-                    else if (FakeToday.Day == 8)
+                    else if (FakeToday.Day == 8 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        user.IsActiveLikeEmployee = false;
-
-                        if (user.Role == Roles.Supervisor || user.Role == Roles.Combined)
-                        {
-                            user.IsActiveLikeSupervisor = true;
-
-                            //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
-                        }
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
                     }
 
                     if (FakeToday.Day == 11 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
@@ -190,7 +168,6 @@ namespace TrelloClone.Services
 
                     else if (FakeToday.Day == 14)
                     {
-                        user.IsActiveLikeSupervisor = false;
                         //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
                 }
@@ -227,12 +204,12 @@ namespace TrelloClone.Services
                         StatusCode = StatusCodes.InternalServerError
                     };
                 }
-                IEnumerable<ExtendedUser> extendedUserInfoRecords = response.Data;           
+                IEnumerable<ExtendedUser> extendedUserInfoRecords = response.Data;
 
                 foreach (var user in users)
                 {
                     //set image, login, birthday and etc.//
-                    ExtendedUser? extendedUserInfoRecord = extendedUserInfoRecords.FirstOrDefault(x => x.lastname == user.Name.Split(" ")[0] &&  x.firstname == user.Name.Split(' ')[1]);
+                    ExtendedUser? extendedUserInfoRecord = extendedUserInfoRecords.FirstOrDefault(x => x.lastname == user.Name.Split(" ")[0] && x.firstname == user.Name.Split(' ')[1]);
 
                     if (extendedUserInfoRecord != null
                         && extendedUserInfoRecord.pict_url != null
@@ -275,7 +252,7 @@ namespace TrelloClone.Services
                         {
                             Console.WriteLine("Unable to check for notifications for user " + userTemp.Id + " : " + notificationsResponse.Description);
                             throw new Exception(notificationsResponse.Description);
-                        }                
+                        }
                     }
 
                     else

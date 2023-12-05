@@ -8,8 +8,6 @@ namespace TrelloClone.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string ImgPath { get; set; }
-        public bool IsActiveLikeEmployee { get; set; }
-        public bool IsActiveLikeSupervisor { get; set; }
         public List<Column> Columns { get; set; } = new List<Column>();
 
         public class Column
@@ -26,6 +24,7 @@ namespace TrelloClone.ViewModels
             public string Name { get; set; }
             public string Requirement { get; set; }
             public DateTime Term { get; set; }
+            public DateTime FactTerm { get; set; }
             public int? EmployeeAssessment { get; set; }
             public int? SupervisorAssessment { get; set; }
             public int CountOfComments { get; set; }

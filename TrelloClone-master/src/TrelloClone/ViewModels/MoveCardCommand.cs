@@ -10,7 +10,6 @@ namespace TrelloClone.ViewModels
         public string Name { get; set; }
         public DateTime Term { get; set; }
         public string Requirement { get; set; }
-
         public string UserName { get; set; }
         public string UserImg { get; set; }
     }

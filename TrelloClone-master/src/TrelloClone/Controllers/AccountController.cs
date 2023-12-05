@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TrelloClone.Data.Repositories;
-using TrelloClone.Models;
 using TrelloClone.Models.Enum;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
@@ -48,34 +47,7 @@ namespace TrelloClone.Controllers
             else return RedirectToAction("Index", "Home");
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var response = await _accountService.Login(model);
-
-
-                if (response.StatusCode == StatusCodes.OK)
-                {
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(response.Data),
-                        new AuthenticationProperties { IsPersistent = true });
-
-                    return RedirectToAction("Index", "Home");
-
-                }
-
-
-                ModelState.AddModelError("", response.Description);
-            }
-
-
-            return View(model);
-        }
-
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -84,15 +56,35 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _accountService.Login(model);
+
+                if (response.StatusCode == StatusCodes.OK)
+                {
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(response.Data),
+                        new AuthenticationProperties { IsPersistent = true });
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError("", response.Description);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> RemindPassword(ChangePasswordViewModel model)
         {
             TempData["changePasswordLogin"] = model.Login;
 
-
             if (ModelState.IsValid)
             {
-                User? userToRemindPassword = await _repository.UserRepository.GetUserByLogin(false, model.Login);
-
+                var userToRemindPassword = await _repository.UserRepository.GetUserByLogin(false, model.Login);
 
                 if (userToRemindPassword == null)
                 {
@@ -104,16 +96,12 @@ namespace TrelloClone.Controllers
                 //var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание пароля", "Ваш пароль - " + userToRemindPassword.Password, null);
                 //await _emailSender.SendEmailAsync(message);
 
-
                 TempData["changePasswordMessage"] = "Ваш пароль успешно выслан вам на почту";
-
 
                 return RedirectToAction("Login", "Account");
             }
 
-
             TempData["changePasswordMessage"] = "Invalid ModelState";
-
 
             return RedirectToAction("Login", "Account");
         }

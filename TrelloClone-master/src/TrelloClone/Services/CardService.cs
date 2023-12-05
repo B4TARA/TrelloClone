@@ -17,12 +17,12 @@ namespace TrelloClone.Services
 {
     public class CardService
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly TrelloCloneDbContext _dbContext;
         private readonly RepositoryManager _repository;
         private readonly EmailSender _emailSender;
 
-        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, IHostingEnvironment hostingEnvironment
+        public CardService(TrelloCloneDbContext dbContext, RepositoryManager repository, IWebHostEnvironment hostingEnvironment
             , EmailSender emailSender)
         {
             _dbContext = dbContext;

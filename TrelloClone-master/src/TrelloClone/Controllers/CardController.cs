@@ -62,7 +62,7 @@ namespace TrelloClone.Controllers
 
             if (response.StatusCode == StatusCodes.OK)
             {
-                TempData["Message"] = "Данные обновлены";
+                TempData["Message"] = "Оценочное суждение выставлено!";
 
                 var employeeId = Convert.ToInt32(action.Split("=")[1]);
                 action = action.Split("?")[0];
@@ -83,7 +83,7 @@ namespace TrelloClone.Controllers
 
             if (response.StatusCode == StatusCodes.OK)
             {
-                TempData["Message"] = "Данные обновлены";
+                TempData["Message"] = "Оценочное суждение выставлено!";
 
                 return RedirectToAction("ListMyCards", "UserBoard");
 
@@ -177,7 +177,7 @@ namespace TrelloClone.Controllers
 
             if (response.StatusCode == StatusCodes.OK)
             {
-                return Ok("Файл успешно добавлен!");
+                return Ok("Комментарий успешно добавлен!");
             }
 
             return NotFound(response.Description);

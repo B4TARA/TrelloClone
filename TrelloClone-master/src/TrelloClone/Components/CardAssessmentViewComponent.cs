@@ -14,18 +14,21 @@ namespace TrelloClone.Components
             _repository = repository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int cardId, int userId)
+        public async Task<IViewComponentResult> InvokeAsync(int cardId)
         {
-            var user = await _repository.UserRepository.GetUserById(false, userId);
+            var model = await GetModelAsync(cardId);
 
-            ////
+            return View("CardAssessment", model);
+        }
+
+        private async Task<CardDetails> GetModelAsync(int cardId)
+        {
             var cards = await _repository.CardRepository.FindBy(x => x.Id == cardId, x => x.Comments, x => x.Files, x => x.Updates);
             var card = cards.FirstOrDefault();
-            ////
 
-            var column = await _repository.ColumnRepository.GetColumnById(false, card.ColumnId);
+            var column = await _repository.ColumnRepository.GetColumnById(false, card!.ColumnId);
 
-            var model = new CardDetails
+            return new CardDetails
             {
                 Id = card.Id,
                 Name = card.Name,
@@ -36,17 +39,13 @@ namespace TrelloClone.Components
                 SupervisorAssessment = card.SupervisorAssessment,
                 EmployeeComment = card.EmployeeComment,
                 SupervisorComment = card.SupervisorComment,
-                Column = column.Number,
+                Column = column!.Number,
                 ColumnId = column.Id,
-                IsActiveLikeEmployee = user.IsActiveLikeEmployee,
-                IsActiveLikeSupervisor = user.IsActiveLikeSupervisor,
                 UserId = card.UserId,
                 Comments = card.Comments,
                 Files = card.Files,
                 Updates = card.Updates,
             };
-
-            return View("CardAssessment", model);
         }
     }
 }

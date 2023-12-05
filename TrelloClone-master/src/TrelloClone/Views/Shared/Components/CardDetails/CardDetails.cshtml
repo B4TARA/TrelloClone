@@ -250,9 +250,7 @@
                     <div class="action_buttons_wrapper">
 
 
-                        @if ((Model.IsActiveLikeEmployee
-                        && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId)
-                        && Model.Column == 1)
+                        @if (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId && Model.Column == 1)
                         {
                                 <button asp-controller="UserBoard" asp-action="MoveCard" 
                                         asp-route-ColumnId="@Model.ColumnId"
@@ -265,9 +263,7 @@
                         }
 
 
-                        else if (Model.IsActiveLikeSupervisor
-                        && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
-                        && Model.Column == 2)
+                        else if (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId && Model.Column == 2)
                         {
                                 <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
                                     <div class="description">Согласовано</div>
@@ -280,8 +276,7 @@
                         }
 
 
-                        else if (Model.IsActiveLikeSupervisor
-                        && Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
+                        else if (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId
                         && Model.Column == 3
                         && TrelloClone.Models.Term.Term.GetQuarter(Model.Term) == TrelloClone.Models.Term.Term.GetPreviousQuarter(TrelloClone.Models.Term.Term.GetFakeDate()))
                         {

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Data.Repositories;
 using TrelloClone.ViewModels;
@@ -12,13 +14,21 @@ namespace TrelloClone.Components
         {
             _repository = repository;
         }
+
         public async Task<IViewComponentResult> InvokeAsync(int id)
         {
-            var supervisor = await _repository.UserRepository.GetUserById(false, id);
+            var model = await GetModelAsync(id);
 
+            return View("ListEmployees", model);
+        }
+
+        private async Task<UserBoardList> GetModelAsync(int id)
+        {
             var model = new UserBoardList();
 
-            var subordinateUsers = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisor.Name, false);
+            var supervisor = await _repository.UserRepository.GetUserById(false, id);      
+            var subordinateUsers = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisor!.Name, false);
+
             foreach (var user in subordinateUsers)
             {
                 model.Users.Add(new UserBoardList.UserBoard
@@ -28,7 +38,7 @@ namespace TrelloClone.Components
                 });
             }
 
-            return View("ListEmployees", model);
+            return model;
         }
     }
 }

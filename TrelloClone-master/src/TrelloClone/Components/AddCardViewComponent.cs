@@ -9,15 +9,25 @@ namespace TrelloClone.Components
     {
         public IViewComponentResult Invoke()
         {
+            var model = GetModel();
+
+            return View("AddCard", model);
+        }
+
+        private AddCard GetModel()
+        {
             DateTime FakeToday = Term.GetFakeDate();
 
             var quarter = Term.GetQuarter(FakeToday);
             var min = Term.GetMin(quarter, FakeToday);
             var max = Term.GetMax(quarter, FakeToday);
 
-            var model = new AddCard { Min = min, Max = max, Term = FakeToday };
-
-            return View("AddCard", model);
+            return new AddCard
+            {
+                Min = min,
+                Max = max,
+                Term = FakeToday
+            };
         }
     }
 }

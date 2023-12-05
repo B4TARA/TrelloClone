@@ -6,7 +6,6 @@ namespace TrelloClone.Data
 {
     public class TrelloCloneDbContext : DbContext
     {
-
         public TrelloCloneDbContext(DbContextOptions<TrelloCloneDbContext> options) : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -21,10 +20,6 @@ namespace TrelloClone.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //base.OnModelCreating(builder);
-
-            //builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
             builder.Entity<User>(builder =>
             {
                 builder.ToTable("USERS", schema: "public").HasKey(x => x.Id);
