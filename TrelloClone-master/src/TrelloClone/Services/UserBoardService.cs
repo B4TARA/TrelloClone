@@ -1,10 +1,9 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
 using TrelloClone.Models;
@@ -47,7 +46,7 @@ namespace TrelloClone.Services
                     Title = column.Title
                 };
 
-                foreach (var card in column.Cards.Where(x=>x.IsRelevant))
+                foreach (var card in column.Cards.Where(x => x.IsRelevant))
                 {
                     var modelCard = new UserBoardView.Card
                     {
@@ -240,7 +239,7 @@ namespace TrelloClone.Services
 
                 else
                 {
-                    if(card.ColumnId == columns.First(x => x.Number == 3).Id)
+                    if (card.ColumnId == columns.First(x => x.Number == 3).Id)
                     {
                         card.ColumnId = card.ColumnId + 1;
                     }
@@ -268,7 +267,7 @@ namespace TrelloClone.Services
                     });
 
                     card.Requirement = command.Requirement;
-                }              
+                }
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
@@ -292,7 +291,7 @@ namespace TrelloClone.Services
         public async Task<IBaseResponse<object>> Reject(int CardId)
         {
             try
-            {              
+            {
                 var card = await _repository.CardRepository.GetCardById(false, CardId);
 
                 card.ColumnId = card.ColumnId - 1;
@@ -322,12 +321,12 @@ namespace TrelloClone.Services
             {
                 DateTime FakeToday = Term.GetFakeDate();
 
-                var quarter = Term.GetQuarter(FakeToday);
+                var quarter = Term.GetPreviousQuarter(FakeToday);
                 var months = Term.GetQuarterMonths(quarter);
 
                 var workbook = new XLWorkbook();
 
-                foreach(var month in months)
+                foreach (var month in months)
                 {
                     workbook.AddWorksheet(Term.GetMonthName(month));
                     var ws = workbook.Worksheet(Term.GetMonthName(month));
@@ -379,7 +378,7 @@ namespace TrelloClone.Services
                     foreach (var employee in employees)
                     {
                         var cards = await _repository.CardRepository.GetUserCards(false, employee.Id);
-                        foreach (var card in cards)
+                        foreach (var card in cards.Where(x => x.ReadyToReport))
                         {
                             ws.Cell("A" + row.ToString()).Value = "-";
                             if (employee.SspName != null)
@@ -469,19 +468,19 @@ namespace TrelloClone.Services
                                 else
                                 {
                                     ws.Cell("M" + row.ToString()).Value = "-";
-                                }                         
+                                }
                             }
-                            
-                            else if(card.SupervisorAssessment == 2 ||
+
+                            else if (card.SupervisorAssessment == 2 ||
                                     card.SupervisorAssessment == 3 ||
                                     card.SupervisorAssessment == 4)
                             {
-                                if(card.FactTerm.Value.Month > month && card.Term.Month <= month)
+                                if (card.FactTerm.Value.Month > month && card.Term.Month <= month)
                                 {
                                     ws.Cell("M" + row.ToString()).Value = "0%";
                                 }
-                                
-                                else if(card.FactTerm.Value.Month > month && card.Term.Month > month)
+
+                                else if (card.FactTerm.Value.Month > month && card.Term.Month > month)
                                 {
                                     ws.Cell("M" + row.ToString()).Value = "-";
                                 }
@@ -497,7 +496,7 @@ namespace TrelloClone.Services
                                 }
                             }
 
-                            else if(card.SupervisorAssessment == 5)
+                            else if (card.SupervisorAssessment == 5)
                             {
                                 if (card.Term.Month > month)
                                 {
@@ -515,18 +514,19 @@ namespace TrelloClone.Services
                                 }
                             }
 
-                            else if(card.SupervisorAssessment == 6
+                            else if (card.SupervisorAssessment == 6
                                 || card.SupervisorAssessment == 7
                                 || card.SupervisorAssessment == 8
                                 || card.SupervisorAssessment == 9)
                             {
                                 ws.Cell("M" + row.ToString()).Value = Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                             }
-                           
                             row++;
                         }
+
+                        ws.Columns().AdjustToContents();
                     }
-                }               
+                }
 
                 string prefixPath = "../TrelloClone/wwwroot/";
                 string savePath = "Отчёт.xlsx";

@@ -53,39 +53,37 @@
                     <input type="hidden" asp-for="Name" placeholder="Введите название" required />
 
                     <input type="hidden" asp-for="Term" placeholder="Выберите период" required>
-                  
-                    
-                        
-                    
-
-
+             
+                    @*Считываем номер колонки для отображения блока с оценками руководителя и сотрудника, отображение для колонок больше 3*@
                     @if (Model.Column > 3)
                     {
-                        <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
+                        @*Считываем есть ли оценка или нет для отображения блока с оценкой сотрудника*@
+                        @if (Model.EmployeeAssessment == null)
+                        {
+                            <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
 
 
-                            <div class="container_description first_row_grid_description">
+                                <div class="container_description first_row_grid_description">
 
 
-                                <div class="icon_description">
-                                    <i class="fa-regular fa-square-check" style="color: #0d062d;"></i>
+                                    <div class="icon_description">
+                                        <i class="fa-regular fa-square-check" style="color: #0d062d;"></i>
+                                    </div>
+
+
+                                    <div class="mid_title">
+                                        Оценочное суждение работника
+                                    </div>
                                 </div>
 
 
-                                <div class="mid_title">
-                                    Оценочное суждение работника
-                                </div>
-                            </div>
+                                <div class="second_row_grid_description margin_container_bottom_small" id="description">
+                                    <div></div>
 
 
-                            <div class="second_row_grid_description margin_container_bottom_small" id="description">
-                                <div></div>
+                                    <div class="select-box" id="selectBox">
 
 
-                                <div class="select-box" id="selectBox">
-
-                                    @if (Model.Column == 4)
-                                    {
                                         <div class="options-container" id="options-container">
 
 
@@ -102,10 +100,7 @@
                                                     <div class="mid_description">@item.Description</div>
                                                 </div>
                                             }
-                                        </div>
-
-
-                                    }
+                                    </div>
 
                                     <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
 
@@ -115,19 +110,8 @@
 
                                         <div class="description value_asessessment" id="descriptionAssessmentVal">
 
-
-                                            @if (Model.EmployeeAssessment != null)
-                                            {
-                                                @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text
-                                            }
-
-
-                                            else
-                                            {
                                                 <span class="placeholder_input">Введите оценочное суждение</span>
-                                            }
-
-
+                                            
                                         </div>
 
 
@@ -147,87 +131,91 @@
                                 </div>
                             </div>
 
-
-                            @if (Model.EmployeeComment == null)
-                            {
                                 <div class="first_row_grid_description select_description_assessment margin_container_bottom_middle">
                                     <div></div>
 
-
-                                    @if (Model.Column == 5)
-                                    {
-                                        @*<textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="EmployeeComment" placeholder="Отчет об исполнении задачи не был введен"></textarea>*@
-                                        <div class="description comment_assessment">
-                                            Отчет об исполнении задачи не был введен
-                                        </div>
-                                    }
-
-
-                                    else
-                                    {
-                                        <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="EmployeeComment" placeholder="Введите отчет об исполнении задачи"></textarea>
-                                    }
-
-
+                                    <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="EmployeeComment" placeholder="Введите отчет об исполнении задачи"></textarea>
+                                    
                                 </div>
 
-                            }
 
 
-                            else
-                            {
-                                <div class="result_comment_assessment_container">
-
-
-                                    <div class="first_row_grid_description margin_container_bottom_middle">
-                                        <div><i class="fa-regular fa-comment"></i></div>
-                                        <div class="description">Отчет об исполнении задачи работника</div>
-                                    </div>
-
-
-                                    <div class="second_row_grid_description">
-                                        <div></div>
-                                        <div class="description result_comment_description">@Model.EmployeeComment</div>
-                                    </div>
-                                </div>
-                            }
-
-                            <div class="choose_fact_date_container" id="choose_fact_date_container">
-                                @*<div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
-
-
-                                    <div class="container_description first_row_grid_description">
-
-
-                                        <div class="icon_description">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </div>
-
-
-                                        <div class="mid_title">
-                                            Фактический срок реализации
-                                        </div>
-
-
-                                    </div>
-
-
-                                    <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
-                                        <div></div>
-
-
-                                        <div class="choose_date_wrapper" id="choose_date">
-                                            <input type="date" asp-for="FactTerm" id="factTerm" placeholder="Выберите период">
-                                        </div>
-
-
-                                    </div>
-                                </div>*@
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="container_description first_row_grid_description">
 
 
-                        @if (Model.Column > 4)
+                                <div class="icon_description">
+                                    <i class="fa-regular fa-bookmark" style="color: #0d062d;"></i>
+                                    
+                                </div>
+
+
+                                <div class="mid_title_wrapper">
+
+                                    <div class="mid_title">
+                                        Результат самооценки сотрудника
+                                    </div>
+
+                                    <i class="fa-solid fa-circle-chevron-down icon_dropdown" onclick="openDropdownList(this)"></i>
+                                    
+                                </div>
+                            </div>
+                            <div class="description_popup_card_wrapper result_employee_assessment margin_container_bottom" id="result_employee_assessment">
+
+
+                                <div class="container_description">
+                                    <div class="description">
+                                        Оценочное суждение работника
+                                    </div>
+                                </div>
+
+
+                                <div class="result_assessment_wrapper margin_container_bottom_small" id="description">
+                                    @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text
+                                </div>
+
+                                @*Считывает наличие коммента сотрудника в БД*@
+                                @if (Model.EmployeeComment != null)
+                                {
+                                    <div class="result_comment_assessment_container">
+
+
+                                        <div class="margin_container_bottom_small">
+                                            <div class="description">Отчет об исполнении задачи работника</div>
+                                        </div>
+
+                                            <div class="comment_area">
+
+
+                                                <div class="mid_description">@Model.EmployeeComment</div>
+
+
+                                            </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="result_comment_assessment_container">
+
+
+                                        <div class="margin_container_bottom_small">
+                                            <div class="description">Отчет об исполнении задачи работника</div>
+                                        </div>
+
+                                        <div class="mid_description">Отчет не был введен</div>
+                                    </div>
+                                }
+
+                            </div>
+                            
+                                
+                        }
+
+
+                        @if (Model.Column == 5 && Model.SupervisorAssessment == null)
                         {
                             <div class="description_popup_card_wrapper grid_description_2fr margin_container_bottom">
 
@@ -251,9 +239,7 @@
 
 
                                     <div class="select-box" id="selectBox">
-                                        @if(Model.Column == 5)
-                                        {
-                                            <div class="options-container" id="options-container">
+                                        <div class="options-container" id="options-container">
 
 
                                                 @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
@@ -270,10 +256,6 @@
 
 
                                             </div>
-                                        }
-                                        
-
-
                                         <div class="selected_main_wrapper" id="selected_main_wrapper" onclick="selectedContainerOpen(this)">
 
 
@@ -283,20 +265,7 @@
 
                                             <div class="description value_asessessment" id="descriptionAssessmentVal">
 
-
-                                                @if (Model.SupervisorAssessment != null)
-                                                {
-                                                    @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text
-                                                }
-
-
-                                                else
-                                                {
-                                                    <div class="description comment_assessment">
-                                                        Комментарий к оценке
-                                                    </div>
-                                                }
-
+                                                <span class="placeholder_input">Введите оценочное суждение</span>
 
                                             </div>
 
@@ -308,68 +277,107 @@
                                     </div>
                                 </div>
 
+                                <div class="first_row_grid_description select_description_assessment margin_container_bottom_middle">
+                                    <div></div>
 
-                                @if (Model.SupervisorComment == null)
-                                {
-                                    <div class="first_row_grid_description select_description_assessment margin_container_bottom_middle">
-                                        <div></div>
-                                        <textarea class="mid_description comment_assessment" id="commentBossAssessment" asp-for="SupervisorComment" placeholder="Введите отчет об исполнении задачи"></textarea>
-                                    </div>
-                                }
+                                    <textarea class="mid_description comment_assessment" id="commentWorkerAssessment" asp-for="SupervisorComment" placeholder="Введите комментарий к оценке"></textarea>
 
+                                </div>
 
-                                else
-                                {
-
-                                    <div class="result_comment_assessment_container">
-
-
-                                        <div class="first_row_grid_description margin_container_bottom_middle">
-                                            <div><i class="fa-regular fa-comment"></i></div>
-                                            <div class="description">Отчет об исполнении задачи руководителя</div>
-                                        </div>
-
-
-                                        <div class="second_row_grid_description">
-                                            <div></div>
-                                            <div class="description result_comment_description">@Model.SupervisorAssessment</div>
-                                        </div>
-                                    </div>
-                                }
                                 <div class="choose_fact_date_container" id="choose_fact_date_container">
-                                    <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
-
-
+                                     <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
                                         <div class="container_description first_row_grid_description">
 
 
-                                            <div class="icon_description">
-                                                <i class="fa-regular fa-calendar"></i>
-                                            </div>
-
-
-                                            <div class="mid_title">
-                                                Фактический срок реализации
-                                            </div>
-
-
+                                        <div class="icon_description">
+                                        <i class="fa-regular fa-calendar"></i>
                                         </div>
 
 
+                                        <div class="mid_title">
+                                        Фактический срок реализации
+                                        </div>
+
+
+                                        </div>
                                         <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
                                             <div></div>
-
-
                                             <div class="choose_date_wrapper" id="choose_date">
-                                                <input type="date" asp-for="FactTerm" placeholder="Выберите период" id="factTerm">
+                                                <input type="date" asp-for="FactTerm" id="factTerm" placeholder="Выберите период">
                                             </div>
+                                        </div>
+                                        </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="container_description first_row_grid_description">
+
+
+                                <div class="icon_description">
+                                    <i class="fa-regular fa-bookmark" style="color: #0d062d;"></i>
+
+                                </div>
+
+
+                                <div class="mid_title_wrapper">
+
+                                    <div class="mid_title">
+                                        Результат оценки непосредственного руководителя
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="description_popup_card_wrapper margin_container_bottom" >
+
+
+                                <div class="container_description">
+                                    <div class="description">
+                                        Оценочное суждение непосредственного руководителя
+                                    </div>
+                                </div>
+
+
+                                <div class="result_assessment_wrapper margin_container_bottom_small" id="description">
+                                    @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text
+                                </div>
+
+                                @*Считывает наличие коммента сотрудника в БД*@
+                                @if (Model.SupervisorComment != null)
+                                {
+                                    <div class="result_comment_assessment_container">
+
+
+                                        <div class="margin_container_bottom_small">
+                                            <div class="description">Комментарий непосредственного руководителя к оценке</div>
+                                        </div>
+
+                                        <div class="comment_area">
+
+
+                                            <div class="mid_description">@Model.SupervisorComment</div>
 
 
                                         </div>
                                     </div>
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="result_comment_assessment_container">
+
+
+                                        <div class="margin_container_bottom_small">
+                                            <div class="description">Комментарий непосредственного руководителя к оценке</div>
+                                        </div>
+
+                                        <div class="mid_description">Комментарий непосредственного руководителя к оценке не был введен</div>
+                                    </div>
+                                }
 
                             </div>
+
+
                         }
                     }
 

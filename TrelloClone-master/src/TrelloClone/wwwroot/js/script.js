@@ -61,50 +61,22 @@ function optionClick(elem) {
     if (resultAssessmentId == 2 || resultAssessmentId == 3 || resultAssessmentId == 4) {
         console.log(chooseFactDateContainer)
         console.log(resultAssessmentId)
-        chooseFactDateContainer.classList.add('active')
-        chooseFactDateContainer.innerHTML = `
-        <div class="choose_date_popup_wrapper grid_description_2fr" id="choose_date_popup_wrapper">
-
-
-                                    <div class="container_description first_row_grid_description">
-
-
-                                        <div class="icon_description">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </div>
-
-
-                                        <div class="mid_title">
-                                            Фактический срок реализации
-                                        </div>
-
-
-                                    </div>
-
-
-                                    <div class="choose_date_popup_wrapper second_row_grid_description margin_container_bottom_middle">
-                                        <div></div>
-
-
-                                        <div class="choose_date_wrapper" id="choose_date">
-                                            <input type="date" asp-for="FactTerm" id="factTerm" placeholder="Выберите период" required>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-        `
+        const factTerm = document.getElementById('factTerm')
+        factTerm.setAttribute('required', 'true')
+        chooseFactDateContainer.classList.add('active');
+        
     } else {
         const chooseDatePopupWrapper = document.getElementById('choose_date_popup_wrapper')
-        chooseDatePopupWrapper.remove()
+        const factTerm = document.getElementById('factTerm')
+        factTerm.removeAttribute('required')
         chooseFactDateContainer.classList.remove('active')
     }
 }
 
 
 function openDropdownList(elem) {
-    const historyListWrapper = document.getElementById('history_list_wrapper')
-    historyListWrapper.classList.toggle('active')
+    const resultEmployeeAssessment = document.getElementById('result_employee_assessment')
+    resultEmployeeAssessment.classList.toggle('active')
     elem.classList.toggle('active')
 }
 

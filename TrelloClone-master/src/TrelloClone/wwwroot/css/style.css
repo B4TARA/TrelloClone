@@ -288,6 +288,22 @@
     justify-content: center;
     flex-direction: column;
 }
+
+.icon_dropdown {
+    font-size: 22px;
+    cursor: pointer;
+    color: #0d062d;
+    /*transition: all 0.5s ease;*/
+}
+
+.icon_dropdown:hover {
+    color: #1b74fd;
+}
+
+.icon_dropdown.active {
+    transform: rotate(180deg);
+    transition: all 0.5s ease;
+}
 /*SIDEBAR*/
 .sidebar {
     position: fixed;
@@ -1367,7 +1383,7 @@ li .sub-menu a {
 }
 
 .choose_fact_date_container.active {
-    display: grid;
+    display: block;
 }
 
 /*POPUP DESCRIPTION*/
@@ -1586,6 +1602,24 @@ li .sub-menu a {
 .result_comment_assessment_container .result_comment_description {
     font-weight: 400;
 }
+
+.result_employee_assessment{
+    display:none;
+}
+
+.result_employee_assessment.active {
+    display: block;
+}
+
+.result_assessment_wrapper {
+    background-color: #f5f5f5;
+    font-weight: 500;
+    color: #292d34;
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
 /*UPLOAD FILES*/
 .mid_title_wrapper {
     display: flex;
@@ -1771,24 +1805,6 @@ section .details span {
     .uploaded-area i.fa-check {
         font-size: 16px;
     }
-
-
-/*HISTORY CONTAINER*/
-
-.history_main_wrapper .icon_dropdown {
-    font-size: 22px;
-    cursor: pointer;
-}
-
-.icon_dropdown:hover {
-    color: #1b74fd;
-}
-
-.icon_dropdown.active {
-    transform: rotate(180deg);
-    transition: all 0.5s ease;
-}
-
 
 
 .history_list_wrapper .holder_image_wrapper {
