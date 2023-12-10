@@ -162,7 +162,10 @@ namespace TrelloClone.Controllers
             {
                 var supervisorName = User.FindFirst("Name").Value;
 
-                var response = await _userBoardService.GetReport(supervisorName);
+                DateTime startDate = Convert.ToDateTime(Request.Form["startDate"]);
+                DateTime endDate = Convert.ToDateTime(Request.Form["endDate"]);
+
+                var response = await _userBoardService.GetReport(supervisorName, startDate, endDate);
                 if (response.StatusCode != StatusCodes.OK)
                 {
                     return Json("Упс... Что-то пошло не так: " + response.Description);
@@ -172,7 +175,7 @@ namespace TrelloClone.Controllers
             }
 
             catch (Exception ex)
-            {               
+            {
                 return Json("Упс... Что-то пошло не так: " + ex.Message);
             }
         }

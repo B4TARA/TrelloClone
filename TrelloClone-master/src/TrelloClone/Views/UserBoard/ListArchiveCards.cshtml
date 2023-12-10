@@ -258,15 +258,37 @@
 <script>
 
 
-    async function getReport() {
-        const response = await fetch('/UserBoard/GetReport', {
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            method: 'GET',
-        })
-        const result = await response.json();
-        window.open(`../${result}`, "_blank");
+    //async function getReport() {
+    //    const response = await fetch('/UserBoard/GetReport', {
+    //        headers: {
+    //            'Content-Type': 'application/json;charset=utf-8'
+    //        },
+    //        method: 'GET',
+    //    })
+    //    const result = await response.json();
+    //    window.open(`../${result}`, "_blank");
+    //}
+
+
+    async function getReport(elem) {
+
+        var url = "/UserBoard/GetReport";
+        formData = new FormData();
+        formData.append("startDate", "Сюда дату начала");
+        formData.append("endDate", "Сюда дату конца");
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: async function (response) {
+                const result = await response.json();
+                window.open(`../${result}`, "_blank");
+            }
+        });
     }
 
 

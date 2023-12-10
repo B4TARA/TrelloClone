@@ -320,19 +320,16 @@ namespace TrelloClone.Services
             }
         }
 
-        public async Task<IBaseResponse<string>> GetReport(string supervisorName)
+        public async Task<IBaseResponse<string>> GetReport(string supervisorName, DateTime startDate, DateTime endDate)
         {
             try
             {
-                DateTime FakeToday = Term.GetFakeDate();
-
-                var quarter = Term.GetPreviousQuarter(FakeToday);
-                var months = Term.GetQuarterMonths(quarter);
-
                 var workbook = new XLWorkbook();
 
-                foreach (var month in months)
+                while(startDate <= endDate)
                 {
+                    var month = startDate.Month;
+
                     workbook.AddWorksheet(Term.GetMonthName(month));
                     var ws = workbook.Worksheet(Term.GetMonthName(month));
 
@@ -427,7 +424,7 @@ namespace TrelloClone.Services
                                 ws.Cell("G" + row.ToString()).Value = card.Requirement.ToString();
                             }
 
-                            ws.Cell("H" + row.ToString()).Value = card.Term.ToString();
+                            ws.Cell("H" + row.ToString()).Value = card.StartTerm.ToString();
 
                             ws.Cell("I" + row.ToString()).Value = "-";
                             if (AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
@@ -527,6 +524,8 @@ namespace TrelloClone.Services
 
                         ws.Columns().AdjustToContents();
                     }
+
+                    startDate.AddMonths(1);
                 }
 
                 string prefixPath = "../TrelloClone/wwwroot/";
