@@ -18,6 +18,8 @@ namespace TrelloClone.ViewModels
         public int Column { get; set; } = 1;
         public int UserId { get; set; }
         public int ColumnId { get; set; }
+        public bool IsRelevant { get; set; }
+        public bool IsDeleted { get; set; }
 
         public List<Comment> Comments = new List<Comment>();
         public List<File> Files = new List<File>();

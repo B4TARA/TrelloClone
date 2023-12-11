@@ -421,7 +421,6 @@ namespace TrelloClone.Services
                 };
             }
         }
-
         public async Task<IBaseResponse<object>> DeleteFile(int fileId, int cardId, string userName, string userImg)
         {
             try
@@ -443,6 +442,9 @@ namespace TrelloClone.Services
                 {
                     System.IO.File.Delete(fileToDelete.Path);
                 }
+
+                _repository.CardRepository.Update(card);
+                await _repository.Save();
 
                 _repository.FileRepository.Delete(fileToDelete);
                 await _repository.Save();

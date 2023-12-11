@@ -108,40 +108,41 @@
 
         <div class="comment_area_sidebar_wrapper">
             <div class="title margin_container_bottom_middle">Комментарии</div>
+            <textarea class="mid_description" id="commentAreaElem" placeholder="Введите комментарий" onclick="addCommentArea(this)"></textarea>
+            <div class="add_texteditor_buttons_wrapper add_comment_btns margin_container_top_small" id="addCommentBtns">
+                <div class="action_buttons_wrapper ">
+
+
+                    <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
+                        <div class="description">Добавить</div>
+                    </div>
+
+
+                    <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
+                        <div>
+                            <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
             <div class="comment_popup_card_wrapper grid_description_2fr margin_container_bottom" id="comment_popup_card_wrapper">
 
 
                 @*<div class="container_description first_row_grid_description">
-                    <div class="icon_description">
-                        <i class="fa-regular fa-comment" style="color: #0D062D;"></i>
-                    </div>
+                <div class="icon_description">
+                <i class="fa-regular fa-comment" style="color: #0D062D;"></i>
+                </div>
 
-                    <div class="mid_title">
-                        Комментарии
-                    </div>
+                <div class="mid_title">
+                Комментарии
+                </div>
                 </div>*@
 
-                <textarea class="mid_description" id="commentAreaElem" placeholder="Введите комментарий" onclick="addCommentArea(this)"></textarea>
-                <div class="add_texteditor_buttons_wrapper add_comment_btns margin_container_top_small" id="addCommentBtns">
-                    <div class="action_buttons_wrapper ">
 
 
-                        <div class="action_btn primary_btn" id="saveTextArea" onclick="saveComment(this)">
-                            <div class="description">Добавить</div>
-                        </div>
 
-
-                        <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
-                            <div>
-                                <i class="fa-solid fa-xmark" style="color: #000000;"></i>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                
-                
 
 
                 @foreach (var comment in Model.Comments)

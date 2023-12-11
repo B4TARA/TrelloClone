@@ -42,6 +42,8 @@ namespace TrelloClone.Components
                 Column = column!.Number,
                 ColumnId = column.Id,
                 UserId = card.UserId,
+                IsRelevant = card.IsRelevant,
+                IsDeleted = card.IsDeleted,
                 Comments = card.Comments,
                 Files = card.Files,
                 Updates = card.Updates,

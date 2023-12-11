@@ -107,6 +107,8 @@
 
 <section class="main_container_content" id="main_container_content">
     <div class="list_view_container">
+
+
         <div class="list_view_main_wrapper">
             <table class="table_list_view margin_container_bottom_middle">
 
@@ -125,9 +127,152 @@
 
 
                 <tbody>
-                    @if (Model.Cards.Count() != 0)
+                    @if (Model.ArchivedCards.Count() != 0)
                     {
-                        @foreach (var card in Model.Cards)
+                        @foreach (var card in Model.ArchivedCards)
+                        {
+                            <tr class="open-popup" idcard="@card.Id">
+
+                                
+                                <td class="table_title_wrapper">
+                                    <div class="stage_indicator_circle blue_bcolor"></div>
+                                    <div class="info_table_title_wrapper">
+                                        <div class="description">
+                                            @card.Name
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                                <td>
+                                    <div class="card_details_info_wrapper">
+
+
+                                        <div class="card_detail_item">
+                                            <div class="item_icon">
+                                                <i class="fa-regular fa-message" style="color: #787486;"></i>
+                                            </div>
+                                            <div class="item_count">
+                                                <div class="mid_description">
+                                                    @card.CountOfComments
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card_detail_item">
+                                            <div class="item_icon">
+                                                <i class="fa-solid fa-paperclip" style="color: #787486;"></i>
+                                            </div>
+                                            <div class="item_count">
+                                                <div class="mid_description">
+                                                    @card.CountOfFiles
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                                <td>
+                                    @if (User.FindFirst("ImagePath") != null)
+                                    {
+                                        <div class="card_holders_wrapper">
+                                            <div class="holder_image_wrapper" style="background-image:url('@User.FindFirst("ImagePath")!.Value');"></div>
+                                        </div>
+                                    }
+
+
+                                    else
+                                    {
+                                        <div class="card_holders_wrapper">
+                                            <div class="holder_image_wrapper" style="background-image:url('/image/default_profile_icon.svg');"></div>
+                                        </div>
+                                    }
+                                </td>
+
+
+                                <td>
+                                    <div class="card_name_wrapper">
+                                        <div class="mid_description">
+                                            @card.Term.ToString("MMMM yyyy")
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                                <td>
+                                    <div class="card_name_wrapper">
+                                        <div class="mid_description">
+                                            @card.FactTerm.ToString("MMMM yyyy")
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                                <td>
+                                    @card.EmployeeAssessment
+                                </td>
+
+
+                                <td>
+                                    @card.SupervisorAssessment
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="table_title_wrapper">
+                            </td>
+
+                            <td>
+                            </td>
+
+                            <td>
+                            </td>
+
+                            <td>
+                            </td>
+
+                            <td>
+                            </td>
+
+                            <td>
+                            </td>
+
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="list_view_main_wrapper">
+            <table class="table_list_view margin_container_bottom_middle">
+
+
+                <thead>
+                    <tr>
+                        <th class="red_bcolor_highcontrast">Удаленные</th>
+                        <th class="extra_info"></th>
+                        <th>Создал</th>
+                        <th>Плановая дата</th>
+                        <th>Фактическая дата</th>
+                        <th>Оценка сотрудника</th>
+                        <th>Оценка руководителя</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    @if (Model.DeletedCards.Count() != 0)
+                    {
+                        @foreach (var card in Model.DeletedCards)
                         {
                             <tr class="open-popup" idcard="@card.Id">
 
@@ -248,11 +393,10 @@
                 </tbody>
             </table>
         </div>
+        <input type="text" id="input-datepicker" placeholder="Выберите период" class="input_datepicker">
+        <button >ОТЧЕТ</button>
     </div>
 </section>
-
-
-<button onclick="getReport()">ОТЧЕТ</button>
 
 
 <script>
@@ -269,13 +413,55 @@
     //    window.open(`../${result}`, "_blank");
     //}
 
+    let downloadExcelBtn = {
+        content: 'Показать отчет',
+        className: 'custom-button-classname',
+        onClick: (dp) => {
+            let viewDate = document.getElementById('input-datepicker').value
+            console.log(typeof(viewDate))
+            getReport(viewDate)
+            //    postRangeDate(viewDate)
+            //    console.log(viewDate)
+        }
 
-    async function getReport(elem) {
+    }
+
+    new AirDatepicker('#input-datepicker', {
+        range: true,
+        multipleDatesSeparator: ' - ',
+        buttons: [downloadExcelBtn],
+        //onSelect({ date, formattedDate, datepicker }) {
+        //    if (formattedDate.length == 2) {
+        //        let searchDate = formattedDate[0]
+
+        //        dateList.forEach(option => {
+        //            let label = option.innerText.toLowerCase();
+        //            let rowElem = option.parentNode;
+        //            if (label.indexOf(searchDate) != -1) {
+        //                rowElem.style.display = "table-row";
+
+        //            } else {
+        //                rowElem.style.display = "none";
+
+        //            }
+        //        });
+
+        //        console.log(formattedDate[0])
+        //        console.log(formattedDate[1])
+        //        getReport(formattedDate[0], formattedDate[1])
+        //    }
+        //},
+
+        // isMobile: true,
+        // autoClose: true,
+    });
+
+
+    function getReport(viewDate) {
 
         var url = "/UserBoard/GetReport";
         formData = new FormData();
-        formData.append("startDate", "Сюда дату начала");
-        formData.append("endDate", "Сюда дату конца");
+        formData.append("viewDate", viewDate);
 
         $.ajax({
             url: url,
@@ -285,7 +471,8 @@
             contentType: false,
             processData: false,
             success: async function (response) {
-                const result = await response.json();
+                console.log(response);
+                const result = response;
                 window.open(`../${result}`, "_blank");
             }
         });

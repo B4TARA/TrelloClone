@@ -57,7 +57,7 @@ namespace EmailService
 			            <center>			
 				            <div style=""text-align: left; padding: 0px 10px 10px 10px; color: #1B74FD;"">
 
-					            <h3><b>Уважаемый(ая),</b></h3>
+					            <h3><b>Уважаемый(ая)</b></h3>
 
 					            <h2><b>{message.AddresseeName}</b></h2>
 

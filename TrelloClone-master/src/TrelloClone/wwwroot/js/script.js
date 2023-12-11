@@ -75,7 +75,7 @@ function optionClick(elem) {
 
 
 function openDropdownList(elem) {
-    const resultEmployeeAssessment = document.getElementById('result_employee_assessment')
+    const resultEmployeeAssessment = document.getElementById('report_employee_result')
     resultEmployeeAssessment.classList.toggle('active')
     elem.classList.toggle('active')
 }

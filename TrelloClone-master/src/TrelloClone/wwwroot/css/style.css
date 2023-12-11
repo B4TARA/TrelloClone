@@ -119,6 +119,11 @@
     color: #1b74fd;
 }
 
+.red_bcolor_highcontrast {
+    background-color: #FF280C30;
+    color: #FF280C;
+}
+
 .yellow_bcolor_highcontrast {
     background-color: #ffc10730;
     color: #ffc107;
@@ -1268,7 +1273,26 @@ li .sub-menu a {
     margin-top: 20px;
 }
 
-.comment_popup_card_wrapper textarea {
+.comment_popup_card_wrapper {
+    max-height: 82vh;
+    overflow-y: scroll;
+    scrollbar-color: #c1c1c1 #eee;
+    scrollbar-width: thin;
+}
+
+    .comment_popup_card_wrapper::-webkit-scrollbar {
+        width: 8px;
+        height:15px;
+        background: #f5f5f5;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .comment_popup_card_wrapper::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 8px;
+    }
+
+.comment_area_sidebar_wrapper textarea {
     background: #f5f5f5;
     color: #292d34;
     border-radius: 10px;
@@ -1279,6 +1303,7 @@ li .sub-menu a {
     margin: 0;
     max-height: 256px;
     min-height: 40px;
+    width: 100%;
     overflow: hidden;
     overflow-wrap: break-word;
     padding: 10px;
@@ -1288,14 +1313,14 @@ li .sub-menu a {
     scrollbar-width: thin;
 }
 
-    .comment_popup_card_wrapper textarea::-webkit-scrollbar {
+    .comment_area_sidebar_wrapper textarea::-webkit-scrollbar {
         height: 15px;
         width: 8px;
         background: #eee;
         border-radius: 8px;
     }
 
-    .comment_popup_card_wrapper textarea::-webkit-scrollbar-thumb {
+    .comment_area_sidebar_wrapper textarea::-webkit-scrollbar-thumb {
         background: #c1c1c1;
         border-radius: 8px;
     }
@@ -1603,16 +1628,22 @@ li .sub-menu a {
     font-weight: 400;
 }
 
-.result_employee_assessment{
+.report_employee_result {
     display:none;
 }
 
-.result_employee_assessment.active {
-    display: block;
+    .report_employee_result.active {
+        display: block;
+    }
+
+.report_employee_result_container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .result_assessment_wrapper {
-    background-color: #f5f5f5;
+    border: 2px solid #1b74fd;
     font-weight: 500;
     color: #292d34;
     font-size: 16px;

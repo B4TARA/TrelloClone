@@ -161,7 +161,15 @@ namespace TrelloClone.Services
                         modelCard.SupervisorAssessment = AssessmentsForDropdown.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Value;
                     }
 
-                    model.Cards.Add(modelCard);
+                    if(card.IsDeleted)
+                    {
+                        model.DeletedCards.Add(modelCard);
+                    }
+
+                    else
+                    {
+                        model.ArchivedCards.Add(modelCard);
+                    }                 
                 }
             }
 
@@ -525,7 +533,7 @@ namespace TrelloClone.Services
                         ws.Columns().AdjustToContents();
                     }
 
-                    startDate.AddMonths(1);
+                    startDate = startDate.AddMonths(1);
                 }
 
                 string prefixPath = "../TrelloClone/wwwroot/";

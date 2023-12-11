@@ -155,15 +155,16 @@ namespace TrelloClone.Controllers
             return NotFound(response.Description);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<JsonResult> GetReport()
         {
             try
             {
                 var supervisorName = User.FindFirst("Name").Value;
 
-                DateTime startDate = Convert.ToDateTime(Request.Form["startDate"]);
-                DateTime endDate = Convert.ToDateTime(Request.Form["endDate"]);
+                var viewDate = Convert.ToString(Request.Form["viewDate"]);
+                var startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
+                var endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
 
                 var response = await _userBoardService.GetReport(supervisorName, startDate, endDate);
                 if (response.StatusCode != StatusCodes.OK)

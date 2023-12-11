@@ -121,22 +121,22 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
                     }
 
                     else if (FakeToday.Day == 23 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
                     }
 
                     else if (FakeToday.Day == 25 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[2]);
                     }
 
                     else if (FakeToday.Day == 28 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[3]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[3]);
                     }
                 }
 
@@ -148,27 +148,27 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 1 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
                     }
 
                     if (FakeToday.Day == 5 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
                     }
 
                     else if (FakeToday.Day == 8 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
                     }
 
                     if (FakeToday.Day == 11 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
 
                     else if (FakeToday.Day == 14)
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
                 }
 

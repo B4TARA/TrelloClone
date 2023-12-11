@@ -202,7 +202,15 @@
 
                                         @if (column.Number == 6)
                                         {
+
+                                        @if (card.SupervisorAssessment != 0 && card.SupervisorAssessment != null)
+                                        {
                                             @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text
+                                        }
+                                        else
+                                        {
+                                            <div>Оценка не была введена</div>
+                                        }
                                         }
 
 
