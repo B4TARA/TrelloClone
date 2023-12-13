@@ -205,7 +205,7 @@
 
                                         @if (card.SupervisorAssessment != 0 && card.SupervisorAssessment != null)
                                         {
-                                            @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text
+                                            @TrelloClone.Models.Assessment.AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Text
                                         }
                                         else
                                         {

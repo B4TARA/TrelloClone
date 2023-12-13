@@ -87,7 +87,7 @@
                                         <div class="options-container" id="options-container">
 
 
-                                            @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
+                                            @foreach (var item in TrelloClone.Models.Assessment.AssessmentList.GetAssessments())
                                             {
 
 
@@ -176,7 +176,7 @@
                                 <div class="result_assessment_wrapper margin_container_bottom_small" id="description">
                                     @if (Model.EmployeeAssessment != 0 && Model.EmployeeAssessment != null)
                                     {
-                                        @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text
+                                        @TrelloClone.Models.Assessment.AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == Model.EmployeeAssessment).Text
                                     }else{
                                         <span class="placeholder_input">Оценка не была введена</span>
                                     }
@@ -250,7 +250,7 @@
                                         <div class="options-container" id="options-container">
 
 
-                                                @foreach (var item in TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments())
+                                                @foreach (var item in TrelloClone.Models.Assessment.AssessmentList.GetAssessments())
                                                 {
 
 
@@ -351,7 +351,7 @@
 
                                     @if (Model.SupervisorAssessment != 0 && Model.SupervisorAssessment != null)
                                     {
-                                        @TrelloClone.Models.Assessment.AssessmentsForDropdown.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text
+                                        @TrelloClone.Models.Assessment.AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == Model.SupervisorAssessment).Text
                                     }
                                     else
                                     {

@@ -1,0 +1,120 @@
+﻿@model List<TrelloClone.ViewModels.Report.ReportCardModel>
+
+
+<div class="buttons_wrapper">
+
+
+    <!-- <div class="buttton" onclick="showReport()">
+        Показать отчет
+    </div> -->
+
+
+    <input type="text" id="input-datepicker" placeholder="Выберите период" class="input_datepicker">
+
+
+    <div class="buttton btn_download" id="btnDownload" onclick="downloadReport()">
+        Скачать отчет
+    </div>
+</div>
+
+
+<table class="table" id="tableReport">
+
+
+    <thead>
+        <tr>
+            <th>Наименование ССП</th>
+            <th>ФИО работника</th>
+            <th>Должность</th>
+            <th>Непосредственный руководитель</th>
+            <th>Наименование SMART-задачи</th>
+            <th>Требование к задаче (что считается исполнением задачи)</th>
+            <th>Плановый срок реализации задачи</th>
+            <th>Оценочное суждение работника</th>
+            <th>Комментарий работника</th>
+            <th>Оценочное суждение непосредственного руководителя</th>
+            <th>Оценочное суждение непосредственного руководителя</th>
+            <th>% выполнения задачи в зависимости от присвоенного оценочного суждения непосредственного руководителя</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+
+
+        @foreach(var card in Model)
+        {
+            <tr>
+                <td>@card.EmployeeSspName</td>
+                <td>@card.EmployeeName</td>
+                <td>@card.EmployeePosition</td>
+                <td>@card.SupervisorName</td>
+                <td>@card.CardName</td>
+                <td>@card.CardRequirement</td>
+                <td>@card.CardStartTerm</td>
+                <td>@card.EmployeeAssessmentText</td>
+                <td>@card.EmployeeComment</td>
+                <td>@card.SupervisorAssessmentText</td>
+                <td>@card.SupervisorComment</td>
+                <td>@card.SupervisorAssessmentValue</td>
+            </tr>
+        }
+   
+        
+    </tbody>
+</table>
+
+
+<script>
+
+
+    function showReport() {
+        const tableReport = document.getElementById('tableReport');
+        const btnDownload = document.getElementById('btnDownload')
+        tableReport.classList.add('active')
+        btnDownload.classList.add('active')
+    }
+
+
+    let downloadExcelBtn = {
+        content: 'Показать отчет',
+        className: 'custom-button-classname',
+        onClick: (dp) => {
+            let viewDate = document.getElementById('input-datepicker').value
+            console.log(typeof (viewDate))
+            getReport(viewDate)
+        }
+
+    }
+
+
+    new AirDatepicker('#input-datepicker', {
+        range: true,
+        multipleDatesSeparator: ' - ',
+        buttons: [downloadExcelBtn],
+    });
+
+
+    function getReport(viewDate) {
+
+        var url = "/UserBoard/GetReport";
+        formData = new FormData();
+        formData.append("viewDate", viewDate);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: async function (response) {
+                console.log(response);
+                const result = response;
+                window.open(`../${result}`, "_blank");
+            }
+        });
+    }
+
+
+</script>

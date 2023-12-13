@@ -91,7 +91,7 @@ namespace TrelloClone.Services
                     });
 
                     //перенос на другой квартал
-                    if (Term.GetQuarter(card.Term) != Term.GetQuarter(cardDetails.Term))
+                    if (!Term.IsEqualQuarter(card.Term, cardDetails.Term))
                     {
                         card.ColumnId = columns.First(x => x.Number == 3).Id;
                     }
@@ -181,7 +181,7 @@ namespace TrelloClone.Services
                     });
 
                     //перенос на другой квартал
-                    if (Models.Term.Term.GetQuarter(card.Term) != Models.Term.Term.GetQuarter(Term))
+                    if (!Models.Term.Term.IsEqualQuarter(card.Term, Term))
                     {
                         card.ColumnId = columns.First(x => x.Number == 3).Id;
                         card.SupervisorAssessment = 8;
@@ -294,7 +294,7 @@ namespace TrelloClone.Services
                     });
 
                     //перенос на другой квартал
-                    if (Models.Term.Term.GetQuarter(card.Term) != Models.Term.Term.GetQuarter(Term))
+                    if (!Models.Term.Term.IsEqualQuarter(card.Term, Term))
                     {
                         card.ColumnId = columns.First(x => x.Number == 3).Id;
                     }
@@ -477,7 +477,8 @@ namespace TrelloClone.Services
                     UserId = userId,
                     UserName = userName.Split(" ")[0] + " " + userName.Split(" ")[1],
                     Content = comment,
-                    UserImg = userImg
+                    UserImg = userImg,
+                    Date = FakeToday
                 });
 
                 card.Updates.Add(new Update

@@ -2,7 +2,7 @@
 
 namespace TrelloClone.Models.Assessment
 {
-    public static class AssessmentsForDropdown
+    public static class AssessmentList
     {
         public static IEnumerable<Assessment> GetAssessments()
         {

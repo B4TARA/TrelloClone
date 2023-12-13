@@ -42,9 +42,9 @@ namespace TrelloClone.Components
                 Column = column!.Number,
                 ColumnId = column.Id,
                 UserId = card.UserId,
-                Comments = card.Comments,
+                Comments = card.Comments.OrderByDescending(x => x.Date).ToList(),
                 Files = card.Files,
-                Updates = card.Updates,
+                Updates = card.Updates.OrderByDescending(x => x.Date).ToList(),
             };
         }
     }

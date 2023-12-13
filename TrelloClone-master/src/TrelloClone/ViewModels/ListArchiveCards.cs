@@ -7,7 +7,7 @@ namespace TrelloClone.ViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string ImgPath { get; set; } = string.Empty;
+        public string? ImgPath { get; set; }
         public List<Card> ArchivedCards { get; set; } = new List<Card>();
         public List<Card> DeletedCards { get; set; } = new List<Card>();
 

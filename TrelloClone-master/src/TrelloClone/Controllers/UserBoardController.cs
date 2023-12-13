@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Models.Enum;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
+using TrelloClone.ViewModels.Report;
 
 namespace TrelloClone.Controllers
 {
@@ -137,11 +140,15 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost("rejectcard")]
-        public async Task<IActionResult> RejectCard(int CardId)
+        public async Task<IActionResult> RejectCard(int cardId)
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
-            var response = await _userBoardService.Reject(CardId);
+            var userName = User.FindFirst("Name").Value;
+
+            var userImage = User.FindFirst("ImagePath").Value;
+
+            var response = await _userBoardService.Reject(cardId, userName, userImage);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -179,6 +186,50 @@ namespace TrelloClone.Controllers
             {
                 return Json("Упс... Что-то пошло не так: " + ex.Message);
             }
+        }
+
+        [HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> GetReportView()
+        {
+            try
+            {
+                var supervisorName = User.FindFirst("Name").Value;
+                
+                var startDate = new DateTime();
+                var endDate = new DateTime();
+
+                if (Request.Method == "GET")
+                {
+                    startDate = new DateTime();
+                    endDate = new DateTime();
+                }
+                else
+                {
+                    var viewDate = Convert.ToString(Request.Form["viewDate"]);
+                    startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
+                    endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
+                }             
+
+                var response = await _userBoardService.GetReportView(supervisorName, startDate, endDate);
+                if (response.StatusCode != StatusCodes.OK)
+                {
+                    return NotFound(response.Description);
+                }
+
+                return View(response.Data);
+            }
+
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult GetMonthReportViewComponent([FromBody] List<ReportCardModel> model)
+        {           
+            return ViewComponent("MonthReport", new { model = model });
         }
     }
 }

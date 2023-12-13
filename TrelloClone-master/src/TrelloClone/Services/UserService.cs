@@ -48,7 +48,7 @@ namespace TrelloClone.Services
                         if (FakeToday.Day == 25)
                         {
                             //25 числа все карточки с 1 колонки автоматически на 2 колонку, если они в нужном квартале
-                            if (cardColumn.Number == 1 && Term.GetQuarter(card.Term) == Term.GetNextQuarter(FakeToday))
+                            if (cardColumn.Number == 1 && Term.IsEqualQuarter(card.Term, FakeToday.AddMonths(3)))
                             {
                                 card.ColumnId = card.ColumnId + 1;
                             }
@@ -74,7 +74,7 @@ namespace TrelloClone.Services
                             }
 
                             //1 числа все карточки предыдущего квартала автоматически переходят с 3 колонки на 4
-                            else if (cardColumn.Number == 3 && Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
+                            else if (cardColumn.Number == 3 && Term.IsEqualQuarter(card.Term.AddMonths(3), FakeToday))
                             {
                                 card.ColumnId = card.ColumnId + 1;
                             }
@@ -83,13 +83,13 @@ namespace TrelloClone.Services
                             else if (cardColumn.Number == 2)
                             {
                                 //1 числа все карточки все карточки переходят со 2 колонки на 3 если они в текущем квартале
-                                if (Term.GetQuarter(card.Term) == Term.GetQuarter(FakeToday))
+                                if (Term.IsEqualQuarter(card.Term, FakeToday))
                                 {
                                     card.ColumnId = card.ColumnId + 1;
                                 }
 
                                 //1 числа все карточки все карточки переходят со 2 колонки на 4 если они с предыдущего квартала
-                                else if (Term.GetQuarter(card.Term) == Term.GetPreviousQuarter(FakeToday))
+                                else if (Term.IsEqualQuarter(card.Term.AddMonths(3), FakeToday))
                                 {
                                     card.ColumnId = card.ColumnId + 2;
                                 }
@@ -410,8 +410,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
 
                 Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();

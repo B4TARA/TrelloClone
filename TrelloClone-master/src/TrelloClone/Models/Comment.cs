@@ -1,4 +1,6 @@
-﻿namespace TrelloClone.Models
+﻿using System;
+
+namespace TrelloClone.Models
 {
     public class Comment
     {
@@ -8,5 +10,6 @@
         public string UserName { get; set; }
         public string Content { get; set; }
         public string UserImg { get; set; }
+        public DateTime Date { get; set; }
     }
 }

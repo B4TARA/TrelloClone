@@ -48,6 +48,7 @@
                 {
                     <li class="showMenu">
 
+
                         <a href="#">
                             <i class='bx bx-collection'></i>
                             <span class="link_name">Задачи работников</span>
@@ -62,6 +63,7 @@
                         </ul>
                     </li>
                 }
+
 
                 @if (User.IsInRole("Employee") || User.IsInRole("Combined"))
                 {
@@ -79,6 +81,24 @@
                         </ul>
 
 
+                    </li>
+                }
+
+
+                @if (User.IsInRole("Supervisor") || User.IsInRole("Combined"))
+                {
+                    <li class="showMenu">
+
+
+                        <a asp-controller="UserBoard" asp-action="GetReportView">
+                            <i class='bx bx-grid-alt'></i>
+                            <span class="link_name">Отчет</span>
+                        </a>
+
+
+                        <ul class="sub-menu blank">
+                            <li class=""><a class="link_name" href="#">Отчет</a></li>
+                        </ul>
                     </li>
                 }
 
