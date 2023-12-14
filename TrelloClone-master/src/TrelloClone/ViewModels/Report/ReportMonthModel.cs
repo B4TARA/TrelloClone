@@ -5,6 +5,6 @@ namespace TrelloClone.ViewModels.Report
     public class ReportMonthModel
     {
         public string MonthName { get; set; } = string.Empty;
-        public List<ReportCardModel> ReportCardModelList { get; set; }
+        public List<ReportCardModel> ReportCardModelList { get; set; } = new List<ReportCardModel>();
     }
 }

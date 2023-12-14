@@ -1,22 +1,4 @@
-﻿@model List<TrelloClone.ViewModels.Report.ReportCardModel>
-
-
-<div class="buttons_wrapper">
-
-
-    <!-- <div class="buttton" onclick="showReport()">
-        Показать отчет
-    </div> -->
-
-
-    <input type="text" id="input-datepicker" placeholder="Выберите период" class="input_datepicker">
-
-
-    <div class="buttton btn_download" id="btnDownload" onclick="downloadReport()">
-        Скачать отчет
-    </div>
-</div>
-
+﻿@model List<TrelloClone.ViewModels.Report.ReportMonthModel>
 
 <table class="table" id="tableReport">
 
@@ -35,6 +17,7 @@
             <th>Оценочное суждение непосредственного руководителя</th>
             <th>Оценочное суждение непосредственного руководителя</th>
             <th>% выполнения задачи в зависимости от присвоенного оценочного суждения непосредственного руководителя</th>
+            <th>Месяц</th>
         </tr>
     </thead>
 
@@ -42,22 +25,26 @@
     <tbody>
 
 
-        @foreach(var card in Model)
+        @foreach(var month in Model)
         {
-            <tr>
-                <td>@card.EmployeeSspName</td>
-                <td>@card.EmployeeName</td>
-                <td>@card.EmployeePosition</td>
-                <td>@card.SupervisorName</td>
-                <td>@card.CardName</td>
-                <td>@card.CardRequirement</td>
-                <td>@card.CardStartTerm</td>
-                <td>@card.EmployeeAssessmentText</td>
-                <td>@card.EmployeeComment</td>
-                <td>@card.SupervisorAssessmentText</td>
-                <td>@card.SupervisorComment</td>
-                <td>@card.SupervisorAssessmentValue</td>
-            </tr>
+            @foreach(var card in month.ReportCardModelList)
+            {
+                <tr>
+                    <td>@card.EmployeeSspName</td>
+                    <td>@card.EmployeeName</td>
+                    <td>@card.EmployeePosition</td>
+                    <td>@card.SupervisorName</td>
+                    <td>@card.CardName</td>
+                    <td>@card.CardRequirement</td>
+                    <td>@card.CardStartTerm</td>
+                    <td>@card.EmployeeAssessmentText</td>
+                    <td>@card.EmployeeComment</td>
+                    <td>@card.SupervisorAssessmentText</td>
+                    <td>@card.SupervisorComment</td>
+                    <td>@card.SupervisorAssessmentValue</td>
+                    <td>@month.MonthName</td>
+                </tr>
+            }          
         }
    
         

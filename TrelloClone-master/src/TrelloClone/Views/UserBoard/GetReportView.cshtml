@@ -4,37 +4,33 @@
 
 <div class="home-content">
 
-
     <div class="home_content_info">
-
 
         <div class="home_content_info_icon">
             <i class="fa-solid fa-folder"></i>
         </div>
 
-
         <div class="mid_title">
             Отчет
         </div>
 
-
     </div>
+
 </div>
 
 
-<div class="header_btns_wrapper">
-
+<div class="header_btns_wrapper" id="header_btns_wrapper">
 
     @foreach (var month in Model)
     {
-        <button class="action_btn_icon" onclick="getMonthReport(@(JsonConvert.SerializeObject(month)))">
+        @*<button class="action_btn_icon" onclick="getMonthReport(@(JsonConvert.SerializeObject(month.ReportCardModelList)))">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M2 2h20v2H2z"></path><rect x="5" y="6" width="6" height="16" rx="1"></rect><rect x="13" y="6" width="6" height="12" rx="1"></rect></svg>
-        </button>
+        </button>*@
 
-
-        <div class="description">@month.MonthName</div>
+        <input type="text" id="input-datepicker" placeholder="Выберите период" class="input_datepicker">
+        
+        @*<div class="description">@month.MonthName</div>*@
     }
-
 
 </div>
 
@@ -45,30 +41,97 @@
 
 <script>
 
+    //async function getMonthReport(month) {
+    //    console.log(month)
+        
+    //    const mainContainers = document.getElementById('main_container_content');
 
-    async function getMonthReport(month) {
+    //    let div = document.createElement('div')
+    //    div.setAttribute("id", "monthReport")
 
-        const mainContainers = document.getElementById('main_container_content');
+    //    await fetch('GetMonthReportViewComponent',
+    //        {
+    //            method: 'POST',
+    //            body: month
+    //        })
+    //        .then((response) => response.text())
+    //        .then((data) => {
+    //            const monthReportWrapper = document.getElementById('monthReport');
+    //            if (monthReportWrapper != null) {
+    //                monthReportWrapper.remove()
+    //            }
+    //            div.innerHTML = data;
+    //            mainContainers.appendChild(div)
+    //        })
+    //}
 
-        let div = document.createElement('div')
-        div.setAttribute("id", "monthReport")
-        alert(typeof(month.ReportCardModelLis))
+    let downloadExcelBtn = {
+        content: 'Показать отчет',
+        className: 'custom-button-classname',
+        onClick: (dp) => {
+            let viewDate = document.getElementById('input-datepicker').value
+            //saveReport(viewDate)
+            showReport(viewDate)
+        }
 
-        await fetch('GetMonthReportViewComponent',
-            {
-                method: 'POST',
-                body: JSON.stringify(month.ReportCardModelList)
-            })
-            .then((response) => response.text())
-            .then((data) => {
-                const monthReportWrapper = document.getElementById('monthReport');
-                if (monthReportWrapper != null) {
-                    monthReportWrapper.remove()
-                }
-                div.innerHTML = data;
-                mainContainers.appendChild(div)
-            })
     }
 
+    new AirDatepicker('#input-datepicker', {
+        range: true,
+        multipleDatesSeparator: ' - ',
+        buttons: [downloadExcelBtn],
+    });
+
+
+    function saveReport(viewDate) {
+
+        var url = "/UserBoard/GetReport";
+        formData = new FormData();
+        formData.append("viewDate", viewDate);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: async function (response) {
+                console.log(response);
+                const result = response;
+                window.open(`../${result}`, "_blank");
+            }
+        });
+    }
+
+    function showReport(viewDate) {
+        var url = "/UserBoard/GetMonthReportViewComponent";
+        formData = new FormData();
+        formData.append("viewDate", viewDate);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: async function (response) {
+                console.log(response);
+                const main_container_content = document.getElementById('main_container_content')
+                main_container_content.innerHTML = response;
+                const header_btns_wrapper = document.getElementById('header_btns_wrapper');
+                let div = document.createElement('div')
+                div.innerHTML = `<div class="buttton btn_download" id="btnDownload" onclick="saveReport('${viewDate}')">
+                Скачать отчет
+            </div>
+
+                `
+                header_btns_wrapper.appendChild(div)
+                //const result = response;
+                //window.open(`../${result}`, "_blank");
+            }
+        });
+    }
 
 </script>

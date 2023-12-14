@@ -227,9 +227,15 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetMonthReportViewComponent([FromBody] List<ReportCardModel> model)
-        {           
-            return ViewComponent("MonthReport", new { model = model });
+        public IActionResult GetMonthReportViewComponent()
+        {
+            var supervisorName = User.FindFirst("Name").Value;
+
+            var viewDate = Convert.ToString(Request.Form["viewDate"]);
+            var startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
+            var endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
+
+            return ViewComponent("MonthReport", new { supervisorName = supervisorName, startDate = startDate, endDate = endDate });
         }
     }
 }

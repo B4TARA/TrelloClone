@@ -404,7 +404,7 @@ namespace TrelloClone.Services
                         var cards = await _repository.CardRepository.GetUserCards(false, employee.Id);
 
                         foreach (var card in cards.Where(x => x.ReadyToReport
-                        && Term.IsEqualQuarter(startDate, x.Term)))
+                        && (Term.IsEqualQuarter(startDate, x.Term) || Term.IsEqualQuarter(startDate, x.StartTerm))))
                         {
                             ws.Cell("A" + row.ToString()).Value = "-";
                             if (employee.SspName != null)
@@ -520,8 +520,25 @@ namespace TrelloClone.Services
                                 }
                             }
 
-                            else if (card.SupervisorAssessment == 7
-                                || card.SupervisorAssessment == 8
+                            else if (card.SupervisorAssessment == 7)
+                            {
+                                if (card.StartTerm.Month > month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                }
+
+                                else if (card.StartTerm.Month == month)
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "0%";
+                                }
+
+                                else
+                                {
+                                    ws.Cell("M" + row.ToString()).Value = "0%";
+                                }
+                            }
+
+                            else if (card.SupervisorAssessment == 8
                                 || card.SupervisorAssessment == 9)
                             {
                                 ws.Cell("M" + row.ToString()).Value = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
@@ -574,22 +591,22 @@ namespace TrelloClone.Services
                         var cards = await _repository.CardRepository.GetUserCards(false, employee.Id);
 
                         foreach (var card in cards.Where(x => x.ReadyToReport
-                        && Term.IsEqualQuarter(startDate, x.Term)))
+                        && (Term.IsEqualQuarter(startDate, x.Term) || Term.IsEqualQuarter(startDate, x.StartTerm))))
                         {
                             var reportCardModel = new ReportCardModel();
 
-                            reportCardModel.EmployeeSspName = employee.SspName.ToString();
-                            reportCardModel.EmployeeName = employee.Name.ToString();
-                            reportCardModel.EmployeePosition = employee.Position.ToString();
-                            reportCardModel.SupervisorName = employee.SupervisorName.ToString();
+                            reportCardModel.EmployeeSspName = employee.SspName;
+                            reportCardModel.EmployeeName = employee.Name;
+                            reportCardModel.EmployeePosition = employee.Position;
+                            reportCardModel.SupervisorName = employee.SupervisorName;
                             //reportCardModel.SupervisorName = employee.SupervisorName.ToString();
-                            reportCardModel.CardName = card.Name.ToString();
-                            reportCardModel.CardRequirement = card.Requirement.ToString();
+                            reportCardModel.CardName = card.Name;
+                            reportCardModel.CardRequirement = card.Requirement;
                             reportCardModel.CardStartTerm = card.StartTerm.ToString();
                             reportCardModel.EmployeeAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Text;
-                            reportCardModel.EmployeeComment = card.EmployeeComment.ToString();
+                            reportCardModel.EmployeeComment = card.EmployeeComment;
                             reportCardModel.SupervisorAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Text;
-                            reportCardModel.SupervisorComment = card.SupervisorComment.ToString();
+                            reportCardModel.SupervisorComment = card.SupervisorComment;
 
                             //Выставление баллов
                             if (card.SupervisorAssessment == 1 ||
@@ -637,8 +654,25 @@ namespace TrelloClone.Services
                                 }
                             }
 
-                            else if (card.SupervisorAssessment == 7
-                                || card.SupervisorAssessment == 8
+                            else if(card.SupervisorAssessment == 7)
+                            {
+                                if (card.StartTerm.Month > month)
+                                {
+                                    reportCardModel.SupervisorAssessmentValue = "-";
+                                }
+
+                                else if (card.StartTerm.Month == month)
+                                {
+                                    reportCardModel.SupervisorAssessmentValue = "0%";
+                                }
+
+                                else
+                                {
+                                    reportCardModel.SupervisorAssessmentValue = "0%";
+                                }
+                            }
+
+                            else if (card.SupervisorAssessment == 8
                                 || card.SupervisorAssessment == 9)
                             {
                                 reportCardModel.SupervisorAssessmentValue = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;

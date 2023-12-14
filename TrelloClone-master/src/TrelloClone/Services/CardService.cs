@@ -221,8 +221,20 @@ namespace TrelloClone.Services
                 //просрочка
                 if (card.SupervisorAssessment == 7)
                 {
-                    card.ColumnId = card.ColumnId - 2;
-                    card.Term = FakeToday;
+                    //Дублируются ли комментарии и файлы??
+                    var oldId = card.Id;
+                    var newCard = card;
+                    newCard.ColumnId = card.ColumnId - 2;
+                    newCard.Term = FakeToday;
+                    newCard.StartTerm = FakeToday;
+                    newCard.Id = 0;
+                    await _repository.CardRepository.Create(newCard);
+                    await _repository.Save();
+
+                    var oldCard = await _repository.CardRepository.GetCardById(false, oldId);
+                    oldCard.IsRelevant = false;
+                    _repository.CardRepository.Update(oldCard);
+                    await _repository.Save();
                 }
 
                 else if (card.SupervisorAssessment != 8)
