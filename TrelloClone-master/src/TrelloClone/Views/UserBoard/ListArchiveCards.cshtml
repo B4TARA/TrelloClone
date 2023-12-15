@@ -133,7 +133,7 @@
                         {
                             <tr class="open-popup" idcard="@card.Id">
 
-                                
+
                                 <td class="table_title_wrapper">
                                     <div class="stage_indicator_circle blue_bcolor"></div>
                                     <div class="info_table_title_wrapper">
@@ -202,11 +202,20 @@
 
 
                                 <td>
-                                    <div class="card_name_wrapper">
+                                    @if (card.FactTerm != default(DateTime))
+                                    {
                                         <div class="mid_description">
-                                            @card.FactTerm.ToString("MMMM yyyy")
+                                            -
                                         </div>
-                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="card_name_wrapper">
+                                            <div class="mid_description">
+                                                @card.FactTerm.ToString("MMMM yyyy")
+                                            </div>
+                                        </div>
+                                    }
                                 </td>
 
 
@@ -393,8 +402,6 @@
                 </tbody>
             </table>
         </div>
-        <input type="text" id="input-datepicker" placeholder="Выберите период" class="input_datepicker">
-        <button >ОТЧЕТ</button>
     </div>
 </section>
 
@@ -418,7 +425,7 @@
         className: 'custom-button-classname',
         onClick: (dp) => {
             let viewDate = document.getElementById('input-datepicker').value
-            console.log(typeof(viewDate))
+            console.log(typeof (viewDate))
             getReport(viewDate)
             //    postRangeDate(viewDate)
             //    console.log(viewDate)

@@ -146,7 +146,7 @@ namespace TrelloClone.Services
                         CountOfFiles = card.Files.Count(),
                     };
 
-                    if (card.FactTerm != null)
+                    if (card.FactTerm != null && card.FactTerm != default(DateTime))
                     {
                         modelCard.FactTerm = (DateTime)card.FactTerm;
                     }
@@ -305,19 +305,67 @@ namespace TrelloClone.Services
             }
         }
 
-        public async Task<IBaseResponse<object>> Reject(int cardId, string userName, string userImg)
+        public async Task<IBaseResponse<object>> Reject(MoveCardCommand command)
         {
             try
             {
-                var card = await _repository.CardRepository.GetCardById(false, cardId);
+                DateTime FakeToday = Term.GetFakeDate();
+
+                var card = await _repository.CardRepository.GetCardById(false, command.CardId);
+
+                if (card.Name != command.Name)
+                {
+                    card.Updates.Add(new Update
+                    {
+                        CardId = card.Id,
+                        UserName = command.UserName,
+                        UserImg = command.UserImg,
+                        Date = FakeToday,
+                        Content = "Изменил(а) \"Название\" с \"" + card.Name + "\" на \"" + command.Name + "\""
+                    });
+
+                    card.Name = command.Name;
+                }
+
+                //перенос
+                if (card.Term != command.Term)
+                {
+                    card.Updates.Add(new Update
+                    {
+                        CardId = card.Id,
+                        UserName = command.UserName,
+                        UserImg = command.UserImg,
+                        Date = FakeToday,
+                        Content = "Изменил(а) \"Плановый срок реализации\" с \"" + card.Term + "\" на \"" + command.Term + "\""
+                    });                    
+
+                    card.Term = command.Term;
+                }
+
+                if (card.Requirement != command.Requirement)
+                {
+                    card.Updates.Add(new Update
+                    {
+                        CardId = card.Id,
+                        UserName = command.UserName,
+                        UserImg = command.UserImg,
+                        Date = FakeToday,
+                        Content = "Изменил(а) \"Требование к SMART-задаче\" с \"" + card.Requirement + "\" на \"" + command.Requirement + "\""
+                    });
+
+                    card.Requirement = command.Requirement;
+                }
 
                 card.ColumnId = card.ColumnId - 1;
+
+                _repository.CardRepository.Update(card);
+                await _repository.Save();                
 
                 card.Updates.Add(new Update
                 {
                     CardId = card.Id,
-                    UserName = userName,
-                    UserImg = userImg,
+                    UserName = command.UserName,
+                    UserImg = command.UserImg,
                     Date = FakeToday,
                     Content = "Отправил(а) задачу на доработку"
                 });
@@ -341,7 +389,7 @@ namespace TrelloClone.Services
             }
         }
 
-        public async Task<IBaseResponse<string>> GetReport(string supervisorName, DateTime startDate, DateTime endDate)
+        public async Task<IBaseResponse<string>> GetReport(string supervisorName, DateTime startDate, DateTime endDate, bool isAuthenticated)
         {
             try
             {
@@ -398,7 +446,16 @@ namespace TrelloClone.Services
 
                     row++;
 
-                    var employees = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisorName, false);
+                    List<User> employees = new List<User>();
+                    if (isAuthenticated)
+                    {
+                        employees = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisorName, false);
+                    }
+                    else
+                    {
+                        employees = await _repository.UserRepository.GetAllUsers(false);
+                    }
+
                     foreach (var employee in employees)
                     {
                         var cards = await _repository.CardRepository.GetUserCards(false, employee.Id);
@@ -553,7 +610,13 @@ namespace TrelloClone.Services
                 }
 
                 string prefixPath = "../TrelloClone/wwwroot/";
-                string savePath = "Отчёт.xlsx";
+                string savePath = "с "
+                    + startDate.Year.ToString() + "-"
+                    + startDate.Month.ToString() + "-"
+                    + startDate.Day.ToString() + " по "
+                    + endDate.Year.ToString() + "-"
+                    + endDate.Month.ToString() + "-"
+                    + endDate.Day.ToString() + ".xlsx";
                 workbook.SaveAs(prefixPath + savePath);
 
                 return new BaseResponse<string>()
@@ -572,7 +635,7 @@ namespace TrelloClone.Services
             }
         }
 
-        public async Task<IBaseResponse<List<ReportMonthModel>>> GetReportView(string supervisorName, DateTime startDate, DateTime endDate)
+        public async Task<IBaseResponse<List<ReportMonthModel>>> GetReportView(string supervisorName, DateTime startDate, DateTime endDate, bool isAuthenticated)
         {
             try
             {
@@ -585,7 +648,16 @@ namespace TrelloClone.Services
                     var reportMonthModel = new ReportMonthModel();
                     reportMonthModel.MonthName = Term.GetMonthName(month) + " " + startDate.Year;
 
-                    var employees = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisorName, false);
+                    List<User> employees = new List<User>();
+                    if (isAuthenticated)
+                    {
+                        employees = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisorName, false);
+                    }
+                    else
+                    {
+                        employees = await _repository.UserRepository.GetAllUsers(false);
+                    }
+
                     foreach (var employee in employees)
                     {
                         var cards = await _repository.CardRepository.GetUserCards(false, employee.Id);
@@ -603,10 +675,42 @@ namespace TrelloClone.Services
                             reportCardModel.CardName = card.Name;
                             reportCardModel.CardRequirement = card.Requirement;
                             reportCardModel.CardStartTerm = card.StartTerm.ToString();
-                            reportCardModel.EmployeeAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Text;
-                            reportCardModel.EmployeeComment = card.EmployeeComment;
-                            reportCardModel.SupervisorAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Text;
-                            reportCardModel.SupervisorComment = card.SupervisorComment;
+
+                            if(AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
+                            {
+                                reportCardModel.EmployeeAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Text;
+                            }
+                            else
+                            {
+                                reportCardModel.EmployeeAssessmentText = "-";
+                            }
+                            
+                            if(card.EmployeeComment != null)
+                            {
+                                reportCardModel.EmployeeComment = card.EmployeeComment;
+                            }
+                            else
+                            {
+                                reportCardModel.EmployeeComment = "-";
+                            }
+                            
+                            if(AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
+                            {
+                                reportCardModel.SupervisorAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Text;
+                            }
+                            else
+                            {
+                                reportCardModel.SupervisorAssessmentText = "-";
+                            }
+                            
+                            if(card.SupervisorComment != null)
+                            {
+                                reportCardModel.SupervisorComment = card.SupervisorComment;
+                            }
+                            else
+                            {
+                                reportCardModel.SupervisorComment = "-";
+                            }
 
                             //Выставление баллов
                             if (card.SupervisorAssessment == 1 ||

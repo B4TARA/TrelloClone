@@ -164,7 +164,6 @@ namespace TrelloClone.Services
 
                 //Фактическая дата исполнения
                 card.FactTerm = FactTerm;
-
                 card.SupervisorAssessment = SupervisorAssessment;
                 card.SupervisorComment = SupervisorComment;
 
@@ -228,10 +227,14 @@ namespace TrelloClone.Services
                     newCard.Term = FakeToday;
                     newCard.StartTerm = FakeToday;
                     newCard.Id = 0;
+                    newCard.SupervisorComment = null;
+                    newCard.EmployeeComment = null;
                     await _repository.CardRepository.Create(newCard);
                     await _repository.Save();
 
                     var oldCard = await _repository.CardRepository.GetCardById(false, oldId);
+                    oldCard.SupervisorAssessment = SupervisorAssessment;
+                    oldCard.SupervisorComment = SupervisorComment;
                     oldCard.IsRelevant = false;
                     _repository.CardRepository.Update(oldCard);
                     await _repository.Save();

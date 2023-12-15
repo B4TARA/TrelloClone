@@ -18,16 +18,16 @@ namespace TrelloClone.Components
             _userBoardService = boardService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string supervisorName, DateTime startDate, DateTime endDate)
+        public async Task<IViewComponentResult> InvokeAsync(string supervisorName, DateTime startDate, DateTime endDate, bool isAuthenticated)
         {
-            var model = await GetModelAsync(supervisorName, startDate, endDate);
+            var model = await GetModelAsync(supervisorName, startDate, endDate, isAuthenticated);
 
             return View("MonthReport", model);
         }
 
-        private async Task<List<ReportMonthModel>> GetModelAsync(string supervisorName, DateTime startDate, DateTime endDate)
+        private async Task<List<ReportMonthModel>> GetModelAsync(string supervisorName, DateTime startDate, DateTime endDate, bool isAuthenticated)
         {
-            var model = await _userBoardService.GetReportView(supervisorName, startDate, endDate);         
+            var model = await _userBoardService.GetReportView(supervisorName, startDate, endDate, isAuthenticated);         
 
             return model.Data;
         }

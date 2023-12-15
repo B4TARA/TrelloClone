@@ -270,7 +270,12 @@
                                 </button>
 
 
-                                <button asp-controller="UserBoard" asp-action="RejectCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn orange_btn">
+                                <button asp-controller="UserBoard" asp-action="RejectCard"
+                                        asp-route-ColumnId="@Model.ColumnId" 
+                                        asp-route-CardId="@Model.Id" class="action_btn orange_btn"
+                                        asp-route-Name="@Model.Name"
+                                        asp-route-Term="@Model.Term"
+                                        asp-route-Requirement="@Model.Requirement">
                                     <div class="description">На доработку</div>
                                 </button>                      
                         }

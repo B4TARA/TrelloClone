@@ -70,7 +70,7 @@ namespace TrelloClone.Services
                             if (cardColumn.Number == 6 && card.SupervisorAssessment != 7)
                             {
                                 card.IsRelevant = false;
-                                card.ReadyToReport = false;
+                                //card.ReadyToReport = false;
                             }
 
                             //1 числа все карточки предыдущего квартала автоматически переходят с 3 колонки на 4

@@ -140,15 +140,24 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost("rejectcard")]
-        public async Task<IActionResult> RejectCard(int cardId)
+        public async Task<IActionResult> RejectCard(int ColumnId, int CardId, string Name, DateTime Term, string Requirement)
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
             var userName = User.FindFirst("Name").Value;
 
-            var userImage = User.FindFirst("ImagePath").Value;
+            var userImg = User.FindFirst("ImagePath").Value;
 
-            var response = await _userBoardService.Reject(cardId, userName, userImage);
+            MoveCardCommand command = new MoveCardCommand();
+            command.ColumnId = ColumnId;
+            command.CardId = CardId;
+            command.Name = Name;
+            command.Term = Term;
+            command.Requirement = Requirement;
+            command.UserName = userName;
+            command.UserImg = userImg;
+
+            var response = await _userBoardService.Reject(command);
 
             if (response.StatusCode == StatusCodes.OK)
             {
@@ -167,13 +176,24 @@ namespace TrelloClone.Controllers
         {
             try
             {
-                var supervisorName = User.FindFirst("Name").Value;
+                bool isAuthenticated = true;
+                string supervisorName = string.Empty;
+
+                //если умст
+                if (User.FindFirst("Name") == null)
+                {
+                    isAuthenticated = false;
+                }
+                else
+                {
+                    supervisorName = User.FindFirst("Name").Value;
+                }
 
                 var viewDate = Convert.ToString(Request.Form["viewDate"]);
                 var startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
                 var endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
 
-                var response = await _userBoardService.GetReport(supervisorName, startDate, endDate);
+                var response = await _userBoardService.GetReport(supervisorName, startDate, endDate, isAuthenticated);
                 if (response.StatusCode != StatusCodes.OK)
                 {
                     return Json("Упс... Что-то пошло не так: " + response.Description);
@@ -194,7 +214,18 @@ namespace TrelloClone.Controllers
         {
             try
             {
-                var supervisorName = User.FindFirst("Name").Value;
+                bool isAuthenticated = true;
+                string supervisorName = string.Empty;
+
+                //если умст
+                if (User.FindFirst("Name") == null)
+                {
+                    isAuthenticated = false;
+                }
+                else
+                {
+                    supervisorName = User.FindFirst("Name").Value;
+                }              
                 
                 var startDate = new DateTime();
                 var endDate = new DateTime();
@@ -211,7 +242,7 @@ namespace TrelloClone.Controllers
                     endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
                 }             
 
-                var response = await _userBoardService.GetReportView(supervisorName, startDate, endDate);
+                var response = await _userBoardService.GetReportView(supervisorName, startDate, endDate, isAuthenticated);
                 if (response.StatusCode != StatusCodes.OK)
                 {
                     return NotFound(response.Description);
@@ -229,13 +260,24 @@ namespace TrelloClone.Controllers
         [HttpPost]
         public IActionResult GetMonthReportViewComponent()
         {
-            var supervisorName = User.FindFirst("Name").Value;
+            bool isAuthenticated = true;
+            string supervisorName = string.Empty;
+
+            //если умст
+            if (User.FindFirst("Name") == null)
+            {
+                isAuthenticated = false;
+            }
+            else
+            {
+                supervisorName = User.FindFirst("Name").Value;
+            }          
 
             var viewDate = Convert.ToString(Request.Form["viewDate"]);
             var startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
             var endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
 
-            return ViewComponent("MonthReport", new { supervisorName = supervisorName, startDate = startDate, endDate = endDate });
+            return ViewComponent("MonthReport", new { supervisorName = supervisorName, startDate = startDate, endDate = endDate, isAuthenticated = isAuthenticated });
         }
     }
 }

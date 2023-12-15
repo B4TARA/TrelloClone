@@ -92,7 +92,7 @@
 
 
                         <a asp-controller="UserBoard" asp-action="GetReportView">
-                            <i class='bx bx-grid-alt'></i>
+                            <i class='bx bx-file'></i>
                             <span class="link_name">Отчет</span>
                         </a>
 
@@ -139,15 +139,24 @@
         </div>
     }
 
+    @if (User.Identity.IsAuthenticated)
+    {
+        <section class="home-section">
 
-    <section class="home-section">
+
+
+            @RenderBody()
+
+
+        </section>
+    }
+    else
+    {
+        <section class="report_default_section">
+            @RenderBody()
+        </section>
         
-
-
-        @RenderBody()
-
-
-    </section>
+    }
 
 
     <script src="~/js/cardDetails.js"></script>

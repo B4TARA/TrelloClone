@@ -34,7 +34,7 @@ namespace TrelloClone.Components
                 Name = card.Name,
                 Requirement = card.Requirement,
                 Term = card.Term,
-                FactTerm = card.FactTerm,
+                FactTerm = card.Term,
                 EmployeeAssessment = card.EmployeeAssessment,
                 SupervisorAssessment = card.SupervisorAssessment,
                 EmployeeComment = card.EmployeeComment,

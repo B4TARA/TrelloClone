@@ -602,6 +602,10 @@ li .sub-menu a {
     width:100%;*/
 }
 
+.report_default_section{
+    padding:20px;
+}
+
 .home-section {
     position: relative;
     /* background: var(--body-color); */
@@ -1517,6 +1521,7 @@ li .sub-menu a {
     .selected_main_wrapper .description {
         font-weight: 400;
         font-size: 16px;
+        width: 90%;
     }
 
     .selected_main_wrapper.active_border {
