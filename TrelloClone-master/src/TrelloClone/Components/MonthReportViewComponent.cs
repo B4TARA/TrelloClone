@@ -1,35 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TrelloClone.Data.Repositories;
-using TrelloClone.Services;
-using TrelloClone.ViewModels;
 using TrelloClone.ViewModels.Report;
 
 namespace TrelloClone.Components
 {
     public class MonthReportViewComponent : ViewComponent
     {
-        private readonly UserBoardService _userBoardService;
-
-        public MonthReportViewComponent(UserBoardService boardService)
+        public IViewComponentResult Invoke(ReportMonthModel reportMonthModel)
         {
-            _userBoardService = boardService;
-        }
-
-        public async Task<IViewComponentResult> InvokeAsync(string supervisorName, DateTime startDate, DateTime endDate, bool isAuthenticated)
-        {
-            var model = await GetModelAsync(supervisorName, startDate, endDate, isAuthenticated);
-
-            return View("MonthReport", model);
-        }
-
-        private async Task<List<ReportMonthModel>> GetModelAsync(string supervisorName, DateTime startDate, DateTime endDate, bool isAuthenticated)
-        {
-            var model = await _userBoardService.GetReportView(supervisorName, startDate, endDate, isAuthenticated);         
-
-            return model.Data;
+            return View("MonthReport", reportMonthModel);
         }
     }
 }

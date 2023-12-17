@@ -634,12 +634,20 @@ namespace TrelloClone.Services
                 };
             }
         }
-
         public async Task<IBaseResponse<List<ReportMonthModel>>> GetReportView(string supervisorName, DateTime startDate, DateTime endDate, bool isAuthenticated)
         {
             try
             {
                 var reportMonthModelList = new List<ReportMonthModel>();
+
+                if(startDate == default(DateTime) || endDate == default(DateTime))
+                {
+                    return new BaseResponse<List<ReportMonthModel>>()
+                    {
+                        Data = reportMonthModelList,
+                        StatusCode = StatusCodes.OK
+                    };
+                }
 
                 while (startDate <= endDate)
                 {

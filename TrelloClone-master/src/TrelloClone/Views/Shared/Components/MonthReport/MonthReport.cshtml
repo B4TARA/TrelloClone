@@ -1,4 +1,5 @@
-﻿@model List<TrelloClone.ViewModels.Report.ReportMonthModel>
+﻿@model TrelloClone.ViewModels.Report.ReportMonthModel
+
 
 <table class="table" id="tableReport">
 
@@ -17,7 +18,6 @@
             <th>Оценочное суждение непосредственного руководителя</th>
             <th>Оценочное суждение непосредственного руководителя</th>
             <th>% выполнения задачи в зависимости от присвоенного оценочного суждения непосредственного руководителя</th>
-            <th>Месяц</th>
         </tr>
     </thead>
 
@@ -25,83 +25,24 @@
     <tbody>
 
 
-        @foreach(var month in Model)
+        @foreach (var card in Model.ReportCardModelList)
         {
-            @foreach(var card in month.ReportCardModelList)
-            {
-                <tr>
-                    <td>@card.EmployeeSspName</td>
-                    <td>@card.EmployeeName</td>
-                    <td>@card.EmployeePosition</td>
-                    <td>@card.SupervisorName</td>
-                    <td>@card.CardName</td>
-                    <td>@card.CardRequirement</td>
-                    <td>@card.CardStartTerm</td>
-                    <td>@card.EmployeeAssessmentText</td>
-                    <td>@card.EmployeeComment</td>
-                    <td>@card.SupervisorAssessmentText</td>
-                    <td>@card.SupervisorComment</td>
-                    <td>@card.SupervisorAssessmentValue</td>
-                    <td>@month.MonthName</td>
-                </tr>
-            }          
+            <tr>
+                <td>@card.EmployeeSspName</td>
+                <td>@card.EmployeeName</td>
+                <td>@card.EmployeePosition</td>
+                <td>@card.SupervisorName</td>
+                <td>@card.CardName</td>
+                <td>@card.CardRequirement</td>
+                <td>@card.CardStartTerm</td>
+                <td>@card.EmployeeAssessmentText</td>
+                <td>@card.EmployeeComment</td>
+                <td>@card.SupervisorAssessmentText</td>
+                <td>@card.SupervisorComment</td>
+                <td>@card.SupervisorAssessmentValue</td>
+            </tr>
         }
-   
-        
+
+
     </tbody>
 </table>
-
-
-<script>
-
-
-    function showReport() {
-        const tableReport = document.getElementById('tableReport');
-        const btnDownload = document.getElementById('btnDownload')
-        tableReport.classList.add('active')
-        btnDownload.classList.add('active')
-    }
-
-
-    let downloadExcelBtn = {
-        content: 'Показать отчет',
-        className: 'custom-button-classname',
-        onClick: (dp) => {
-            let viewDate = document.getElementById('input-datepicker').value
-            console.log(typeof (viewDate))
-            getReport(viewDate)
-        }
-
-    }
-
-
-    new AirDatepicker('#input-datepicker', {
-        range: true,
-        multipleDatesSeparator: ' - ',
-        buttons: [downloadExcelBtn],
-    });
-
-
-    function getReport(viewDate) {
-
-        var url = "/UserBoard/GetReport";
-        formData = new FormData();
-        formData.append("viewDate", viewDate);
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: async function (response) {
-                console.log(response);
-                const result = response;
-                window.open(`../${result}`, "_blank");
-            }
-        });
-    }
-
-
-</script>

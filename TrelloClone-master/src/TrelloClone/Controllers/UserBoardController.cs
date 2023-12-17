@@ -225,17 +225,12 @@ namespace TrelloClone.Controllers
                 else
                 {
                     supervisorName = User.FindFirst("Name").Value;
-                }              
-                
-                var startDate = new DateTime();
-                var endDate = new DateTime();
-
-                if (Request.Method == "GET")
-                {
-                    startDate = new DateTime();
-                    endDate = new DateTime();
                 }
-                else
+
+                DateTime startDate = new DateTime();
+                DateTime endDate = new DateTime();
+
+                if (Request.Method == "POST")
                 {
                     var viewDate = Convert.ToString(Request.Form["viewDate"]);
                     startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
@@ -258,26 +253,9 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetMonthReportViewComponent()
-        {
-            bool isAuthenticated = true;
-            string supervisorName = string.Empty;
-
-            //если умст
-            if (User.FindFirst("Name") == null)
-            {
-                isAuthenticated = false;
-            }
-            else
-            {
-                supervisorName = User.FindFirst("Name").Value;
-            }          
-
-            var viewDate = Convert.ToString(Request.Form["viewDate"]);
-            var startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
-            var endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
-
-            return ViewComponent("MonthReport", new { supervisorName = supervisorName, startDate = startDate, endDate = endDate, isAuthenticated = isAuthenticated });
+        public IActionResult GetMonthReportViewComponent(ReportMonthModel reportMonthModel)
+        {           
+            return ViewComponent("MonthReport", new { reportMonthModel = reportMonthModel});
         }
     }
 }
