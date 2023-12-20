@@ -131,6 +131,7 @@ namespace TrelloClone.Services
 
             model.Id = userId;
             model.Name = user!.Name;
+            model.ImgPath = user.ImagePath;
 
             foreach (var column in user.Columns)
             {
@@ -485,50 +486,44 @@ namespace TrelloClone.Services
                             if (employee.SupervisorName != null)
                             {
                                 ws.Cell("D" + row.ToString()).Value = employee.SupervisorName.ToString();
-                            }
+                            }                      
 
                             ws.Cell("E" + row.ToString()).Value = "-";
-                            if (employee.SupervisorName != null)
+                            if (card.Name != null)
                             {
-                                ws.Cell("E" + row.ToString()).Value = employee.SupervisorName.ToString();
+                                ws.Cell("E" + row.ToString()).Value = card.Name.ToString();
                             }
 
                             ws.Cell("F" + row.ToString()).Value = "-";
-                            if (card.Name != null)
-                            {
-                                ws.Cell("F" + row.ToString()).Value = card.Name.ToString();
-                            }
-
-                            ws.Cell("G" + row.ToString()).Value = "-";
                             if (card.Requirement != null)
                             {
-                                ws.Cell("G" + row.ToString()).Value = card.Requirement.ToString();
+                                ws.Cell("F" + row.ToString()).Value = card.Requirement.ToString();
                             }
 
-                            ws.Cell("H" + row.ToString()).Value = card.StartTerm.ToString();
+                            ws.Cell("G" + row.ToString()).Value = card.StartTerm.ToString();
 
-                            ws.Cell("I" + row.ToString()).Value = "-";
+                            ws.Cell("H" + row.ToString()).Value = "-";
                             if (AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
                             {
-                                ws.Cell("I" + row.ToString()).Value = AssessmentList.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Text;
+                                ws.Cell("H" + row.ToString()).Value = AssessmentList.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Text;
+                            }
+
+                            ws.Cell("I" + row.ToString()).Value = "-";
+                            if (card.EmployeeComment != null)
+                            {
+                                ws.Cell("I" + row.ToString()).Value = card.EmployeeComment.ToString();
                             }
 
                             ws.Cell("J" + row.ToString()).Value = "-";
-                            if (card.EmployeeComment != null)
+                            if (AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
                             {
-                                ws.Cell("J" + row.ToString()).Value = card.EmployeeComment.ToString();
+                                ws.Cell("J" + row.ToString()).Value = AssessmentList.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Text;
                             }
 
                             ws.Cell("K" + row.ToString()).Value = "-";
-                            if (AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
-                            {
-                                ws.Cell("K" + row.ToString()).Value = AssessmentList.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Text;
-                            }
-
-                            ws.Cell("L" + row.ToString()).Value = "-";
                             if (card.SupervisorComment != null)
                             {
-                                ws.Cell("L" + row.ToString()).Value = card.SupervisorComment.ToString();
+                                ws.Cell("K" + row.ToString()).Value = card.SupervisorComment.ToString();
                             }
 
                             //Выставление баллов
@@ -538,17 +533,17 @@ namespace TrelloClone.Services
                             {
                                 if (card.Term.Month > month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                    ws.Cell("L" + row.ToString()).Value = "-";
                                 }
 
                                 else if (card.Term.Month == month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                    ws.Cell("L" + row.ToString()).Value = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                                 }
 
                                 else
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                    ws.Cell("L" + row.ToString()).Value = "-";
                                 }
                             }
 
@@ -558,22 +553,22 @@ namespace TrelloClone.Services
                             {
                                 if (card.FactTerm.Value.Month > month && card.Term.Month <= month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "0%";
+                                    ws.Cell("L" + row.ToString()).Value = "0%";
                                 }
 
                                 else if (card.FactTerm.Value.Month > month && card.Term.Month > month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                    ws.Cell("L" + row.ToString()).Value = "-";
                                 }
 
                                 else if (card.FactTerm.Value.Month == month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                    ws.Cell("L" + row.ToString()).Value = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                                 }
 
                                 else
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                    ws.Cell("L" + row.ToString()).Value = "-";
                                 }
                             }
 
@@ -581,24 +576,24 @@ namespace TrelloClone.Services
                             {
                                 if (card.StartTerm.Month > month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "-";
+                                    ws.Cell("L" + row.ToString()).Value = "-";
                                 }
 
                                 else if (card.StartTerm.Month == month)
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "0%";
+                                    ws.Cell("L" + row.ToString()).Value = "0%";
                                 }
 
                                 else
                                 {
-                                    ws.Cell("M" + row.ToString()).Value = "0%";
+                                    ws.Cell("L" + row.ToString()).Value = "0%";
                                 }
                             }
 
                             else if (card.SupervisorAssessment == 8
                                 || card.SupervisorAssessment == 9)
                             {
-                                ws.Cell("M" + row.ToString()).Value = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
+                                ws.Cell("L" + row.ToString()).Value = AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment).Value;
                             }
                             row++;
                         }

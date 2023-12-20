@@ -61,6 +61,10 @@
     height: 40px;
 }
 
+    .buttton.btn_download.active {
+        /*display: flex;*/
+    }
+
     .buttton.btn_download:hover {
         cursor: pointer;
         background-color: #1b74fd30;
@@ -74,6 +78,11 @@
         border-radius: 10px;
         height: 40px;
         padding: 5px 15px;
-        margin-right: 15px;
-        margin-top:15px;
+        margin:15px;
     }
+
+
+.kek{
+    display:flex;
+    align-items:center;
+}

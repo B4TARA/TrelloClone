@@ -1,4 +1,5 @@
-﻿using EmailService;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using EmailService;
 using Microsoft.EntityFrameworkCore;
 using TrelloClone.Data;
 using TrelloClone.Data.Repositories;
@@ -15,13 +16,12 @@ RepositoryManager _repository = new RepositoryManager(_db);
 EmailConfiguration _configuration = new EmailConfiguration();
 _configuration.Port = 25;
 _configuration.SmtpServer = "LDGate.mtb.minsk.by";
-_configuration.From = "KOPSender";
+_configuration.From = "MTSmart";
 
 EmailSender _emailSender = new EmailSender(_configuration);
 UserService userService = new UserService(_repository, _emailSender);
 
-var path = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
-//var path = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
+var path = "C:\\PROJECTS\\MTSmart\\files\\\\SMART-задачи_список_сотрудников.xlsx";
 
 Task.Run(async () =>
 {
@@ -39,6 +39,18 @@ Task.Run(async () =>
         {
             Console.WriteLine("Unable to import data : " + importResponse.Description);
             return;
+        }
+
+        var dbUsers = await _repository.UserRepository.GetAllUsers(false);
+        foreach (var dbUser in dbUsers)
+        {
+            var excelUser = exportResponse.Data.FirstOrDefault(x => x.Name == dbUser.Name);
+            if (excelUser == null)
+            {
+                dbUser.IsBlocked = true;
+                _repository.UserRepository.Update(dbUser);
+                await _repository.Save();
+            }
         }
     }
 

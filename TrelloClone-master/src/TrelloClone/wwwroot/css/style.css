@@ -1,9 +1,9 @@
 /*@font-face {
     font-weight: 400; 
     font-family: Inter;
-    src: url("../fonts/Roboto-Regular.ttf");
+    src: url("../fonts/");
 }*/
-
+ 
 * {
     margin: 0;
     padding: 0;
@@ -160,6 +160,8 @@
 
     .action_btn .action_btn_icon {
         margin-right: 15px;
+        display:flex;
+        align-items:center;
     }
 
     .action_btn.close_action_btn {
@@ -201,6 +203,7 @@
         .action_btn.header_btn:hover .action_btn_icon {
             color: #1b74fd;
             fill: #1b74fd;
+            /*background-color:#1b74fd;*/
         }
 
 .header_btn {
@@ -221,11 +224,16 @@
 .white_btn {
     background-color: #fff;
     color: #787486;
+    fill :#787486 ;
 }
 
 .action_btn.white_btn:hover {
     background-color: #1b74fd;
     color: #fff;
+}
+
+.action_btn.white_btn:hover {
+    fill:#fff;
 }
 
 .primary_btn {
@@ -406,7 +414,7 @@
     display: block
 }
 
-.sidebar .nav-links li i {
+.sidebar .nav-links li i{
     height: 50px;
     min-width: 78px;
     text-align: center;
@@ -603,7 +611,7 @@ li .sub-menu a {
 }
 
 .report_default_section{
-    padding:20px;
+    /*padding:20px;*/
 }
 
 .home-section {
@@ -976,6 +984,8 @@ li .sub-menu a {
     .card_detail_item .item_icon {
         font-size: 18px;
         margin-right: 5px;
+        display:flex;
+        align-items:center;
     }
 
 .card_holder_wrapper {
@@ -1107,9 +1117,14 @@ li .sub-menu a {
     color: #292d34;
 }
 
-.popup_wrapper {
-    display: flex;
-}
+    .close-popup img{
+        width:20px;
+        height:20px;
+    }
+
+    .popup_wrapper {
+        display: flex;
+    }
 
 .leftside_popup_buttons_wrapper {
     display: flex;
@@ -1120,7 +1135,7 @@ li .sub-menu a {
 .leftside_button_wrapper {
     position:relative;
     background-color: #fff;
-    padding: 5px 30px;
+    padding: 5px 25px;
     border-radius: 10px 0px 0px 10px;
     margin-bottom: 10px;
     display: flex;
@@ -1152,15 +1167,28 @@ li .sub-menu a {
     .leftside_button_icon {
         color: #1b74fd;
         font-size:30px;
+        
     }
 
-.close-popup:hover {
-    transform: scale(1.1);
-    color: #1B74FD;
-}
+        .leftside_button_icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .close-popup:hover {
+            transform: scale(1.1);
+            color: #1B74FD;
+        }
 
 .info_popup_card_wrapper .icon_description {
     font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.info_popup_card_wrapper .icon_description img {
+    width: 100%;
+    height: auto;
 }
 
 .comment_area_sidebar_wrapper {
@@ -1705,6 +1733,7 @@ li .sub-menu a {
 
         .input__wrapper:hover .input__file-button {
             color: #1b74fd;
+            fill: #1b74fd;
         }
 
 .input__file {
@@ -1728,6 +1757,7 @@ li .sub-menu a {
     font-size: 17px;
     font-weight: 500;
     color: #4d4d4d;
+    fill: #4d4d4d;
     height: 35px;
     padding: 15px 10px;
     /*border: none;*/
@@ -1948,3 +1978,22 @@ section .details span {
         align-items: center;
         min-width: 335px;
     }
+
+
+.mid_description.getreportview{
+    margin-left:15px;
+}
+
+.card_name_input_wrapper.add_card{
+    width:95%;
+}
+
+.icon_sidebar_layout {
+    width: 20px;
+    height: 20px;
+}
+
+/*.logout_icon {
+    width: 20px;
+    height: 20px;
+}*/

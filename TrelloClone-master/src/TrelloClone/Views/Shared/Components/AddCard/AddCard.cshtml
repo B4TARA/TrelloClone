@@ -5,7 +5,10 @@
     <div class="popup add_card">
 
 
-        <div class="close-popup" onclick="closeCard(this)"><i class="fa-solid fa-xmark"></i></div>
+        <div class="close-popup" onclick="closeCard(this)">
+            @*<i class="fa-solid fa-xmark"></i>*@
+            <img src="~/image/icons/xmark-solid-black.svg" />
+            </div>
 
 
         <div class="info_popup_card_wrapper">
@@ -19,11 +22,12 @@
 
 
                         <div class="icon_description">
-                            <i class="fa-regular fa-credit-card"></i>
+                            @*<i class="fa-regular fa-credit-card"></i>*@
+                            <img src="~/image/icons/credit-card-regular-black.svg" />
                         </div>
 
 
-                        <div class="card_name_input_wrapper">
+                        <div class="card_name_input_wrapper add_card">
                             <input type="text" asp-for="Name" placeholder="Введите наименование SMART-задачи" required/>
                         </div>
                         
@@ -39,7 +43,8 @@
 
 
                         <div class="icon_description">
-                            <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
+                            @*<i class="fa-solid fa-bars" style="color: #0D062D;"></i>*@
+                            <img src="~/image/icons/bars-solid-black.svg" />
                         </div>
 
 
@@ -66,7 +71,8 @@
 
                     <div class="container_description first_row_grid_description">
                         <div class="icon_description">
-                            <i class="fa-regular fa-calendar"></i>
+                            @*<i class="fa-regular fa-calendar"></i>*@
+                            <img src="~/image/icons/calendar-regular-black.svg" />
                         </div>
                         <div class="mid_title">
                             Плановый срок реализации

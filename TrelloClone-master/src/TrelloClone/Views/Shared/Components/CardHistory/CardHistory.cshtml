@@ -6,7 +6,8 @@
         <div class="leftside_popup_buttons_wrapper">
             <div class="leftside_button_wrapper" onclick="editCard(@Model.Id)">
                 <div class="leftside_button_icon">
-                    <i class="fa-solid fa-house"></i>
+                    @*<i class="fa-solid fa-house"></i>*@
+                    <img src="~/image/icons/house-solid-primary.svg" />
                 </div>
                 @*<div class="mid_title">Инфо</div>*@
             </div>
@@ -14,7 +15,8 @@
             {
                 <div class="leftside_button_wrapper" onclick="editCard2(@Model.Id)">
                     <div class="leftside_button_icon">
-                        <i class="fa-solid fa-check-to-slot"></i>
+                        @*<i class="fa-solid fa-check-to-slot"></i>*@
+                        <img src="~/image/icons/check-to-slot-solid-primary.svg" />
                     </div>
                     @if (Model.SupervisorAssessment == null || Model.EmployeeAssessment == null)
                     {
@@ -24,7 +26,8 @@
             }
             <div class="leftside_button_wrapper active" onclick="editCard3(@Model.Id)">
                 <div class="leftside_button_icon">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    @*<i class="fa-solid fa-clock-rotate-left"></i>*@
+                    <img src="~/image/icons/clock-rotate-left-solid-primary.svg" />
                 </div>
                 @*<div class="mid_title">История</div>*@
             </div>
@@ -32,7 +35,9 @@
         <div class="popup" cardId="@Model.Id">
 
 
-            <div class="close-popup" onclick="closeCard(this)"><i class="fa-solid fa-xmark"></i></div>
+            <div class="close-popup" onclick="closeCard(this)">
+                @*<i class="fa-solid fa-xmark"></i>*@
+                </div>
 
 
             <div class="info_popup_card_wrapper">

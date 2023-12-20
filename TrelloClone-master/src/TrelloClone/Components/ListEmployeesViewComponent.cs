@@ -27,7 +27,7 @@ namespace TrelloClone.Components
             var model = new UserBoardList();
 
             var supervisor = await _repository.UserRepository.GetUserById(false, id);      
-            var subordinateUsers = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisor!.Name, false);
+            var subordinateUsers = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisor!.Name && !x.IsBlocked, false);
 
             foreach (var user in subordinateUsers)
             {

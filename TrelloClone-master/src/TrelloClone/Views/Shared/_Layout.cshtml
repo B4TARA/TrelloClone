@@ -27,7 +27,8 @@
     {
         <div class="sidebar">
             <div class="sidebar_close_btn_wrapper">
-                <i class="fa-solid fa-angle-left sidebar_btn"></i>
+                @*<i class="fa-solid fa-angle-left sidebar_btn"></i>*@
+                <img src="~/image/icons/angle-left-solid-black.svg" class="sidebar_btn" />
             </div>
             <div class="logo-details">
                 <img src="~/image/smartproj_icon.svg" alt="logo">
@@ -51,10 +52,13 @@
 
 
                         <a href="#">
-                            <i class='bx bx-collection'></i>
+                            @*<i class='bx bx-collection'></i>*@
+                            <i><img src="/image/icons/collection-regular-24.png" class="icon_sidebar_layout" /> </i>
+                            
                             <span class="link_name">Задачи работников</span>
                             @*<i class='bx bxs-chevron-down arrow'></i>*@
                             <i class="fa-solid fa-angle-up bxs-chevron-down arrow"></i>
+                            
                         </a>
 
 
@@ -72,7 +76,8 @@
 
 
                         <a asp-controller="UserBoard" asp-action="ListMyCards">
-                            <i class='bx bx-grid-alt'></i>
+                            @*<i class='bx bx-grid-alt'></i>*@
+                            <i><img src="/image/icons/grid-alt-regular-24.png" class="icon_sidebar_layout" /> </i>
                             <span class="link_name">Мои задачи</span>
                         </a>
 
@@ -92,7 +97,8 @@
 
 
                         <a asp-controller="UserBoard" asp-action="GetReportView">
-                            <i class='bx bx-file'></i>
+                            @*<i class='bx bx-file'></i>*@
+                            <i><img src="/image/icons/file-regular-24.png" class="icon_sidebar_layout" /> </i>
                             <span class="link_name">Отчет</span>
                         </a>
 
@@ -129,7 +135,8 @@
 
 
                         <a asp-area="" asp-controller="Account" asp-action="Logout">
-                            <i class='bx bx-log-out'></i>
+                            @*<i class='bx bx-log-out'></i>*@
+                            <i><img src="/image/icons/log-out-regular-24.png" class="logout_icon" style="width:28px; height:28px;"/> </i>
                         </a>
 
 

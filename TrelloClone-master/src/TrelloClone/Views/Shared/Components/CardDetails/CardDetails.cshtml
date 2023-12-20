@@ -6,7 +6,8 @@
         <div class="leftside_popup_buttons_wrapper">
             <div class="leftside_button_wrapper active" onclick="editCard(@Model.Id)">
                 <div class="leftside_button_icon">
-                    <i class="fa-solid fa-house"></i>
+                    @*<i class="fa-solid fa-house"></i>*@
+                    <img src="~/image/icons/house-solid-primary.svg" />
                 </div>
                 @*<div class="mid_title">Инфо</div>*@
             </div>
@@ -14,7 +15,8 @@
             {
                 <div class="leftside_button_wrapper" onclick="editCard2(@Model.Id)">
                     <div class="leftside_button_icon">
-                        <i class="fa-solid fa-check-to-slot"></i>
+                        @*<i class="fa-solid fa-check-to-slot"></i>*@
+                        <img src="~/image/icons/check-to-slot-solid-primary.svg" />
                     </div>
                     @if (Model.SupervisorAssessment == null || Model.EmployeeAssessment == null)
                     {
@@ -24,7 +26,8 @@
             }
             <div class="leftside_button_wrapper" onclick="editCard3(@Model.Id)">
                 <div class="leftside_button_icon">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    @*<i class="fa-solid fa-clock-rotate-left"></i>*@
+                    <img src="~/image/icons/clock-rotate-left-solid-primary.svg" />
                 </div>
                 @*<div class="mid_title">История</div>*@
             </div>
@@ -32,7 +35,10 @@
         <div class="popup" cardId="@Model.Id">
 
 
-            <div class="close-popup" onclick="closeCard(this)"><i class="fa-solid fa-xmark"></i></div>
+            <div class="close-popup" onclick="closeCard(this)">
+                @*<i class="fa-solid fa-xmark"></i>*@
+                <img src="~/image/icons/xmark-solid-black.svg" />
+            </div>
 
 
             <div class="info_popup_card_wrapper">
@@ -51,7 +57,8 @@
 
 
                             <div class="icon_description">
-                                <i class="fa-regular fa-credit-card"></i>
+                                @*<i class="fa-regular fa-credit-card"></i>*@
+                                <img src="~/image/icons/credit-card-regular-black.svg" />
                             </div>
 
 
@@ -71,7 +78,8 @@
 
 
                             <div class="icon_description">
-                                <i class="fa-solid fa-bars" style="color: #0D062D;"></i>
+                                @*<i class="fa-solid fa-bars" style="color: #0D062D;"></i>*@
+                                <img src="~/image/icons/bars-solid-black.svg" />
                             </div>
 
 
@@ -101,7 +109,8 @@
 
 
                             <div class="icon_description">
-                                <i class="fa-regular fa-calendar"></i>
+                                @*<i class="fa-regular fa-calendar"></i>*@
+                                <img src="~/image/icons/calendar-regular-black.svg" />
                             </div>
 
 
@@ -133,7 +142,8 @@
 
 
                                 <div class="icon_description">
-                                    <i class="fa-regular fa-calendar"></i>
+                                    @*<i class="fa-regular fa-calendar"></i>*@
+                                    <img src="~/image/icons/calendar-regular-black.svg" />
                                 </div>
 
 
@@ -168,7 +178,8 @@
 
 
                             <div class="icon_description">
-                                <i class="fa-solid fa-paperclip" style="color: #191919;"></i>
+                                @*<i class="fa-solid fa-paperclip" style="color: #191919;"></i>*@
+                                <img src="~/image/icons/paperclip-solid-black.svg" />
                             </div>
 
 
@@ -188,7 +199,12 @@
 
 
                                         <label for="input__file" class="input__file-button">
-                                            <span class="input__file-icon-wrapper"><i class="fa-solid fa-plus"></i></span>
+                                            <span class="input__file-icon-wrapper">
+                                                @*<i class="fa-solid fa-plus"></i>*@
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="15" width="13" viewBox="0 0 448 512">
+                                                    <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                </svg>
+                                                </span>
                                             <span class="input__file-button-text">Добавить</span>
                                         </label>
 
@@ -286,7 +302,7 @@
                         && TrelloClone.Models.Term.Term.IsEqualQuarter(Model.Term.AddMonths(3), TrelloClone.Models.Term.Term.GetFakeDate()))
                         {
                             <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
-                                <div class="description">Перевести на след. этап</div>
+                                <div class="description">Перевести</div>
                             </button>
                         }
 
@@ -317,7 +333,8 @@
 
                     <div class="action_btn close_action_btn white_btn" id="saveTextArea" onclick="closeTextEditor(this)">
                         <div>
-                            <i class="fa-solid fa-xmark" style="color: #000000;"></i>
+                            @*<i class="fa-solid fa-xmark" style="color: #000000;"></i>*@
+                            <img src="~/image/icons/xmark-solid-black.svg" />
                         </div>
                     </div>
 

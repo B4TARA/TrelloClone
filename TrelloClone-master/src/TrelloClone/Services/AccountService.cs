@@ -38,6 +38,14 @@ namespace TrelloClone.Services
                     };
                 }
 
+                if(user.IsBlocked)
+                {
+                    return new BaseResponse<ClaimsIdentity>()
+                    {
+                        Description = "Вы были удалены из системы"
+                    };
+                }
+
                 var result = Authenticate(user);
                 return new BaseResponse<ClaimsIdentity>()
                 {

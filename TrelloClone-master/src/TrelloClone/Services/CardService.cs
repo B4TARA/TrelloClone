@@ -145,7 +145,8 @@ namespace TrelloClone.Services
         {
             try
             {
-                var card = await _repository.CardRepository.GetCardById(false, cardId);
+                var cards = await _repository.CardRepository.FindBy(x => x.Id == cardId, x => x.Comments, x => x.Files, x => x.Updates);
+                var card = cards.FirstOrDefault();
                 var columns = await _repository.ColumnRepository.GetColumnsByUser(false, card.UserId);
 
                 if (card.Name != Name)
@@ -229,6 +230,22 @@ namespace TrelloClone.Services
                     newCard.Id = 0;
                     newCard.SupervisorComment = null;
                     newCard.EmployeeComment = null;
+
+                    newCard.Files.ForEach(x =>
+                    {
+                        x.Id = 0;
+                        x.CardId = 0;
+                    });
+                    newCard.Updates.ForEach(x =>
+                    {
+                        x.Id = 0;
+                        x.CardId = 0;
+                    });
+                    newCard.Comments.ForEach(x =>
+                    {
+                        x.Id = 0;
+                        x.CardId = 0;
+                    });
                     await _repository.CardRepository.Create(newCard);
                     await _repository.Save();
 

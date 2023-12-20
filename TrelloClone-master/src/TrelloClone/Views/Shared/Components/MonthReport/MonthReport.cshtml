@@ -1,8 +1,8 @@
 ﻿@model TrelloClone.ViewModels.Report.ReportMonthModel
 
 
-<table class="table" id="tableReport">
 
+<table class="table" id="tableReport">
 
     <thead>
         <tr>
@@ -24,7 +24,6 @@
 
     <tbody>
 
-
         @foreach (var card in Model.ReportCardModelList)
         {
             <tr>
@@ -42,7 +41,6 @@
                 <td>@card.SupervisorAssessmentValue</td>
             </tr>
         }
-
 
     </tbody>
 </table>

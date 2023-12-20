@@ -149,7 +149,7 @@ namespace TrelloClone.Models.Term
         }
         public static DateTime GetFakeDate()
         {
-            return new DateTime(2024, 10, 1);
+            return DateTime.Today;
         }
     }
 }

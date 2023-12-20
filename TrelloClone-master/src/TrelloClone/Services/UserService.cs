@@ -1,4 +1,5 @@
-﻿using EmailService;
+﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using EmailService;
 using ExcelDataReader;
 using Newtonsoft.Json;
 using System;
@@ -161,12 +162,7 @@ namespace TrelloClone.Services
                         await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
                     }
 
-                    if (FakeToday.Day == 11 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
-                    {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
-                    }
-
-                    else if (FakeToday.Day == 14)
+                    if ((FakeToday.Day == 11 || FakeToday.Day == 14) && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
                         await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
@@ -204,10 +200,10 @@ namespace TrelloClone.Services
                         StatusCode = StatusCodes.InternalServerError
                     };
                 }
-                IEnumerable<ExtendedUser> extendedUserInfoRecords = response.Data;
+                var extendedUserInfoRecords = response.Data;
 
                 foreach (var user in users)
-                {
+                {                 
                     //set image, login, birthday and etc.//
                     ExtendedUser? extendedUserInfoRecord = extendedUserInfoRecords.FirstOrDefault(x => x.lastname == user.Name.Split(" ")[0] && x.firstname == user.Name.Split(' ')[1]);
 
@@ -217,12 +213,15 @@ namespace TrelloClone.Services
                         && extendedUserInfoRecord.birth_date != null
                         && extendedUserInfoRecord.f_type != null
                         && extendedUserInfoRecord.email != null
+                        && extendedUserInfoRecord.login != null
+                        && extendedUserInfoRecord.password != null
                         && extendedUserInfoRecord.email.Contains("@"))
                     {
+                        user.Login = extendedUserInfoRecord.login;
+                        user.Password = extendedUserInfoRecord.password;
+                        user.Email = extendedUserInfoRecord.email;
                         Base64Decode.Base64Decode.Base64ToImage(extendedUserInfoRecord.pict_url, extendedUserInfoRecord.fullname.Replace(" ", string.Empty), extendedUserInfoRecord.birth_date, extendedUserInfoRecord.f_type);
 
-                        user.Login = extendedUserInfoRecord.email.Split('@').FirstOrDefault();
-                        user.Password = user.Login;
                         if (extendedUserInfoRecord.f_type != "" && extendedUserInfoRecord.pict_url != "")
                         {
                             user.ImagePath = "../image/user_image/" + extendedUserInfoRecord.fullname.Replace(" ", string.Empty) + extendedUserInfoRecord.birth_date.Replace(".", string.Empty) + "." + extendedUserInfoRecord.f_type;
@@ -243,6 +242,7 @@ namespace TrelloClone.Services
                         userTemp.Login = user.Login;
                         userTemp.Password = user.Password;
                         userTemp.ImagePath = user.ImagePath;
+                        userTemp.Email = user.Email;
 
                         _repository.UserRepository.Update(userTemp);
                         await _repository.Save();
@@ -284,7 +284,7 @@ namespace TrelloClone.Services
                             throw new Exception(notificationsResponse.Description);
                         }
                     }
-                }
+                }               
 
                 return new BaseResponse<object>()
                 {
@@ -410,12 +410,14 @@ namespace TrelloClone.Services
         {
             try
             {
-                string cols_array = "C:\\Users\\tomchikadm\\Documents\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string cols_array = "C:\\PROJECTS\\MTSmart\\files\\cols_array.xml";
+                string users_exttutor = "C:\\PROJECTS\\MTSmart\\files\\users_pass_container.xml";
 
-                Values values = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
+                Values values1 = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
+                Values values2 = Deserealization.Deserealization.DeserializeToObject<Values>(users_exttutor);
                 List<ExtendedUser> extendedUserInfoRecords = new List<ExtendedUser>();
-                foreach (var value in values.values)
+
+                foreach (var value in values1.values)
                 {
                     ExtendedUser? extendedUserInfoRecord = JsonConvert.DeserializeObject<ExtendedUser>(value.json);
                     if (extendedUserInfoRecord == null)
@@ -426,6 +428,18 @@ namespace TrelloClone.Services
                     extendedUserInfoRecord.fullname = extendedUserInfoRecord.lastname + " " + extendedUserInfoRecord.firstname + " " + extendedUserInfoRecord.middlename;
 
                     extendedUserInfoRecords.Add(extendedUserInfoRecord);
+                }
+
+                foreach (var value in values2.values)
+                {
+                    ExtendedUser? extendedUserInfoRecord = JsonConvert.DeserializeObject<ExtendedUser>(value.json);
+                    if (extendedUserInfoRecord == null
+                        || extendedUserInfoRecords.FirstOrDefault(x => x.login == extendedUserInfoRecord.login) == null)
+                    {
+                        continue;
+                    }
+
+                    extendedUserInfoRecords.Where(x => x.login == extendedUserInfoRecord.login).ToList().ForEach(s => s.password = extendedUserInfoRecord.password);
                 }
 
                 return new BaseResponse<IEnumerable<ExtendedUser>>()
@@ -451,7 +465,7 @@ namespace TrelloClone.Services
             {
                 var user = await _repository.UserRepository.GetUserById(false, userId);
 
-                var message = new Message(new string[] { user.Login + "@mtb.minsk.by" }, subject, content, user.Name);
+                var message = new Message(new string[] { user.Email }, subject, content, user.Name);
                 await _emailSender.SendEmailAsync(message);
 
                 return new BaseResponse<object>()

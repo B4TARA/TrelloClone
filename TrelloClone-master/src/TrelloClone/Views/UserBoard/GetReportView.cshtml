@@ -1,43 +1,56 @@
 ﻿@using Newtonsoft.Json
 @model List<TrelloClone.ViewModels.Report.ReportMonthModel>
 
-<div id="report">
-    <div class="home-content">
-        <div class="home_content_info">
+
+<div class="home-content">
+    <div class="home_content_info">
 
 
-            <div class="home_content_info_icon">
-                <i class="fa-solid fa-folder"></i>
-            </div>
-
-
-            <div class="mid_title">
-                Отчет
-            </div>
-
-
+        <div class="home_content_info_icon">
+            @*<i class="fa-solid fa-folder"></i>*@
+            <img src="~/image/icons/folder-solid.svg" />
         </div>
+
+
+        <div class="mid_title">
+            Отчет
+        </div>
+
+
     </div>
+    
+</div>
+
+
+<div class="mid_description getreportview">Отчет о выполненных задачах за период</div>
 
 
     <input type="text" id="input-datepicker" placeholder="Выберите период" class="input_datepicker">
 
 
-    <div class="header_btns_wrapper" id="header_btns_wrapper">
 
 
-        @foreach (var month in Model)
-        {
-            <button type="button" class="btn btn-secondary" onclick='GetMonthReport(@Newtonsoft.Json.JsonConvert.SerializeObject(month))'>@month.MonthName</button>
-        }
+<div class="header_btns_wrapper" id="header_btns_wrapper">
 
 
-    </div>
+    @foreach (var month in Model)
+    {
+        <button type="button" class="action_btn header_btn" onclick='GetMonthReport(@Newtonsoft.Json.JsonConvert.SerializeObject(month))' id="@month.MonthName">@month.MonthName</button>
+    }
 
+    @if (@Model.Count() > 0)
+    {
+        <div class="buttton btn_download" id="btnDownload" onclick="saveReport('@Model[0].viewDate')">
+            Скачать отчет
+        </div>
+    }   
 
-    <section class="main_container_content" id="main_container_content">
-    </section>
 </div>
+
+
+<section class="main_container_content" id="main_container_content">
+</section>
+
 
 
 
@@ -49,6 +62,14 @@
             function (result) {
                 $("#main_container_content").html(result);
             });
+        
+        const btnsHeaders = document.querySelectorAll('.header_btn');
+        btnsHeaders.forEach((elem)=>{
+            elem.classList.remove('active')
+        })
+        const btnMonthReport = document.getElementById(`${month.MonthName}`);
+        btnMonthReport.classList.add('active');
+        
     }
 
 
@@ -57,8 +78,11 @@
         className: 'custom-button-classname',
         onClick: (dp) => {
             let viewDate = document.getElementById('input-datepicker').value
-            //saveReport(viewDate)
-            showReport(viewDate)
+            window.location.href = "@Url.Action("GetReportView", "UserBoard")?viewDate=" + viewDate;
+
+            //const btnDownload = document.getElementById('btnDownload')
+            //btnDownload.setAttribute('onclick', `${viewDate}`)
+            //btnDownload.classList.add('active')
         }
 
     }
@@ -92,23 +116,5 @@
         });
     }
 
-    function showReport(viewDate) {
-        var url = "/UserBoard/GetReportView";
-        formData = new FormData();
-        formData.append("viewDate", viewDate);
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: async function (response) {
-                const main_container_content = document.getElementById('report')
-                main_container_content.innerHTML = response;
-            }
-        });
-    }
 
 </script>

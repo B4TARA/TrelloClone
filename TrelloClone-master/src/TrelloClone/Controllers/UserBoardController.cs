@@ -1,7 +1,5 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrelloClone.Models.Enum;
@@ -208,9 +206,9 @@ namespace TrelloClone.Controllers
             }
         }
 
-        [HttpPost]
+        //[HttpPost]
         [HttpGet]
-        public async Task<IActionResult> GetReportView()
+        public async Task<IActionResult> GetReportView(string viewDate)
         {
             try
             {
@@ -230,14 +228,23 @@ namespace TrelloClone.Controllers
                 DateTime startDate = new DateTime();
                 DateTime endDate = new DateTime();
 
-                if (Request.Method == "POST")
+                if (viewDate != null)
                 {
-                    var viewDate = Convert.ToString(Request.Form["viewDate"]);
                     startDate = Convert.ToDateTime(viewDate.Split(" - ")[0]);
                     endDate = Convert.ToDateTime(viewDate.Split(" - ")[1]);
-                }             
+                }
+
+
+
+
+                //if (Request.Method == "POST")
+                //{
+                //    var viewDate = Convert.ToString(Request.Form["viewDate"]);
+
+                //}             
 
                 var response = await _userBoardService.GetReportView(supervisorName, startDate, endDate, isAuthenticated);
+                response.Data.ForEach(x => x.viewDate = viewDate);
                 if (response.StatusCode != StatusCodes.OK)
                 {
                     return NotFound(response.Description);
@@ -254,8 +261,8 @@ namespace TrelloClone.Controllers
 
         [HttpPost]
         public IActionResult GetMonthReportViewComponent(ReportMonthModel reportMonthModel)
-        {           
-            return ViewComponent("MonthReport", new { reportMonthModel = reportMonthModel});
+        {
+            return ViewComponent("MonthReport", new { reportMonthModel = reportMonthModel });
         }
     }
 }
