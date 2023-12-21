@@ -54,7 +54,7 @@ namespace TrelloClone
             //email//
             var emailConfig = _config.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
-            // services.AddScoped<IEmailSender, EmailSender>();
+            //services.AddScoped<IEmailSender, EmailSender>();
             //
 
             services.AddScoped<EmailSender>();
@@ -75,7 +75,7 @@ namespace TrelloClone
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/User/Login";
+                options.LoginPath = "/Account/Login";
             });
 
             services.AddDbContext<TrelloCloneDbContext>();
@@ -94,13 +94,13 @@ namespace TrelloClone
             }
 
             app.UseHttpsRedirection();
-
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {

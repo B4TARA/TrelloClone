@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace TrelloClone.Controllers
             _userBoardService = boardService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             if (User.Identity == null)

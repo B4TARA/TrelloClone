@@ -42,7 +42,7 @@ namespace TrelloClone.Services
                 {
                     return new BaseResponse<ClaimsIdentity>()
                     {
-                        Description = "Вы были удалены из системы"
+                        Description = "Учетная запись заблокирована"
                     };
                 }
 

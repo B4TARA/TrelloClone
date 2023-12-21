@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Employee,Combined")]
         public IActionResult ListMyCards()
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -29,6 +31,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Employee,Combined")]
         public IActionResult ListMyCardsTable()
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -39,6 +42,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Supervisor,Combined")]
         public IActionResult ListEmployeeCards(int employeeId)
         {
             int supervisorId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -49,6 +53,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Supervisor,Combined")]
         public IActionResult ListEmployeeCardsTable(int employeeId)
         {
             int supervisorId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -59,6 +64,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public IActionResult ListArchiveCards(int userId)
         {
             var model = _userBoardService.ListArchiveCards(userId);
@@ -67,6 +73,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Combined,Employee")]
         public IActionResult AddCardViewComponent()
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -75,6 +82,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public IActionResult GetCardDetailsViewComponent(int cardId)
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -83,6 +91,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public IActionResult GetCardAssessmentViewComponent(int cardId)
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -91,6 +100,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public IActionResult GetCardHistoryViewComponent(int cardId)
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
@@ -99,6 +109,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public async Task<IActionResult> MoveCard(int ColumnId, int CardId, string Name, DateTime Term, string Requirement)
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
@@ -138,6 +149,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost("rejectcard")]
+        [Authorize(Roles = "Supervisor,Combined")]
         public async Task<IActionResult> RejectCard(int ColumnId, int CardId, string Name, DateTime Term, string Requirement)
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
@@ -206,7 +218,6 @@ namespace TrelloClone.Controllers
             }
         }
 
-        //[HttpPost]
         [HttpGet]
         public async Task<IActionResult> GetReportView(string viewDate)
         {

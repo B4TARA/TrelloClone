@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public async Task<IActionResult> Update(CardDetails card)
         {
             var userName = User.FindFirst("Name").Value;
@@ -50,6 +52,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Supervisor,Combined")]
         public async Task<IActionResult> GiveSupervisorRating(int CardId, string Name, DateTime Term, DateTime FactTerm, string Requirement, int SupervisorAssessment, string SupervisorComment)
         {
             var userName = User.FindFirst("Name").Value;
@@ -73,6 +76,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Combined,Employee")]
         public async Task<IActionResult> GiveEmployeeRating(int CardId, string Name, DateTime Term, string Requirement, int EmployeeAssessment, string EmployeeComment)
         {
             var userName = User.FindFirst("Name").Value;
@@ -93,6 +97,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Combined,Employee")]
         public IActionResult Create(AddCard viewModel)
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
@@ -100,11 +105,12 @@ namespace TrelloClone.Controllers
             viewModel.Id = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
 
             _cardService.Create(viewModel);
-           
+
             return RedirectToAction(action, "UserBoard");
         }
 
         [HttpPost]
+        [Authorize(Roles = "Combined,Employee")]
         public async Task<IActionResult> Delete()
         {
             int cardId = Convert.ToInt32(Request.Form["cardId"]);
@@ -120,6 +126,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public async Task<IActionResult> UploadFile()
         {
             var userId = Convert.ToInt32(User.FindFirst("Id").Value);
@@ -142,6 +149,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public async Task<IActionResult> DeleteFile()
         {
             var userName = User.FindFirst("Name").Value;
@@ -162,6 +170,7 @@ namespace TrelloClone.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Supervisor,Combined,Employee")]
         public async Task<IActionResult> AddComment()
         {
             var userId = Convert.ToInt32(User.FindFirst("Id").Value);

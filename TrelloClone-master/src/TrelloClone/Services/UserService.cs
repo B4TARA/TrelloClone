@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using EmailService;
+﻿using EmailService;
 using ExcelDataReader;
 using Newtonsoft.Json;
 using System;
@@ -122,10 +121,10 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
                     }
 
-                    else if (FakeToday.Day == 23 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
+                    else if (FakeToday.Day == 22 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
                         await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[1]);
                     }
@@ -149,22 +148,22 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 1 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[4]);
                     }
 
                     if (FakeToday.Day == 5 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[5]);
                     }
 
                     else if (FakeToday.Day == 8 && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[6]);
                     }
 
                     if ((FakeToday.Day == 11 || FakeToday.Day == 14) && (user.Role == Roles.Supervisor || user.Role == Roles.Combined))
                     {
-                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
+                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[7]);
                     }
                 }
 
@@ -203,7 +202,7 @@ namespace TrelloClone.Services
                 var extendedUserInfoRecords = response.Data;
 
                 foreach (var user in users)
-                {                 
+                {
                     //set image, login, birthday and etc.//
                     ExtendedUser? extendedUserInfoRecord = extendedUserInfoRecords.FirstOrDefault(x => x.lastname == user.Name.Split(" ")[0] && x.firstname == user.Name.Split(' ')[1]);
 
@@ -284,7 +283,7 @@ namespace TrelloClone.Services
                             throw new Exception(notificationsResponse.Description);
                         }
                     }
-                }               
+                }
 
                 return new BaseResponse<object>()
                 {
