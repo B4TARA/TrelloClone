@@ -1,52 +1,76 @@
 ﻿@model TrelloClone.ViewModels.LoginViewModel
+
+
 <link rel="stylesheet" href="~/css/style_authorization.css">
+
+
 <body>
+    
 
-				<div class="main_container_authorization">
-		<div class="container" id="container">
-			<div class="form-container sign-in-container">
-				<form autocomplete="on" method="post" asp-controller="Account" asp-action="Login" class="login_form">
-					<h1>Вход</h1>
+    <div class="main_container_authorization">
+        <div class="container" id="container">
 
-					<!--дизайн текста об ошибке при авторизации-->
+
+            <div class="form-container sign-in-container">
+                <form autocomplete="on" method="post" asp-controller="Account" asp-action="Login" class="login_form">
+                    <h1>Вход</h1>
+
+                    <!--дизайн текста об ошибке при авторизации-->
                     <div asp-validation-summary="All" class="description"></div>
 
-					<input asp-for="Login" type="login" class="form-control" placeholder="Логин" id="login-box" required />
+                    <input asp-for="Login" type="login" class="form-control" placeholder="Логин" id="login-box" required />
 
-					<input asp-for="Password" autocomplete="new-password" type="password" class="form-control" placeholder="Пароль" required />
-					@*<a href="#">Забыли пароль?</a>*@
-					<button>Войти</button>
-				</form>
-			</div>
-			<div class="overlay-container">
-				<div class="overlay">
-					<div class="overlay-panel overlay-right">
-						<h1>MTSmart</h1>
-						<img src="/image/smartproj_icon.svg" alt="">
-					</div>
-				</div>
-			</div>
-		</div>
-				</div>
+                    <input asp-for="Password" autocomplete="new-password" type="password" class="form-control" placeholder="Пароль" required />
+                    <a href="#" id="requestPass" onclick="openRequestPass()">Забыли пароль?</a>
+                    <button>Войти</button>
+                </form>
+
+
+                <div class="email_form">
+                    <div class="close_request_pass_btn" onclick="openRequestPass()">
+                            <img src="~/image/icons/xmark-solid-black.svg" />
+                        </div>
+                    <form autocomplete="on" method="post" asp-controller="Account" asp-action="RemindPassword">
+                        
+                        <h1>Забыли пароль</h1>
+
+                        <a>Введите Ваш рабочий email, на него будут отправлены учетные данные</a>
+
+                        <input asp-for="Email" type="email" class="form-control" placeholder="email@mtb.minsk.by" id="email-box" required />
+                        @*<a href="#">Забыли пароль?</a>*@
+                        <button>Отправить</button>
+                    </form>
+                </div>
+                
+
                 
             </div>
 
+
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-right">
+                        <h1>MTSmart</h1>
+                        <img src="/image/smartproj_icon.svg" alt="">
+                    </div>
+                </div>
+            </div>
+
+          
+        </div>
+    </div>
+
+
 </body>
 
+
 <script>
-    //const wrapper = document.querySelector(".login_main_wrapper"),
-    //    signupHeader = document.querySelector(".signup header"),
-    //    forgotPassBtn = document.getElementById("forgot_pass")
-    //loginHeader = document.querySelector(".login header");
 
-    //forgotPassBtn.addEventListener("click", () => {
-    //    wrapper.classList.add("active");
-    //    console.log('add')
-    //    console.log(forgotPassBtn)
-    //});
-
-    //signupHeader.addEventListener("click", () => {
-    //    wrapper.classList.remove("active");
-    //    console.log('remove')
-    //});
+    function openRequestPass () {
+        const emailForm = document.querySelector('.email_form');
+        const loginForm = document.querySelector('.login_form');
+        emailForm.classList.toggle('active')
+        loginForm.classList.toggle('hide')
+    }
+    
 </script>

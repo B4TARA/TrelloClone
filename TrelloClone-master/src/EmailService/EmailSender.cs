@@ -1,11 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmailService
 {
@@ -39,12 +34,8 @@ namespace EmailService
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
 
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var parentDirectory = Directory.GetParent(currentDirectory).FullName;
-            var filesDirectory = Path.Combine(parentDirectory, "Files");
-
             var bodyBuilder = new BodyBuilder();
-            var image = bodyBuilder.LinkedResources.Add(Path.Combine(filesDirectory, "smartproj_icon.png"));
+            var image = bodyBuilder.LinkedResources.Add(Path.Combine("C:\\PROJECTS\\MTSmart\\files", "smartproj_icon.png"));
             image.IsAttachment = false;
             image.ContentId = MimeUtils.GenerateMessageId();
 

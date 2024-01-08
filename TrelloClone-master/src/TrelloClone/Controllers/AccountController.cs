@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using EmailService;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TrelloClone.Data.Repositories;
+using TrelloClone.Models;
 using TrelloClone.Models.Enum;
 using TrelloClone.Services;
 using TrelloClone.ViewModels;
@@ -15,11 +17,13 @@ namespace TrelloClone.Controllers
     {
         private readonly AccountService _accountService;
         private readonly RepositoryManager _repository;
+        private readonly EmailSender _emailSender;
 
-        public AccountController(AccountService accountService, RepositoryManager repository)
+        public AccountController(AccountService accountService, RepositoryManager repository, EmailSender emailSender)
         {
             _accountService = accountService;
             _repository = repository;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -81,23 +85,23 @@ namespace TrelloClone.Controllers
         [HttpPost]
         public async Task<IActionResult> RemindPassword(ChangePasswordViewModel model)
         {
-            TempData["changePasswordLogin"] = model.Login;
+            TempData["changePasswordLogin"] = model.Email;
 
             if (ModelState.IsValid)
             {
-                var userToRemindPassword = await _repository.UserRepository.GetUserByLogin(false, model.Login);
+                var userToRemindPassword = await _repository.UserRepository.GetUserByEmail(false, model.Email);
 
                 if (userToRemindPassword == null)
                 {
-                    TempData["changePasswordMessage"] = "Пользователя с таким логином не существует";
+                    TempData["changePasswordMessage"] = "Пользователя с таким email-ом не существует";
                     return RedirectToAction("Login", "Account");
                 }
 
-                //var message = new Message(new string[] { userToChangePassword.login + "@gmail.com" }, "Напоминание пароля", "Ваш пароль - " + userToChangePassword.pass, null);
-                //var message = new Message(new string[] { "yatomchik@mtb.minsk.by" }, "Напоминание пароля", "Ваш пароль - " + userToRemindPassword.Password, null);
-                //await _emailSender.SendEmailAsync(message);
+                var content = "Ваш логин - " + userToRemindPassword.Login + ". Ваш пароль - " + userToRemindPassword.Password;
+                var message = new Message(new string[] { userToRemindPassword.Email }, "Напоминание", content, userToRemindPassword.Name);
+                await _emailSender.SendEmailAsync(message);
 
-                TempData["changePasswordMessage"] = "Ваш пароль успешно выслан вам на почту";
+                TempData["changePasswordMessage"] = "Ваши учетные данные успешно высланы на почту";
 
                 return RedirectToAction("Login", "Account");
             }

@@ -121,7 +121,7 @@ namespace TrelloClone.Services
 
                     if (FakeToday.Day == 20 && (user.Role == Roles.Employee || user.Role == Roles.Combined))
                     {
-                        //await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
+                        await SendNotification(user.Id, "Напоминание", Models.Mailing.Mailing.GetMails()[0]);
                     }
 
                     else if (FakeToday.Day == 22 && (user.Role == Roles.Employee || user.Role == Roles.Combined))

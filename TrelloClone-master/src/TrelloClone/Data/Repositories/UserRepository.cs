@@ -49,6 +49,18 @@ namespace TrelloClone.Data.Repositories
             return usersByCondition.First();
         }
 
+        public async Task<User?> GetUserByEmail(bool trackChanges, string email)
+        {
+            Expression<Func<User, bool>> expression = m => m.Email == email;
+
+            List<User> usersByCondition = await GetByCondition(expression, trackChanges);
+            if (usersByCondition.Count() == 0)
+            {
+                return null;
+            }
+            return usersByCondition.First();
+        }
+
         public async Task<User?> GetUserByLogin(bool trackChanges, string? login)
         {
             if (login == null)

@@ -12,10 +12,12 @@ arrowShowMenu.forEach(item => {
         arrowParent.classList.toggle("showMenu");
     });
 })
+if (sidebarBtn != null) {
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("close_sidebar");
+    });
+}
 
-sidebarBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("close_sidebar");
-});
 
 
 var searchBoxItem = document.getElementById("selectBox");

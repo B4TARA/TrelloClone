@@ -51,6 +51,12 @@ Task.Run(async () =>
                 _repository.UserRepository.Update(dbUser);
                 await _repository.Save();
             }
+            else
+            {
+                dbUser.IsBlocked = false;
+                _repository.UserRepository.Update(dbUser);
+                await _repository.Save();
+            }
         }
     }
 

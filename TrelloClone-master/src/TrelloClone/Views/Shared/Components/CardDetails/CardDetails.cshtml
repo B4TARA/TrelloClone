@@ -47,7 +47,7 @@
 
                 <form asp-controller="Card" asp-action="Update" enctype="multipart/form-data">
 
-                    
+
                     <input type="hidden" asp-for="Id" value="@Model.Id" />
 
                     <input type="hidden" asp-for="Column" value="@Model.Column" />
@@ -204,7 +204,7 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="15" width="13" viewBox="0 0 448 512">
                                                     <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                 </svg>
-                                                </span>
+                                            </span>
                                             <span class="input__file-button-text">Добавить</span>
                                         </label>
 
@@ -268,32 +268,22 @@
 
                         @if (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId && Model.Column == 1)
                         {
-                                <button asp-controller="UserBoard" asp-action="MoveCard" 
-                                        asp-route-ColumnId="@Model.ColumnId"
-                                        asp-route-CardId="@Model.Id" class="action_btn green_btn"
-                                        asp-route-Name="@Model.Name"
-                                        asp-route-Term="@Model.Term"
-                                        asp-route-Requirement="@Model.Requirement">
-                                    <div class="description">На согласование</div>
-                                </button>                                                   
+                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn green_btn">
+                                <div class="description">На согласование</div>
+                            </div>
                         }
 
 
                         else if (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId && Model.Column == 2)
                         {
-                                <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
-                                    <div class="description">Согласовано</div>
-                                </button>
+                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn green_btn">
+                                <div class="description">Согласовано</div>
+                            </div>
 
 
-                                <button asp-controller="UserBoard" asp-action="RejectCard"
-                                        asp-route-ColumnId="@Model.ColumnId" 
-                                        asp-route-CardId="@Model.Id" class="action_btn orange_btn"
-                                        asp-route-Name="@Model.Name"
-                                        asp-route-Term="@Model.Term"
-                                        asp-route-Requirement="@Model.Requirement">
-                                    <div class="description">На доработку</div>
-                                </button>                      
+                            <div onclick="rejectCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn orange_btn">
+                                <div class="description">На доработку</div>
+                            </div>
                         }
 
 
@@ -301,9 +291,9 @@
                         && Model.Column == 3
                         && TrelloClone.Models.Term.Term.IsEqualQuarter(Model.Term.AddMonths(3), TrelloClone.Models.Term.Term.GetFakeDate()))
                         {
-                            <button asp-controller="UserBoard" asp-action="MoveCard" asp-route-ColumnId="@Model.ColumnId" asp-route-CardId="@Model.Id" class="action_btn green_btn">
+                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn green_btn">
                                 <div class="description">Перевести</div>
-                            </button>
+                            </div>
                         }
 
 
@@ -345,18 +335,18 @@
 
 
                 @*<div class="container_description first_row_grid_description">
-                    <div class="icon_description">
-                        <i class="fa-regular fa-comment" style="color: #0D062D;"></i>
-                    </div>
+                <div class="icon_description">
+                <i class="fa-regular fa-comment" style="color: #0D062D;"></i>
+                </div>
 
-                    <div class="mid_title">
-                        Комментарии
-                    </div>
+                <div class="mid_title">
+                Комментарии
+                </div>
                 </div>*@
 
-                
-                
-                
+
+
+
 
 
                 @foreach (var comment in Model.Comments)
@@ -406,10 +396,5 @@
 </div>
 
 
-@section scripts{
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-
-}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

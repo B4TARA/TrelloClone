@@ -13,5 +13,7 @@ namespace TrelloClone.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string? Password { get; set; }
+
+        public string? Email { get; set; }
     }
 }

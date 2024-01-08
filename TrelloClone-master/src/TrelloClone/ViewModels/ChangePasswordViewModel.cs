@@ -2,6 +2,6 @@
 {
     public class ChangePasswordViewModel
     {
-        public string? Login { get; set; }
+        public string? Email { get; set; }
     }
 }

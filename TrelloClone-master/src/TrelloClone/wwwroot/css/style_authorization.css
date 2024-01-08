@@ -214,3 +214,46 @@ input {
         height: 40px;
         width: 40px;
     }
+
+.email_form form{
+    padding:0;
+    width:100%;
+}
+
+
+.email_form {
+    display: none;
+}
+
+    .email_form.active {
+        background-color: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 50px;
+        height: 100%;
+        text-align: center;
+    }
+
+.login_form {
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
+
+    .login_form.hide {
+        display: none;
+    }
+
+.close_request_pass_btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor:pointer;
+}

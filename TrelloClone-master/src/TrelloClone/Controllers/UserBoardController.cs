@@ -110,7 +110,7 @@ namespace TrelloClone.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Supervisor,Combined,Employee")]
-        public async Task<IActionResult> MoveCard(int ColumnId, int CardId, string Name, DateTime Term, string Requirement)
+        public async Task<IActionResult> MoveCard()
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
@@ -119,11 +119,11 @@ namespace TrelloClone.Controllers
             var userImg = Convert.ToString(User.FindFirst("ImagePath").Value);
 
             MoveCardCommand command = new MoveCardCommand();
-            command.ColumnId = ColumnId;
-            command.CardId = CardId;
-            command.Name = Name;
-            command.Term = Term;
-            command.Requirement = Requirement;
+            command.ColumnId = Convert.ToInt32(Request.Form["ColumnId"]);
+            command.CardId = Convert.ToInt32(Request.Form["CardId"]);
+            command.Name = Convert.ToString(Request.Form["Name"]);
+            command.Term = Convert.ToDateTime(Request.Form["Term"]);
+            command.Requirement = Convert.ToString(Request.Form["Requirement"]);
             command.UserName = userName;
             command.UserImg = userImg;
 
@@ -148,9 +148,9 @@ namespace TrelloClone.Controllers
             return NotFound(response.Description);
         }
 
-        [HttpPost("rejectcard")]
+        [HttpPost]
         [Authorize(Roles = "Supervisor,Combined")]
-        public async Task<IActionResult> RejectCard(int ColumnId, int CardId, string Name, DateTime Term, string Requirement)
+        public async Task<IActionResult> RejectCard()
         {
             var action = Request.Headers.Referer.ToString().Split("/")[4];
 
@@ -159,11 +159,11 @@ namespace TrelloClone.Controllers
             var userImg = User.FindFirst("ImagePath").Value;
 
             MoveCardCommand command = new MoveCardCommand();
-            command.ColumnId = ColumnId;
-            command.CardId = CardId;
-            command.Name = Name;
-            command.Term = Term;
-            command.Requirement = Requirement;
+            command.ColumnId = Convert.ToInt32(Request.Form["ColumnId"]);
+            command.CardId = Convert.ToInt32(Request.Form["CardId"]);
+            command.Name = Convert.ToString(Request.Form["Name"]);
+            command.Term = Convert.ToDateTime(Request.Form["Term"]);
+            command.Requirement = Convert.ToString(Request.Form["Requirement"]);
             command.UserName = userName;
             command.UserImg = userImg;
 
