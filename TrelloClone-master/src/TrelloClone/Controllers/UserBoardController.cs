@@ -164,6 +164,7 @@ namespace TrelloClone.Controllers
             command.Name = Convert.ToString(Request.Form["Name"]);
             command.Term = Convert.ToDateTime(Request.Form["Term"]);
             command.Requirement = Convert.ToString(Request.Form["Requirement"]);
+            command.EmployeeId = Convert.ToInt32(Request.Form["EmployeeId"]);
             command.UserName = userName;
             command.UserImg = userImg;
 

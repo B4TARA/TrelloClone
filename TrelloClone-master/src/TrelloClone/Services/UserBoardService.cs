@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,13 @@ namespace TrelloClone.Services
     {
         private readonly TrelloCloneDbContext _dbContext;
         private readonly RepositoryManager _repository;
+        private readonly UserService _userService;
 
-        public UserBoardService(TrelloCloneDbContext dbContext, RepositoryManager repository)
+        public UserBoardService(TrelloCloneDbContext dbContext, RepositoryManager repository, UserService userService)
         {
             _dbContext = dbContext;
             _repository = repository;
+            _userService = userService;
         }
 
         DateTime FakeToday = Term.GetFakeDate();
@@ -370,6 +373,8 @@ namespace TrelloClone.Services
                     Date = FakeToday,
                     Content = "Отправил(а) задачу на доработку"
                 });
+
+                await _userService.SendNotification(command.EmployeeId, "Уведомление", Models.Mailing.Mailing.GetMails()[8]);
 
                 _repository.CardRepository.Update(card);
                 await _repository.Save();
