@@ -41,6 +41,7 @@ Task.Run(async () =>
             return;
         }
 
+        _db.ChangeTracker.Clear();
         var dbUsers = await _repository.UserRepository.GetAllUsers(false);
         foreach (var dbUser in dbUsers)
         {
