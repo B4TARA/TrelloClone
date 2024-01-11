@@ -2,6 +2,7 @@
 
 
 <div class="popup__bg">
+    
     <div class="popup_wrapper">
         <div class="leftside_popup_buttons_wrapper">
             <div class="leftside_button_wrapper active" onclick="editCard(@Model.Id)">
@@ -63,7 +64,7 @@
 
 
                             <div class="card_name_input_wrapper card_detail_active">
-                                <input type="text" asp-for="Name" placeholder="Введите название" required />
+                                <input type="text" asp-for="Name" placeholder="Введите название" id="nameCardItem" required />
                             </div>
 
 
@@ -95,7 +96,7 @@
                             <div></div>
 
 
-                            <textarea class="mid_description" id="description_editor" asp-for="Requirement" placeholder="Введите описание" required></textarea>
+                            <textarea class="mid_description" asp-for="Requirement" placeholder="Введите описание" id="requirementCardItem" required></textarea>
                         </div>
 
 
@@ -127,7 +128,7 @@
 
 
                             <div class="choose_date_wrapper" id="choose_date">
-                                <input type="date" asp-for="Term" placeholder="Выберите период" required>
+                                <input type="date" asp-for="Term" placeholder="Выберите период" id="termCardItem" required>
                             </div>
 
 
@@ -268,7 +269,7 @@
 
                         @if (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) == Model.UserId && Model.Column == 1)
                         {
-                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn green_btn">
+                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.UserId`)" class="action_btn green_btn">
                                 <div class="description">На согласование</div>
                             </div>
                         }
@@ -276,12 +277,12 @@
 
                         else if (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id").Value) != Model.UserId && Model.Column == 2)
                         {
-                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn green_btn">
+                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.UserId`)" class="action_btn green_btn">
                                 <div class="description">Согласовано</div>
                             </div>
 
 
-                            <div onclick="rejectCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn orange_btn">
+                            <div onclick="rejectCard(`@Model.ColumnId`, `@Model.Id`, `@Model.UserId`)" class="action_btn orange_btn">
                                 <div class="description">На доработку</div>
                             </div>
                         }
@@ -291,7 +292,7 @@
                         && Model.Column == 3
                         && TrelloClone.Models.Term.Term.IsEqualQuarter(Model.Term.AddMonths(3), TrelloClone.Models.Term.Term.GetFakeDate()))
                         {
-                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.Name`, `@Model.Term`, `@Model.Requirement`, `@Model.UserId`)" class="action_btn green_btn">
+                            <div onclick="moveCard(`@Model.ColumnId`, `@Model.Id`, `@Model.UserId`)" class="action_btn green_btn">
                                 <div class="description">Перевести</div>
                             </div>
                         }

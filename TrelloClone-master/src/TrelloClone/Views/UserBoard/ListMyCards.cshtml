@@ -247,14 +247,19 @@
 <script>
 
 
-    function moveCard(ColumnId, CardId, Name, Term, Requirement, EmployeeId) {
+    function moveCard(ColumnId, CardId, EmployeeId) {
         var url = "/UserBoard/MoveCard";
         formData = new FormData();
         formData.append("ColumnId", ColumnId);
         formData.append("CardId", CardId);
-        formData.append("Name", Name);
-        formData.append("Term", Term);
-        formData.append("Requirement", Requirement);
+
+        const nameCard = document.getElementById('nameCardItem').value
+        const termCard = document.getElementById('termCardItem').value
+        const requirementCard = document.getElementById('requirementCardItem').value;
+
+        formData.append("Name", nameCard);
+        formData.append("Term", termCard);
+        formData.append("Requirement", requirementCard);      
 
         $.ajax({
             url: url,

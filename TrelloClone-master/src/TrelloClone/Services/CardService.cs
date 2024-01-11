@@ -51,6 +51,7 @@ namespace TrelloClone.Services
                     StartTerm = viewModel.Term,
                     UserId = viewModel.Id,
                     IsRelevant = true,
+                    DateOfCreation = DateTime.Now,
                 });
             }
 

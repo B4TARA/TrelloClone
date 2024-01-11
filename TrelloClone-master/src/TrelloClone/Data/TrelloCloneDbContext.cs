@@ -9,7 +9,7 @@ namespace TrelloClone.Data
         public TrelloCloneDbContext(DbContextOptions<TrelloCloneDbContext> options) : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         public DbSet<Card> Cards { get; set; }

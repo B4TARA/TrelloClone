@@ -1,5 +1,4 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -189,7 +188,9 @@ namespace TrelloClone.Services
             try
             {
                 var supervisor = await _repository.UserRepository.GetUserById(false, supervisorId);
-                var employees = await _repository.UserRepository.GetByCondition(x => x.SupervisorName == supervisor.Name, false);
+                var employees = await _repository.
+                    UserRepository.
+                    GetByCondition(x => x.SupervisorName == supervisor.Name && !x.IsBlocked, false);
 
                 return new BaseResponse<User>()
                 {
@@ -341,7 +342,7 @@ namespace TrelloClone.Services
                         UserImg = command.UserImg,
                         Date = FakeToday,
                         Content = "Изменил(а) \"Плановый срок реализации\" с \"" + card.Term + "\" на \"" + command.Term + "\""
-                    });                    
+                    });
 
                     card.Term = command.Term;
                 }
@@ -363,7 +364,7 @@ namespace TrelloClone.Services
                 card.ColumnId = card.ColumnId - 1;
 
                 _repository.CardRepository.Update(card);
-                await _repository.Save();                
+                await _repository.Save();
 
                 card.Updates.Add(new Update
                 {
@@ -491,7 +492,7 @@ namespace TrelloClone.Services
                             if (employee.SupervisorName != null)
                             {
                                 ws.Cell("D" + row.ToString()).Value = employee.SupervisorName.ToString();
-                            }                      
+                            }
 
                             ws.Cell("E" + row.ToString()).Value = "-";
                             if (card.Name != null)
@@ -640,7 +641,7 @@ namespace TrelloClone.Services
             {
                 var reportMonthModelList = new List<ReportMonthModel>();
 
-                if(startDate == default(DateTime) || endDate == default(DateTime))
+                if (startDate == default(DateTime) || endDate == default(DateTime))
                 {
                     return new BaseResponse<List<ReportMonthModel>>()
                     {
@@ -684,7 +685,7 @@ namespace TrelloClone.Services
                             reportCardModel.CardRequirement = card.Requirement;
                             reportCardModel.CardStartTerm = card.StartTerm.ToString();
 
-                            if(AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
+                            if (AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.EmployeeAssessment) != null)
                             {
                                 reportCardModel.EmployeeAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.EmployeeAssessment).Text;
                             }
@@ -692,8 +693,8 @@ namespace TrelloClone.Services
                             {
                                 reportCardModel.EmployeeAssessmentText = "-";
                             }
-                            
-                            if(card.EmployeeComment != null)
+
+                            if (card.EmployeeComment != null)
                             {
                                 reportCardModel.EmployeeComment = card.EmployeeComment;
                             }
@@ -701,8 +702,8 @@ namespace TrelloClone.Services
                             {
                                 reportCardModel.EmployeeComment = "-";
                             }
-                            
-                            if(AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
+
+                            if (AssessmentList.GetAssessments().FirstOrDefault(x => x.Id == card.SupervisorAssessment) != null)
                             {
                                 reportCardModel.SupervisorAssessmentText = AssessmentList.GetAssessments().First(x => x.Id == card.SupervisorAssessment).Text;
                             }
@@ -710,8 +711,8 @@ namespace TrelloClone.Services
                             {
                                 reportCardModel.SupervisorAssessmentText = "-";
                             }
-                            
-                            if(card.SupervisorComment != null)
+
+                            if (card.SupervisorComment != null)
                             {
                                 reportCardModel.SupervisorComment = card.SupervisorComment;
                             }
@@ -766,7 +767,7 @@ namespace TrelloClone.Services
                                 }
                             }
 
-                            else if(card.SupervisorAssessment == 7)
+                            else if (card.SupervisorAssessment == 7)
                             {
                                 if (card.StartTerm.Month > month)
                                 {
