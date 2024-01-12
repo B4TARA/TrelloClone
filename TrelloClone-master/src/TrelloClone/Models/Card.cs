@@ -24,6 +24,6 @@ namespace TrelloClone.Models
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<File> Files { get; set; } = new List<File>();
         public List<Update> Updates { get; set; } = new List<Update>();
-        public DateTime? DateOfCreation { get; set; }
+        public DateTime? dateofcreation { get; set; }
     }
 }

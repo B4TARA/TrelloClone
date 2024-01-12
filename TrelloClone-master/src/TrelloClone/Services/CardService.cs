@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +44,15 @@ namespace TrelloClone.Services
             {
                 var firstColumn = user.Columns.First();
 
+                List<Update> Updates = new List<Update>();
+                Updates.Add(new Update
+                {
+                    UserName = user.Name,
+                    UserImg = user.ImagePath,
+                    Date = FakeToday,
+                    Content = "Создал(а) карточку."
+                });
+
                 firstColumn.Cards.Add(new Card
                 {
                     Name = viewModel.Name,
@@ -51,7 +61,8 @@ namespace TrelloClone.Services
                     StartTerm = viewModel.Term,
                     UserId = viewModel.Id,
                     IsRelevant = true,
-                    DateOfCreation = DateTime.Now,
+                    dateofcreation = DateTime.Now,
+                    Updates = Updates,
                 });
             }
 
