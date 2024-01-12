@@ -11,8 +11,8 @@ namespace TrelloClone.Services.Base64Decode
             {
                 string b_date = birth_date.Replace(".", "");
 
-                //var path = "C:\\PROJECTS\\MTSmart\\src\\TrelloClone\\wwwroot\\image\\user_image\\";
-                var path = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\src\\TrelloClone\\wwwroot\\image\\user_image\\";
+                var path = "C:\\PROJECTS\\MTSmart\\src\\TrelloClone\\wwwroot\\image\\user_image\\";
+                //var path = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\src\\TrelloClone\\wwwroot\\image\\user_image\\";
 
                 var bytes = Convert.FromBase64String(base64String);
                 using (var imageFile = new FileStream(path + f_name + b_date + "." + f_type, FileMode.Create))

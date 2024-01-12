@@ -409,10 +409,10 @@ namespace TrelloClone.Services
         {
             try
             {
-                //string cols_array = "C:\\PROJECTS\\MTSmart\\files\\cols_array.xml";
-                string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
-                //string users_exttutor = "C:\\PROJECTS\\MTSmart\\files\\users_pass_container.xml";
-                string users_exttutor = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\users_pass_container.xml";
+                string cols_array = "C:\\PROJECTS\\MTSmart\\files\\cols_array.xml";
+                //string cols_array = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\cols_array.xml";
+                string users_exttutor = "C:\\PROJECTS\\MTSmart\\files\\users_pass_container.xml";
+                //string users_exttutor = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\users_pass_container.xml";
 
                 Values values1 = Deserealization.Deserealization.DeserializeToObject<Values>(cols_array);
                 Values values2 = Deserealization.Deserealization.DeserializeToObject<Values>(users_exttutor);

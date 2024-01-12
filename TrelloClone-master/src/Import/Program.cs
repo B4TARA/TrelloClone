@@ -21,8 +21,8 @@ _configuration.From = "MTSmart";
 EmailSender _emailSender = new EmailSender(_configuration);
 UserService userService = new UserService(_repository, _emailSender);
 
-//var path = "C:\\PROJECTS\\MTSmart\\files\\\\SMART-задачи_список_сотрудников.xlsx";
-var path = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
+var path = "C:\\PROJECTS\\MTSmart\\files\\\\SMART-задачи_список_сотрудников.xlsx";
+//var path = "C:\\Users\\evgen\\OneDrive\\Документы\\GitHub\\TrelloClone\\TrelloClone-master\\files\\SMART-задачи_список_сотрудников.xlsx";
 
 Task.Run(async () =>
 {
